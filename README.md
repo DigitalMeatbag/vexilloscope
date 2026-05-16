@@ -3,7 +3,10 @@
 ViT-lite flag classifier — identify country flags from images using a Vision Transformer
 trained from scratch in C with no external ML libraries.
 
-Built on top of `otto_von_grad` (the autograd engine). This is vexilloscope **v1**.
+Built on top of `otto-von-grad` (the autograd engine). This is vexilloscope **v1**.
+
+Intended as a backend for a Discord bot: the bot handles image retrieval and sizing;
+vexilloscope handles classification via `--identify`.
 
 ---
 
@@ -52,9 +55,9 @@ image [128×128×3]
 
 ## Data
 
-- 255 country flags at 64 × 64 PNG
+- 255 country flags at 128 × 128 PNG
 - Source: [hampusborgos/country-flags](https://github.com/hampusborgos/country-flags) (public domain)
-- Resize: `magick mogrify -resize 64x64! *.png`
+- Resize: `magick mogrify -resize 128x128! *.png`
 - `data/labels.csv`: `<code>,<country name>` (one row per flag)
 
 ```
@@ -74,16 +77,25 @@ Applied per training step to the raw image before patchification:
 3. Random translation ±4px (vacated edges filled white)
 4. Random rotation ±15° (bilinear, white fill)
 
-Eval and inference use clean images (no augmentation).
-`img_load` bilinearly resizes any source image to the target dimensions.
+Inference (`--identify`) uses the raw image with no augmentation.
+Eval uses multiple augmented passes per flag to measure robustness to distortion.
+`img_load` bilinearly resizes any source image to 128×128 before patchification.
 
 ---
 
 ## Build
 
+### CPU only
+
 ```powershell
-cd vexilloscope
 cmake -B build
+cmake --build build --config Release
+```
+
+### CUDA (recommended for training)
+
+```powershell
+cmake -B build -DOVG_CUDA=ON -G Ninja "-DCMAKE_CUDA_FLAGS=-allow-unsupported-compiler"
 cmake --build build
 ```
 
@@ -94,19 +106,47 @@ cmake --build build
 ### Train (saves weights)
 
 ```powershell
-.\build\Debug\vexilloscope.exe [labels.csv [flags_dir]]
+# MSVC multi-config (Debug/Release subfolder):
+.\build\Release\vexilloscope.exe [labels.csv [flags_dir]]
+
+# Ninja (no config subfolder):
+.\build\vexilloscope.exe [labels.csv [flags_dir]]
+
 # defaults: data/labels.csv  data/flags
 # saves: vit_weights.bin after training completes
 ```
 
-### Identify a flag (no training)
+### Identify a flag
 
 ```powershell
-.\build\Debug\vexilloscope.exe --identify path/to/flag.png
-.\build\Debug\vexilloscope.exe --identify path/to/flag.png --weights my_weights.bin
+.\build\Release\vexilloscope.exe --identify path/to/flag.png
+.\build\Release\vexilloscope.exe --identify path/to/flag.png --weights my_weights.bin
 ```
 
 `--weights` defaults to `vit_weights.bin` in the current directory.
+
+---
+
+## Discord Bot Integration
+
+The bot calls `--identify` with a pre-sized image and parses stdout:
+
+```
+vexilloscope.exe --identify <image_path> [--weights <weights_path>]
+```
+
+**Output (stdout):**
+
+```
+identify_flag: path/to/flag.png
+  #1  DE    Germany                                   logit: 4.2341
+  #2  AT    Austria                                   logit: 2.1034
+  #3  BE    Belgium                                   logit: 1.8821
+```
+
+Parse lines matching `#N  CODE  Name  logit: score`. The bot is responsible for
+sizing; `img_load` bilinearly rescales any input to 128×128 as a fallback.
+Inference is deterministic — dropout is disabled in identify mode.
 
 ---
 
@@ -144,16 +184,3 @@ void    vx_vit_save(const VxViT *v, const char *path);
 VxViT   vx_vit_load(const char *path);
 ```
 
----
-
-## Results (v1 training run)
-
-```
-steps: 10 000  augmentation: on  cosine LR: on
-train accuracy: ~42%  (218 flags seen during training)
-eval accuracy:  ~0%   (37 held-out classes never seen — hard generalization task)
-```
-
-The eval 0% is expected: the train/eval split holds out entire flag classes. With one image per
-class, the model has never seen those flags at all. Train accuracy of 42% confirms the model is
-learning visual features from augmented single-image data.
