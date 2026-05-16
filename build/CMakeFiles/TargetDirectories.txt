@@ -1,0 +1,7 @@
+C:/Users/Anthony Vargo/Code/vexilloscope/build/CMakeFiles/vexilloscope.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/CMakeFiles/cuda_smoke.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/CMakeFiles/edit_cache.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/otto-von-grad/CMakeFiles/ottovongrad.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/otto-von-grad/CMakeFiles/edit_cache.dir
+C:/Users/Anthony Vargo/Code/vexilloscope/build/otto-von-grad/CMakeFiles/rebuild_cache.dir

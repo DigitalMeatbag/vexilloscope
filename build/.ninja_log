@@ -1,0 +1,21 @@
+# ninja log v6
+14	135	8006727433238009	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_ops.c.obj	70208b5b6bbe20a0
+34	138	8006727433419815	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_gpt.c.obj	be037c35f8b802c7
+10	139	8006727433186159	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_tensor.c.obj	1c0aff92e152cb9b
+20	140	8006727433294487	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_mlp.c.obj	6bc1be11bdd32f4f
+17	141	8006727433238009	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_train.c.obj	6d33c79e204fcf69
+31	142	8006727433398469	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_transformer.c.obj	f8b0417096d63979
+23	143	8006727433294487	otto-von-grad/CMakeFiles/ottovongrad.dir/src/attention.c.obj	ae68ea37f96fba6b
+59	145	8006727433687903	CMakeFiles/vexilloscope.dir/src/patch_embedding.c.obj	4bbcf134d99ee2e
+55	146	8006727433619125	CMakeFiles/vexilloscope.dir/src/mlp_classifier.c.obj	cd5c0d33f6f4ae3e
+27	147	8006727433294487	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_block.c.obj	e569c8f1b9df3247
+52	147	8006727433619125	CMakeFiles/vexilloscope.dir/src/dataset.c.obj	1d010a1cb586c132
+62	148	8006727433687903	CMakeFiles/vexilloscope.dir/src/vit.c.obj	e8d9f94956b619c3
+44	152	8006727433540001	CMakeFiles/vexilloscope.dir/src/main.c.obj	2e09fd8d8b45fc99
+66	165	8006727433687903	CMakeFiles/cuda_smoke.dir/src/cuda_smoke.c.obj	bdf3f9acba974ddd
+48	208	8006727433540001	CMakeFiles/vexilloscope.dir/src/img.c.obj	875d89587ec6dda3
+37	898	8006727433419815	otto-von-grad/CMakeFiles/ottovongrad.dir/src/tg_cuda.cu.obj	9f34a481d0605e46
+41	1178	8006727433500077	otto-von-grad/CMakeFiles/ottovongrad.dir/src/cuda_ops.cu.obj	a89eece4e4cb67f6
+1178	1218	8006727444838014	otto-von-grad/ottovongrad.lib	9b8ab583310f4130
+1223	1424	8006727445327111	cuda_smoke.exe	fbd80a1c9f54553a
+1218	1426	8006727445280454	vexilloscope.exe	d50be1234e87accc
