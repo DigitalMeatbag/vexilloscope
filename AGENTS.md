@@ -159,9 +159,10 @@ after all steps:
 Training runs on **all flags** — there is no held-out class split. Eval measures
 robustness to augmentation across all 255 flags.
 
-When `flags_dir2` is provided (positional arg 3), `n_images = n_flags * 2`. The training
-loop cycles over both sources; `class_idx = idx % n_flags` maps each image to its label.
-Secondary images that are missing fall back to NULL and the loop substitutes the primary.
+When `flags_dir2` is provided (positional arg 3), `n_images = n_flags * 2`. When `flags_dir3`
+is provided (positional arg 4), `n_images = n_flags * 3`. The training loop cycles over all
+sources; `class_idx = idx % n_flags` maps each image to its label. Secondary/tertiary images
+that are missing fall back to NULL and the loop substitutes the primary.
 
 ---
 
@@ -239,4 +240,5 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * The `-allow-unsupported-compiler` flag is required for VS 2026 + CUDA 12.8 and is set in the otto-von-grad CMakeLists.txt — do not remove it.
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
 * `data/flags_wiki/` is generated — do not commit it. Regenerate with `scripts/fetch_wiki_flags.py`.
+* `data/flags_emoji/` is generated — do not commit it. Regenerate with `scripts/fetch_twemoji_flags.py`.
 * The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and pre-processes images to 128×128 PNG with Pillow before passing to the exe.
