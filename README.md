@@ -35,7 +35,7 @@ image [128×128×3]
 → cross_entropy / identify
 ```
 
-**Hyperparameters (v1):**
+**Hyperparameters:**
 
 | Parameter | Value |
 |-----------|-------|
@@ -79,8 +79,9 @@ Applied per training step to the raw image before patchification:
 
 1. 50% random horizontal flip
 2. Per-channel color jitter × uniform(0.85, 1.15)
-3. Random translation ±4px (vacated edges filled white)
-4. Random rotation ±15° (bilinear, white fill)
+3. Random crop 80–100% of image, resized back to 128×128
+4. Random translation ±4px (vacated edges filled white)
+5. Random rotation ±15° (bilinear, white fill)
 
 Inference (`--identify`) runs a sliding window detector over the input image, scores candidates
 with a single unaugmented forward pass, then re-extracts the best crop and averages
@@ -132,8 +133,8 @@ Ninja builds use `.\build\vexilloscope.exe`; MSVC multi-config uses `.\build\Rel
 ### Identify a flag
 
 ```powershell
-.\build\Release\vexilloscope.exe --identify path/to/flag.png
-.\build\Release\vexilloscope.exe --identify path/to/flag.png --weights my_weights.bin
+.\build\vexilloscope.exe --identify path/to/flag.png
+.\build\vexilloscope.exe --identify path/to/flag.png --weights my_weights.bin
 ```
 
 `--weights` defaults to `vit_weights.bin` in the current directory.
