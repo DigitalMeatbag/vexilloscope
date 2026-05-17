@@ -23,9 +23,9 @@ cmake -B build -DOVG_CUDA=ON -G Ninja "-DCMAKE_CUDA_FLAGS=-allow-unsupported-com
 cmake --build build
 ```
 
-Train (two-source recommended — run `scripts/fetch_wiki_flags.py` first):
+Train (three-source recommended — run `scripts/fetch_wiki_flags.py` and `scripts/fetch_twemoji_flags.py` first):
 ```powershell
-.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki
+.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki data/flags_emoji
 ```
 
 The `-allow-unsupported-compiler` flag is set in the otto-von-grad CMakeLists.txt — do not remove it.

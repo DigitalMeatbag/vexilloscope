@@ -27,9 +27,11 @@ vexilloscope/
   data/
     flags/               — PNG flag images (one per country, 128×128, hampusborgos source)
     flags_wiki/          — PNG flag images (Wikimedia-sourced, generated — not committed)
+    flags_emoji/         — PNG flag images (Twemoji emoji renders, generated — not committed)
     labels.csv           — ISO code, country name per row
   scripts/
-    fetch_wiki_flags.py  — downloads flags_wiki/ from flagcdn.com (Wikimedia SVG renders)
+    fetch_wiki_flags.py   — downloads flags_wiki/ from flagcdn.com (Wikimedia SVG renders)
+    fetch_twemoji_flags.py — downloads flags_emoji/ from Twemoji CDN (emoji-style renders, CC-BY 4.0)
     requirements.txt     — Python deps for scripts (requests, Pillow)
   bot/
     bot.py               — Discord bot: right-click context menu → identify flag
@@ -186,8 +188,11 @@ cmake --build build
 # Train — single source
 .\build\vexilloscope.exe
 
-# Train — two sources (recommended; populate data/flags_wiki/ first via fetch_wiki_flags.py)
+# Train — two sources
 .\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki
+
+# Train — three sources (recommended; populate flags_wiki/ and flags_emoji/ first)
+.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki data/flags_emoji
 
 # Identify a flag
 .\build\vexilloscope.exe --identify path\to\flag.png

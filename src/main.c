@@ -29,18 +29,22 @@ enum {
     VX_N_HEADS       = 4,
     VX_VIT_STEPS     = 50000,
     VX_EVAL_AUGS     = 8,     // augmented versions per flag for robustness eval
+    VX_IDENTIFY_TTA  = 8,     // augmented passes averaged at inference time
     VX_BATCH_SIZE    = 1,     // gradient accumulation batch size (1 = single sample per step)
-    VX_WARMUP_STEPS  = 2000   // linear LR ramp; prevents early divergence in deep transformers
+    VX_WARMUP_STEPS  = 2000,  // linear LR ramp; prevents early divergence in deep transformers
+    VX_LABEL_SMOOTH  = 100    // label smoothing epsilon × 1000 (e.g. 100 → ε=0.10); 0 = hard labels
 };
 
 static Tensor *make_one_hot(int id, int n_classes) {
     Tensor *out = tg_new(1, n_classes);
-    tg_fill(out, 0.0f);
     if (id < 0 || id >= n_classes) {
         fprintf(stderr, "make_one_hot: id %d out of range [0,%d)\n", id, n_classes);
         exit(1);
     }
-    out->data[id]  = 1.0f;
+    float eps = VX_LABEL_SMOOTH / 1000.0f;
+    float off = eps / (float)(n_classes - 1);
+    for (int j = 0; j < n_classes; j++)
+        out->data[j] = (j == id) ? (1.0f - eps) : off;
     out->persistent = 1;
     return out;
 }
@@ -111,12 +115,14 @@ static int path_exists(const char *path) {
     return 1;
 }
 
-/* Load images from dataset, optionally supplemented by a second source directory.
-   If dir2 is non-NULL, the returned array has 2*n entries: [0,n) primary, [n,2n) secondary.
-   Missing secondary images are stored as NULL; the training loop falls back to primary. */
-static Tensor **load_images_multi(const VxDataset *dataset, const char *dir2) {
+/* Load images from dataset, optionally supplemented by up to two extra source directories.
+   Layout: [0,n) primary, [n,2n) dir2, [2n,3n) dir3.
+   Missing secondary/tertiary images are NULL; the training loop falls back to primary. */
+static Tensor **load_images_multi(const VxDataset *dataset,
+                                  const char *dir2, const char *dir3) {
     int n     = dataset->count;
-    int total = dir2 ? n * 2 : n;
+    int n_src = 1 + (dir2 ? 1 : 0) + (dir3 ? 1 : 0);
+    int total = n * n_src;
     Tensor **images = calloc((size_t)total, sizeof(Tensor *));
     if (!images) { fprintf(stderr, "load_images_multi: out of memory\n"); exit(1); }
 
@@ -124,20 +130,21 @@ static Tensor **load_images_multi(const VxDataset *dataset, const char *dir2) {
         images[i] = img_load(dataset->countries[i].flag_path,
                              VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
 
-    if (dir2) {
+    const char *extra[2] = { dir2, dir3 };
+    for (int s = 0; s < 2; s++) {
+        if (!extra[s]) continue;
         int found = 0;
         for (int i = 0; i < n; i++) {
             const char *base = strrchr(dataset->countries[i].flag_path, '/');
             base = base ? base + 1 : dataset->countries[i].flag_path;
             char path2[512];
-            snprintf(path2, sizeof(path2), "%s/%s", dir2, base);
+            snprintf(path2, sizeof(path2), "%s/%s", extra[s], base);
             if (path_exists(path2)) {
-                images[n + i] = img_load(path2, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+                images[(s + 1) * n + i] = img_load(path2, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
                 found++;
             }
-            /* else: leave NULL — training loop falls back to primary */
         }
-        printf("secondary source: %d/%d flags found in %s\n", found, n, dir2);
+        printf("source %d: %d/%d flags found in %s\n", s + 2, found, n, extra[s]);
     }
 
     return images;
@@ -196,16 +203,33 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
 static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset) {
     printf("\nidentify_flag: %s\n", path);
 
-    Tensor *image   = img_load(path, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
-    Tensor *patches = img_patchify(image, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,
-                                   VX_PATCH_H, VX_PATCH_W);
-    patches->persistent = 1;
+    Tensor *image = img_load(path, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
 
-    Tensor *logits  = vx_vit_forward(vit, patches);
+    int n = dataset->count;
+    float *avg_logits = calloc((size_t)n, sizeof(float));
+    if (!avg_logits) { fprintf(stderr, "identify_flag: out of memory\n"); exit(1); }
 
-    int k = dataset->count < 3 ? dataset->count : 3;
+    for (int a = 0; a < VX_IDENTIFY_TTA; a++) {
+        Tensor *aug     = img_augment(image, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+        Tensor *patches = img_patchify(aug, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,
+                                       VX_PATCH_H, VX_PATCH_W);
+        patches->persistent = 1;
+        tg_free(aug);
+
+        Tensor *logits = vx_vit_forward(vit, patches);
+        for (int j = 0; j < n; j++)
+            avg_logits[j] += logits->data[j];
+
+        tg_free_graph(logits);
+        tg_free(patches);
+    }
+
+    float inv = 1.0f / VX_IDENTIFY_TTA;
+    for (int j = 0; j < n; j++) avg_logits[j] *= inv;
+
+    int k = n < 3 ? n : 3;
     int top_indices[3];
-    topk_indices(logits->data, dataset->count, k, top_indices);
+    topk_indices(avg_logits, n, k, top_indices);
 
     for (int r = 0; r < k; r++) {
         int idx = top_indices[r];
@@ -213,11 +237,10 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
                r + 1,
                dataset->countries[idx].code,
                dataset->countries[idx].name,
-               logits->data[idx]);
+               avg_logits[idx]);
     }
 
-    tg_free_graph(logits);
-    tg_free(patches);
+    free(avg_logits);
     tg_free(image);
 }
 
@@ -230,6 +253,7 @@ int main(int argc, char **argv) {
     const char *labels_path   = "data/labels.csv";
     const char *flags_dir     = "data/flags";
     const char *flags_dir2    = NULL;
+    const char *flags_dir3    = NULL;
 
     int pos = 0;
     for (int i = 1; i < argc; i++) {
@@ -240,6 +264,7 @@ int main(int argc, char **argv) {
         } else if (pos == 0) { labels_path = argv[i]; pos++; }
           else if (pos == 1) { flags_dir   = argv[i]; pos++; }
           else if (pos == 2) { flags_dir2  = argv[i]; pos++; }
+          else if (pos == 3) { flags_dir3  = argv[i]; pos++; }
     }
 
     /* ── Identify mode: load weights and classify a single image ── */
@@ -261,14 +286,15 @@ int main(int argc, char **argv) {
     vx_dataset_print_summary(&dataset);
     require_all_images_present(&dataset);
 
-    Tensor **images  = load_images_multi(&dataset, flags_dir2);
+    Tensor **images  = load_images_multi(&dataset, flags_dir2, flags_dir3);
     Tensor **targets = make_targets(dataset.count);
     Tensor **patches = make_patches(images, dataset.count);
 
     int n_flags  = dataset.count;
-    int n_images = flags_dir2 ? n_flags * 2 : n_flags;
-    if (flags_dir2)
-        printf("training on %d flags × 2 sources = %d images\n", n_flags, n_images);
+    int n_src    = 1 + (flags_dir2 ? 1 : 0) + (flags_dir3 ? 1 : 0);
+    int n_images = n_flags * n_src;
+    if (n_src > 1)
+        printf("training on %d flags × %d sources = %d images\n", n_flags, n_src, n_images);
     else
         printf("training on all %d flags\n", n_flags);
     printf("baseline ln(%d) ~= %.6f\n", n_flags, logf((float)n_flags));

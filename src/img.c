@@ -171,6 +171,45 @@ Tensor *img_rotate(const Tensor *img, int H, int W, int C, float angle_rad) {
     return out;
 }
 
+Tensor *img_crop_resize(const Tensor *img, int H, int W, int C, float crop_frac) {
+    int ch = (int)(crop_frac * H);
+    int cw = (int)(crop_frac * W);
+    if (ch < 1) ch = 1;
+    if (cw < 1) cw = 1;
+
+    int max_oy = H - ch;
+    int max_ox = W - cw;
+    int oy = max_oy > 0 ? rand() % (max_oy + 1) : 0;
+    int ox = max_ox > 0 ? rand() % (max_ox + 1) : 0;
+
+    Tensor *out = tg_new(1, H * W * C);
+    float x_ratio = (W > 1) ? (float)(cw - 1) / (float)(W - 1) : 0.0f;
+    float y_ratio = (H > 1) ? (float)(ch - 1) / (float)(H - 1) : 0.0f;
+
+    for (int dy = 0; dy < H; dy++) {
+        float fy = dy * y_ratio;
+        int y0 = (int)fy;
+        int y1 = y0 + 1 < ch ? y0 + 1 : ch - 1;
+        float ty = fy - y0;
+        for (int dx = 0; dx < W; dx++) {
+            float fx = dx * x_ratio;
+            int x0 = (int)fx;
+            int x1 = x0 + 1 < cw ? x0 + 1 : cw - 1;
+            float tx = fx - x0;
+            for (int c = 0; c < C; c++) {
+                float q00 = img->data[((oy + y0) * W + (ox + x0)) * C + c];
+                float q10 = img->data[((oy + y0) * W + (ox + x1)) * C + c];
+                float q01 = img->data[((oy + y1) * W + (ox + x0)) * C + c];
+                float q11 = img->data[((oy + y1) * W + (ox + x1)) * C + c];
+                out->data[(dy * W + dx) * C + c] =
+                    (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10
+                  + (1-tx)*   ty *q01 +    tx*ty *q11;
+            }
+        }
+    }
+    return out;
+}
+
 Tensor *img_augment(const Tensor *img, int H, int W, int C) {
     Tensor *cur = tg_new(1, H * W * C);
     int n = H * W * C;
@@ -186,6 +225,15 @@ Tensor *img_augment(const Tensor *img, int H, int W, int C) {
     /* Color jitter ×[0.85, 1.15] per channel */
     {
         Tensor *tmp = img_jitter(cur, H, W, C, 0.85f, 1.15f);
+        tg_free(cur);
+        cur = tmp;
+    }
+
+    /* Random crop 80–100% of image, resized back to H×W (simulates zoom/crop in Discord) */
+    {
+        float t = (float)rand() / ((float)RAND_MAX + 1.0f);
+        float crop_frac = 0.80f + t * 0.20f;
+        Tensor *tmp = img_crop_resize(cur, H, W, C, crop_frac);
         tg_free(cur);
         cur = tmp;
     }
