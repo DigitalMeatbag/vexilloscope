@@ -8,7 +8,7 @@ from pathlib import Path
 
 import discord
 from discord import app_commands
-from PIL import Image as PILImage
+from PIL import Image as PILImage  # stb_image doesn't support WebP; thanks for nothing, spec
 
 TOKEN   = os.environ["Vexilloscope_DiscordToken"]
 EXE     = os.environ.get("VEXILLOSCOPE_EXE",     str(Path(__file__).parent.parent / "build" / "vexilloscope.exe"))
@@ -43,6 +43,9 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
             result.stderr,
         )
 
+    if any("no flag detected" in line for line in result.stdout.splitlines()):
+        return "No flag found in that image.", result.stdout, result.stderr
+
     lines = []
     for line in result.stdout.splitlines():
         m = RESULT_RE.search(line)
@@ -56,37 +59,27 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
     return parsed, result.stdout, result.stderr
 
 
-def _preprocess(data: bytes) -> tuple[bytes, tuple[int, int], str]:
-    """Normalize any image format to a 128×128 RGB PNG composited against white.
-    Returns (png_bytes, original_size, original_format)."""
-    img = PILImage.open(BytesIO(data))
-    fmt = img.format or "unknown"
-    original_size = img.size
-    img = img.convert("RGBA")
-    bg  = PILImage.new("RGBA", img.size, (255, 255, 255, 255))
-    bg.paste(img, mask=img.split()[3])
-    out = bg.convert("RGB").resize((128, 128), PILImage.LANCZOS)
-    buf = BytesIO()
-    out.save(buf, format="PNG")
-    return buf.getvalue(), original_size, fmt
-
-
 async def identify_attachment(attachment: discord.Attachment) -> str:
     print(f"  attachment: {attachment.filename}  content_type={attachment.content_type}  size={attachment.size}B")
 
     data = await attachment.read()
     print(f"  downloaded: {len(data)}B")
 
-    png_data, original_size, fmt = _preprocess(data)
-    print(f"  preprocessed: format={fmt}  original={original_size}  → 128×128 PNG ({len(png_data)}B)")
-
     DEBUG_DIR.mkdir(exist_ok=True)
-    debug_path = DEBUG_DIR / "last_input.png"
-    debug_path.write_bytes(png_data)
+    suffix = Path(attachment.filename).suffix or ".png"
+    debug_path = DEBUG_DIR / f"last_input{suffix}"
+    debug_path.write_bytes(data)
     print(f"  debug image saved: {debug_path}")
 
+    if attachment.content_type and "webp" in attachment.content_type:
+        buf = BytesIO()
+        PILImage.open(BytesIO(data)).convert("RGB").save(buf, format="PNG")
+        file_data = buf.getvalue()
+    else:
+        file_data = data
+
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-        tmp.write(png_data)
+        tmp.write(file_data)
         tmp_path = tmp.name
 
     try:

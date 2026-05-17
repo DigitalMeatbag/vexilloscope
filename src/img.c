@@ -261,6 +261,133 @@ Tensor *img_augment(const Tensor *img, int H, int W, int C) {
     return cur;
 }
 
+Tensor *img_load_native(const char *path, int max_dim, int channels,
+                        int *out_h, int *out_w) {
+    if (!path || max_dim <= 0 || channels <= 0 || !out_h || !out_w) {
+        fprintf(stderr, "img_load_native: invalid arguments\n");
+        exit(1);
+    }
+
+    int width = 0, height = 0, file_channels = 0;
+    int load_channels = channels == 3 ? 4 : channels;
+    unsigned char *pixels = stbi_load(path, &width, &height, &file_channels, load_channels);
+    if (!pixels) {
+        fprintf(stderr, "img_load_native: failed to load '%s': %s\n", path, stbi_failure_reason());
+        exit(1);
+    }
+
+    int src_w = width, src_h = height;
+    int target_h = src_h, target_w = src_w;
+
+    if (src_w > max_dim || src_h > max_dim) {
+        if (src_w >= src_h) {
+            target_w = max_dim;
+            target_h = (int)((float)src_h * max_dim / src_w);
+            if (target_h < 1) target_h = 1;
+        } else {
+            target_h = max_dim;
+            target_w = (int)((float)src_w * max_dim / src_h);
+            if (target_w < 1) target_w = 1;
+        }
+    }
+
+    unsigned char *buf = pixels;
+    int buf_from_stbi = 1;
+
+    if (src_h != target_h || src_w != target_w) {
+        unsigned char *resized = malloc((size_t)target_h * target_w * load_channels);
+        if (!resized) {
+            fprintf(stderr, "img_load_native: out of memory resizing '%s'\n", path);
+            stbi_image_free(pixels);
+            exit(1);
+        }
+        float x_ratio = (target_w > 1) ? (float)(src_w - 1) / (float)(target_w - 1) : 0.0f;
+        float y_ratio = (target_h > 1) ? (float)(src_h - 1) / (float)(target_h - 1) : 0.0f;
+        for (int oy = 0; oy < target_h; oy++) {
+            float fy = oy * y_ratio;
+            int y0 = (int)fy; int y1 = y0 + 1 < src_h ? y0 + 1 : src_h - 1;
+            float ty = fy - y0;
+            for (int ox = 0; ox < target_w; ox++) {
+                float fx = ox * x_ratio;
+                int x0 = (int)fx; int x1 = x0 + 1 < src_w ? x0 + 1 : src_w - 1;
+                float tx = fx - x0;
+                for (int c = 0; c < load_channels; c++) {
+                    float q00 = pixels[(y0 * src_w + x0) * load_channels + c];
+                    float q10 = pixels[(y0 * src_w + x1) * load_channels + c];
+                    float q01 = pixels[(y1 * src_w + x0) * load_channels + c];
+                    float q11 = pixels[(y1 * src_w + x1) * load_channels + c];
+                    float v = (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10
+                            + (1-tx)*   ty *q01 +    tx*ty *q11;
+                    resized[(oy * target_w + ox) * load_channels + c] = (unsigned char)(v + 0.5f);
+                }
+            }
+        }
+        stbi_image_free(pixels);
+        buf = resized;
+        buf_from_stbi = 0;
+    }
+
+    *out_h = target_h;
+    *out_w = target_w;
+
+    int n = target_h * target_w * channels;
+    Tensor *out = tg_new(1, n);
+
+    if (channels == 3) {
+        for (int i = 0; i < target_h * target_w; i++) {
+            float alpha = buf[i * 4 + 3] / 255.0f;
+            for (int c = 0; c < 3; c++) {
+                float src = buf[i * 4 + c] / 255.0f;
+                out->data[i * 3 + c] = src * alpha + (1.0f - alpha);
+            }
+        }
+    } else {
+        for (int i = 0; i < n; i++)
+            out->data[i] = buf[i] / 255.0f;
+    }
+
+    if (buf_from_stbi) stbi_image_free(buf); else free(buf);
+    return out;
+}
+
+Tensor *img_crop_and_resize(const Tensor *img, int src_h, int src_w, int channels,
+                             int y0, int x0, int crop_h, int crop_w,
+                             int target_h, int target_w) {
+    if (!img || src_h <= 0 || src_w <= 0 || channels <= 0 ||
+        crop_h <= 0 || crop_w <= 0 || target_h <= 0 || target_w <= 0) {
+        fprintf(stderr, "img_crop_and_resize: invalid arguments\n");
+        exit(1);
+    }
+
+    Tensor *out = tg_new(1, target_h * target_w * channels);
+    float x_ratio = (target_w > 1) ? (float)(crop_w - 1) / (float)(target_w - 1) : 0.0f;
+    float y_ratio = (target_h > 1) ? (float)(crop_h - 1) / (float)(target_h - 1) : 0.0f;
+
+    for (int oy = 0; oy < target_h; oy++) {
+        float fy = oy * y_ratio;
+        int sy0 = (int)fy; int sy1 = sy0 + 1 < crop_h ? sy0 + 1 : crop_h - 1;
+        float ty = fy - sy0;
+        int abs_y0 = y0 + sy0, abs_y1 = y0 + sy1;
+        for (int ox = 0; ox < target_w; ox++) {
+            float fx = ox * x_ratio;
+            int sx0 = (int)fx; int sx1 = sx0 + 1 < crop_w ? sx0 + 1 : crop_w - 1;
+            float tx = fx - sx0;
+            int abs_x0 = x0 + sx0, abs_x1 = x0 + sx1;
+            for (int c = 0; c < channels; c++) {
+                float q00 = img->data[(abs_y0 * src_w + abs_x0) * channels + c];
+                float q10 = img->data[(abs_y0 * src_w + abs_x1) * channels + c];
+                float q01 = img->data[(abs_y1 * src_w + abs_x0) * channels + c];
+                float q11 = img->data[(abs_y1 * src_w + abs_x1) * channels + c];
+                out->data[(oy * target_w + ox) * channels + c] =
+                    (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10
+                  + (1-tx)*   ty *q01 +    tx*ty *q11;
+            }
+        }
+    }
+
+    return out;
+}
+
 Tensor *img_patchify(Tensor *img, int image_h, int image_w, int channels,
                      int patch_h, int patch_w) {
     if (!img || image_h <= 0 || image_w <= 0 || channels <= 0 ||

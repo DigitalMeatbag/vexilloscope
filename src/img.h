@@ -4,6 +4,11 @@
 #include "tg_tensor.h"
 
 Tensor *img_load(const char *path, int target_h, int target_w, int channels);
+Tensor *img_load_native(const char *path, int max_dim, int channels,
+                        int *out_h, int *out_w);
+Tensor *img_crop_and_resize(const Tensor *img, int src_h, int src_w, int channels,
+                             int y0, int x0, int crop_h, int crop_w,
+                             int target_h, int target_w);
 Tensor *img_patchify(Tensor *img, int image_h, int image_w, int channels,
                      int patch_h, int patch_w);
 

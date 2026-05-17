@@ -3,10 +3,10 @@
 ViT-lite flag classifier — identify country flags from images using a Vision Transformer
 trained from scratch in C with no external ML libraries.
 
-Built on top of [`otto-von-grad`](https://github.com/DigitalMeatbag/otto-von-grad) (the autograd engine). This is vexilloscope **v1**.
+Built on top of [`otto-von-grad`](https://github.com/DigitalMeatbag/otto-von-grad) (the autograd engine). This is vexilloscope **v2**.
 
-Intended as a backend for a Discord bot: the bot handles image retrieval and sizing;
-vexilloscope handles classification via `--identify`.
+Intended as a backend for a Discord bot: the bot handles image retrieval;
+vexilloscope handles detection, cropping, and classification via `--identify`.
 
 ---
 
@@ -82,9 +82,10 @@ Applied per training step to the raw image before patchification:
 3. Random translation ±4px (vacated edges filled white)
 4. Random rotation ±15° (bilinear, white fill)
 
-Inference (`--identify`) uses the raw image with no augmentation.
+Inference (`--identify`) runs a sliding window detector over the input image, scores candidates
+with a single unaugmented forward pass, then re-extracts the best crop and averages
+`VX_IDENTIFY_TTA` augmented passes to produce the final top-3.
 Eval uses multiple augmented passes per flag to measure robustness to distortion.
-`img_load` bilinearly resizes any source image to 128×128 before patchification.
 
 ---
 
@@ -141,13 +142,13 @@ Ninja builds use `.\build\vexilloscope.exe`; MSVC multi-config uses `.\build\Rel
 
 ## Discord Bot Integration
 
-The bot calls `--identify` with a pre-sized image and parses stdout:
+The bot passes raw attachment bytes to `--identify` and parses stdout:
 
 ```
 vexilloscope.exe --identify <image_path> [--weights <weights_path>]
 ```
 
-**Output (stdout):**
+**Output (stdout) — flag found:**
 
 ```
 identify_flag: path/to/flag.png
@@ -156,9 +157,19 @@ identify_flag: path/to/flag.png
   #3  BE    Belgium                                   logit: 1.8821
 ```
 
-Parse lines matching `#N  CODE  Name  logit: score`. The bot is responsible for
-sizing; `img_load` bilinearly rescales any input to 128×128 as a fallback.
+**Output (stdout) — no flag detected:**
+
+```
+identify_flag: path/to/flag.png
+no flag detected
+```
+
+Check for `no flag detected` before attempting `#N  CODE  Name  logit: score` parsing.
+The binary handles all sizing internally via the sliding window detector.
 Inference is deterministic — dropout is disabled in identify mode.
+
+> **Note:** `stb_image` does not support WebP. The bot converts WebP attachments to PNG
+> in-memory with PIL before passing to the binary. All other formats pass through raw.
 
 ---
 

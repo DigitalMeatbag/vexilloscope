@@ -32,7 +32,12 @@ enum {
     VX_IDENTIFY_TTA  = 8,     // augmented passes averaged at inference time
     VX_BATCH_SIZE    = 1,     // gradient accumulation batch size (1 = single sample per step)
     VX_WARMUP_STEPS  = 2000,  // linear LR ramp; prevents early divergence in deep transformers
-    VX_LABEL_SMOOTH  = 100    // label smoothing epsilon × 1000 (e.g. 100 → ε=0.10); 0 = hard labels
+    VX_LABEL_SMOOTH  = 100,   // label smoothing epsilon × 1000 (e.g. 100 → ε=0.10); 0 = hard labels
+    VX_DETECT_MAX_DIM            = 1024, // longer edge cap when loading for detection
+    VX_DETECT_THRESHOLD_X10      =   20, // confidence threshold × 10 (e.g. 20 → 2.0 logit)
+    VX_DETECT_STRIDE_PCT         =   50, // window stride as % of window size
+    VX_DETECT_MIN_CROP           =   64, // minimum window dimension (px) in working image
+    VX_DETECT_SKIP_SUBWINDOWS_X10=   30  // skip sub-windows if scale-1 logit >= this ÷ 10
 };
 
 static Tensor *make_one_hot(int id, int n_classes) {
@@ -203,14 +208,76 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
 static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset) {
     printf("\nidentify_flag: %s\n", path);
 
-    Tensor *image = img_load(path, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
-
+    int H = 0, W = 0;
+    Tensor *full_img = img_load_native(path, VX_DETECT_MAX_DIM, VX_IMAGE_C, &H, &W);
     int n = dataset->count;
+
+    float best_logit = -1e38f;
+    int best_y0 = 0, best_x0 = 0, best_crop_h = H, best_crop_w = W;
+
+    /* Score one candidate window and update running best. */
+#define SCORE_CANDIDATE(cy0, cx0, ch, cw)                                        \
+    do {                                                                          \
+        Tensor *_crop = img_crop_and_resize(full_img, H, W, VX_IMAGE_C,          \
+                                            (cy0), (cx0), (ch), (cw),            \
+                                            VX_IMAGE_H, VX_IMAGE_W);             \
+        Tensor *_p = img_patchify(_crop, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,    \
+                                  VX_PATCH_H, VX_PATCH_W);                       \
+        _p->persistent = 1;                                                       \
+        tg_free(_crop);                                                           \
+        Tensor *_lg = vx_vit_forward(vit, _p);                                   \
+        float _mx = _lg->data[0];                                                 \
+        for (int _j = 1; _j < n; _j++)                                           \
+            if (_lg->data[_j] > _mx) _mx = _lg->data[_j];                        \
+        tg_free_graph(_lg);                                                       \
+        tg_free(_p);                                                              \
+        if (_mx > best_logit) {                                                   \
+            best_logit = _mx;                                                     \
+            best_y0 = (cy0); best_x0 = (cx0);                                    \
+            best_crop_h = (ch); best_crop_w = (cw);                              \
+        }                                                                         \
+    } while (0)
+
+    /* Scale 1: full image — always exactly one candidate. */
+    SCORE_CANDIDATE(0, 0, H, W);
+    float scale1_logit = best_logit;
+
+    /* Scales 2 (75%) and 3 (50%): only run if scale-1 isn't already confident.
+       Avoids sub-crops of a flag image beating the correct full-image answer. */
+    if (scale1_logit < VX_DETECT_SKIP_SUBWINDOWS_X10 / 10.0f) {
+        int min_side = H < W ? H : W;
+        float scale_fracs[2] = { 0.75f, 0.50f };
+        for (int s = 0; s < 2; s++) {
+            int side = (int)(scale_fracs[s] * min_side);
+            if (side < VX_DETECT_MIN_CROP) continue;
+            int stride = side * VX_DETECT_STRIDE_PCT / 100;
+            if (stride < 1) stride = 1;
+            for (int cy0 = 0; cy0 + side <= H; cy0 += stride)
+                for (int cx0 = 0; cx0 + side <= W; cx0 += stride)
+                    SCORE_CANDIDATE(cy0, cx0, side, side);
+        }
+    }
+
+#undef SCORE_CANDIDATE
+
+    if (best_logit < VX_DETECT_THRESHOLD_X10 / 10.0f) {
+        tg_free(full_img);
+        printf("no flag detected\n");
+        return;
+    }
+
+    /* Re-extract winner and run TTA. */
+    Tensor *win_crop = img_crop_and_resize(full_img, H, W, VX_IMAGE_C,
+                                           best_y0, best_x0,
+                                           best_crop_h, best_crop_w,
+                                           VX_IMAGE_H, VX_IMAGE_W);
+    tg_free(full_img);
+
     float *avg_logits = calloc((size_t)n, sizeof(float));
     if (!avg_logits) { fprintf(stderr, "identify_flag: out of memory\n"); exit(1); }
 
     for (int a = 0; a < VX_IDENTIFY_TTA; a++) {
-        Tensor *aug     = img_augment(image, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+        Tensor *aug     = img_augment(win_crop, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
         Tensor *patches = img_patchify(aug, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,
                                        VX_PATCH_H, VX_PATCH_W);
         patches->persistent = 1;
@@ -223,6 +290,8 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
         tg_free_graph(logits);
         tg_free(patches);
     }
+
+    tg_free(win_crop);
 
     float inv = 1.0f / VX_IDENTIFY_TTA;
     for (int j = 0; j < n; j++) avg_logits[j] *= inv;
@@ -241,7 +310,6 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
     }
 
     free(avg_logits);
-    tg_free(image);
 }
 
 int main(int argc, char **argv) {

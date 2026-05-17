@@ -19,7 +19,7 @@ vexilloscope/
   src/
     main.c               — training loop, eval, identify_flag entry point
     dataset.c / .h       — CSV label loading, VxDataset, VxCountry structs
-    img.c / .h           — PNG load/resize, patchify, augmentation pipeline
+    img.c / .h           — image load/resize/crop, patchify, augmentation pipeline
     patch_embedding.c / .h — VxPatchEmbedding (linear projection + positional embedding)
     vit.c / .h           — VxViT model: patch_emb + encoder + Wout
     mlp_classifier.c / .h — legacy MLP classifier (unused in current ViT pipeline)
@@ -123,13 +123,19 @@ Images are loaded, resized to 128×128, and normalized to [0,1] float.
 ## Image Pipeline
 
 ```c
-Tensor *img_load(path, H, W, C);                         // load + resize → [1 × H*W*C]
+Tensor *img_load(path, H, W, C);                         // load + resize to fixed H×W → [1 × H*W*C]
+Tensor *img_load_native(path, max_dim, C, *out_h, *out_w); // load at native res, cap longer edge to max_dim
+Tensor *img_crop_and_resize(img, src_h, src_w, C,        // extract rect + bilinear resize
+                             y0, x0, crop_h, crop_w,     //   → [1 × target_h*target_w*C]
+                             target_h, target_w);
 Tensor *img_patchify(img, H, W, C, patch_h, patch_w);    // → [n_patches × patch_size]
-Tensor *img_augment(img, H, W, C);                       // flip + jitter + translate + rotate
+Tensor *img_augment(img, H, W, C);                       // flip + jitter + translate + rotate + crop
 ```
 
-Augmentation is applied fresh each training step. Eval uses augmented samples too
-(N passes per flag) to measure robustness to distortion.
+`img_load` is used for training. `img_load_native` + `img_crop_and_resize` drive the
+sliding window detector at inference. Augmentation is applied fresh each training step
+and during TTA in `identify_flag`. Eval uses augmented samples (N passes per flag) to
+measure robustness to distortion.
 
 ---
 
@@ -241,4 +247,6 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
 * `data/flags_wiki/` is generated — do not commit it. Regenerate with `scripts/fetch_wiki_flags.py`.
 * `data/flags_emoji/` is generated — do not commit it. Regenerate with `scripts/fetch_twemoji_flags.py`.
-* The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and pre-processes images to 128×128 PNG with Pillow before passing to the exe.
+* The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and passes raw attachment bytes to the exe. Exception: WebP attachments are converted to PNG in-memory with PIL first (`stb_image` does not support WebP). The binary handles all sizing via the sliding window detector.
+* `identify_flag` stdout has two cases: top-3 lines (`#N  CODE  Name  logit: score`) on success, or `no flag detected` on its own line when the best window logit is below `VX_DETECT_THRESHOLD_X10 / 10.0`. Check for the latter before attempting regex parsing.
+* The detector scores scale-1 (full image) first. If `scale1_logit >= VX_DETECT_SKIP_SUBWINDOWS_X10 / 10.0`, sub-windows are skipped entirely. This prevents a high-confidence sub-crop of a complex flag from overriding the correct full-image answer.

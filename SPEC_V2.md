@@ -53,17 +53,25 @@ VX_DETECT_STRIDE_PCT    =   50,  // window stride as % of window size
 VX_DETECT_MIN_CROP      =   64,  // minimum window dimension (px) in working image
 ```
 
+### New enum constants
+
+```c
+VX_DETECT_SKIP_SUBWINDOWS_X10 = 30,  // skip sub-windows if scale-1 logit >= this ÷ 10 (e.g. 30 → 3.0)
+```
+
 ### Candidate generation
 
 1. Load the input image with `img_load_native(..., VX_DETECT_MAX_DIM, VX_IMAGE_C, &H, &W)`.
-2. Compute three window sizes based on `min(H, W)`:
-   - Scale 1 (100%): window = `H × W` — the full image, always exactly one candidate.
+2. Score the scale-1 (full image) candidate first. Record `scale1_logit`.
+3. If `scale1_logit >= VX_DETECT_SKIP_SUBWINDOWS_X10 / 10.0f`, skip sub-windows entirely — the full image is already confident enough. Go directly to selection.
+4. Otherwise, compute sub-window scales based on `min(H, W)`:
    - Scale 2 (75%): square window of side `floor(0.75 × min(H, W))`.
    - Scale 3 (50%): square window of side `floor(0.50 × min(H, W))`.
-3. For scales 2 and 3, discard any scale whose window side falls below `VX_DETECT_MIN_CROP`. Scale 1 (full image) is always retained regardless of image dimensions.
-4. For scales 2 and 3, stride = `max(1, floor(side × VX_DETECT_STRIDE_PCT / 100))`.
-5. Enumerate all `(y0, x0)` positions where the window fits within `[0, H) × [0, W)` at the given stride.
-6. The full-image candidate (scale 1) is always included and is never subject to stride enumeration.
+5. For scales 2 and 3, discard any scale whose window side falls below `VX_DETECT_MIN_CROP`.
+6. For scales 2 and 3, stride = `max(1, floor(side × VX_DETECT_STRIDE_PCT / 100))`.
+7. Enumerate all `(y0, x0)` positions where the window fits within `[0, H) × [0, W)` at the given stride.
+
+**Rationale for early exit:** A plain sub-crop of a complex flag (e.g. the black triangle of the Papua New Guinea flag) can produce a higher single-pass logit than the correct full-image answer. The early exit prevents sub-windows from overriding an already-confident scale-1 result.
 
 ### Scoring
 
@@ -138,6 +146,12 @@ The existing `RESULT_RE` path is unchanged for successful identifications. The b
 - Multi-flag detection — out of scope for v2
 - Label set expansion — deferred pending real-world accuracy validation
 - Dedicated detector model — deferred pending sliding window evaluation
+
+## Implementation deviation: WebP
+
+The spec stated "stbi in the C binary handles JPEG, PNG, WebP, and other formats Discord delivers." This is incorrect — `stb_image` does not support WebP natively.
+
+**Resolution:** `bot/bot.py` retains a minimal PIL dependency for WebP conversion only. When `content_type` contains `"webp"`, the bot converts the attachment to PNG in-memory with PIL before writing to the temp file. All other formats pass through raw as specified. The debug file still receives the original raw bytes.
 
 ---
 
