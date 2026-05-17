@@ -18,6 +18,12 @@ DEBUG_DIR = Path(__file__).parent / "debug"
 
 RESULT_RE = re.compile(r"#(\d+)\s+(\S+)\s+(.+?)\s+logit:\s+([-\d.]+)")
 
+
+def flag_emoji(code: str) -> str:
+    if len(code) == 2:
+        return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in code.upper())
+    return ""  # sub-national codes (GB-ENG etc.) have no standard Unicode flag emoji
+
 client = discord.Client(intents=discord.Intents.default())
 tree   = app_commands.CommandTree(client)
 
@@ -42,7 +48,9 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
         m = RESULT_RE.search(line)
         if m:
             rank, code, name, logit = m.groups()
-            lines.append(f"{rank}. **{name.strip()}** ({code})  —  logit {float(logit):.2f}")
+            emoji = flag_emoji(code)
+            prefix = f"{emoji} " if emoji else ""
+            lines.append(f"{rank}. {prefix}**{name.strip()}** ({code})  —  logit {float(logit):.2f}")
 
     parsed = "\n".join(lines) if lines else "no results returned"
     return parsed, result.stdout, result.stderr
