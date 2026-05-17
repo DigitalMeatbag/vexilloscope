@@ -3,7 +3,7 @@
 ViT-lite flag classifier — identify country flags from images using a Vision Transformer
 trained from scratch in C with no external ML libraries.
 
-Built on top of `otto-von-grad` (the autograd engine). This is vexilloscope **v1**.
+Built on top of [`otto-von-grad`](https://github.com/DigitalMeatbag/otto-von-grad) (the autograd engine). This is vexilloscope **v1**.
 
 Intended as a backend for a Discord bot: the bot handles image retrieval and sizing;
 vexilloscope handles classification via `--identify`.
