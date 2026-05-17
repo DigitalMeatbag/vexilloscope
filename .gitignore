@@ -1,0 +1,7 @@
+build/
+vit_weights.bin
+.claude/
+data/flags_wiki/
+bot/__pycache__/
+bot/*.pyc
+bot/debug/

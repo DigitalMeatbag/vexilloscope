@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/Anthony Vargo/Code/vexilloscope/build/cmake_install.cmake",
-		"C:/Users/Anthony Vargo/Code/vexilloscope/build/otto-von-grad/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

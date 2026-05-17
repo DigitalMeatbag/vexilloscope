@@ -25,11 +25,17 @@ vexilloscope/
     mlp_classifier.c / .h — legacy MLP classifier (unused in current ViT pipeline)
     cuda_smoke.c         — CUDA sanity tests
   data/
-    flags/               — PNG flag images (one per country, ~128×128)
-    labels.csv           — ISO code, country name, flag filename per row
+    flags/               — PNG flag images (one per country, 128×128, hampusborgos source)
+    flags_wiki/          — PNG flag images (Wikimedia-sourced, generated — not committed)
+    labels.csv           — ISO code, country name per row
+  scripts/
+    fetch_wiki_flags.py  — downloads flags_wiki/ from flagcdn.com (Wikimedia SVG renders)
+    requirements.txt     — Python deps for scripts (requests, Pillow)
+  bot/
+    bot.py               — Discord bot: right-click context menu → identify flag
+    requirements.txt     — Python deps for bot (discord.py, Pillow)
   vendor/
     stb_image.h          — single-header PNG/JPEG loader (stb)
-    stb_image_resize2.h  — single-header image resizer (stb)
   CMakeLists.txt
 ```
 
@@ -151,6 +157,10 @@ after all steps:
 Training runs on **all flags** — there is no held-out class split. Eval measures
 robustness to augmentation across all 255 flags.
 
+When `flags_dir2` is provided (positional arg 3), `n_images = n_flags * 2`. The training
+loop cycles over both sources; `class_idx = idx % n_flags` maps each image to its label.
+Secondary images that are missing fall back to NULL and the loop substitutes the primary.
+
 ---
 
 ## Weights Serialization
@@ -171,13 +181,16 @@ File format: `"VXWT"` magic + version int32 + 8 architecture int32s + per-param 
 cmake -B build -DOVG_CUDA=ON -G Ninja "-DCMAKE_CUDA_FLAGS=-allow-unsupported-compiler"
 
 # Build
-cmake --build build --config Release
+cmake --build build
 
-# Train
+# Train — single source
 .\build\vexilloscope.exe
 
+# Train — two sources (recommended; populate data/flags_wiki/ first via fetch_wiki_flags.py)
+.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki
+
 # Identify a flag
-.\build\vexilloscope.exe identify path\to\flag.png
+.\build\vexilloscope.exe --identify path\to\flag.png
 ```
 
 Requires `data/flags/` and `data/labels.csv` to be present relative to the working directory.
@@ -220,3 +233,5 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * When changing hyperparameters, update the enum constants in `main.c` — do not scatter magic numbers.
 * The `-allow-unsupported-compiler` flag is required for VS 2026 + CUDA 12.8 and is set in the otto-von-grad CMakeLists.txt — do not remove it.
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
+* `data/flags_wiki/` is generated — do not commit it. Regenerate with `scripts/fetch_wiki_flags.py`.
+* The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and pre-processes images to 128×128 PNG with Pillow before passing to the exe.

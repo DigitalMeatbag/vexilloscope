@@ -17,12 +17,15 @@ See `AGENTS.md` for full architecture, API reference, and constraints.
 # CPU only
 cmake -B build
 cmake --build build --config Release
-.\build\Release\vexilloscope.exe --identify data/flags/de.png
 
 # CUDA (recommended for training)
 cmake -B build -DOVG_CUDA=ON -G Ninja "-DCMAKE_CUDA_FLAGS=-allow-unsupported-compiler"
 cmake --build build
-.\build\vexilloscope.exe --identify data/flags/de.png
+```
+
+Train (two-source recommended — run `scripts/fetch_wiki_flags.py` first):
+```powershell
+.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki
 ```
 
 The `-allow-unsupported-compiler` flag is set in the otto-von-grad CMakeLists.txt — do not remove it.

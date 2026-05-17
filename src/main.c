@@ -100,8 +100,47 @@ static Tensor **make_patches(Tensor **images, int n) {
 
 static void free_tensor_array(Tensor **items, int n) {
     if (!items) return;
-    for (int i = 0; i < n; i++) tg_free(items[i]);
+    for (int i = 0; i < n; i++) if (items[i]) tg_free(items[i]);
     free(items);
+}
+
+static int path_exists(const char *path) {
+    FILE *f = fopen(path, "rb");
+    if (!f) return 0;
+    fclose(f);
+    return 1;
+}
+
+/* Load images from dataset, optionally supplemented by a second source directory.
+   If dir2 is non-NULL, the returned array has 2*n entries: [0,n) primary, [n,2n) secondary.
+   Missing secondary images are stored as NULL; the training loop falls back to primary. */
+static Tensor **load_images_multi(const VxDataset *dataset, const char *dir2) {
+    int n     = dataset->count;
+    int total = dir2 ? n * 2 : n;
+    Tensor **images = calloc((size_t)total, sizeof(Tensor *));
+    if (!images) { fprintf(stderr, "load_images_multi: out of memory\n"); exit(1); }
+
+    for (int i = 0; i < n; i++)
+        images[i] = img_load(dataset->countries[i].flag_path,
+                             VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+
+    if (dir2) {
+        int found = 0;
+        for (int i = 0; i < n; i++) {
+            const char *base = strrchr(dataset->countries[i].flag_path, '/');
+            base = base ? base + 1 : dataset->countries[i].flag_path;
+            char path2[512];
+            snprintf(path2, sizeof(path2), "%s/%s", dir2, base);
+            if (path_exists(path2)) {
+                images[n + i] = img_load(path2, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+                found++;
+            }
+            /* else: leave NULL — training loop falls back to primary */
+        }
+        printf("secondary source: %d/%d flags found in %s\n", found, n, dir2);
+    }
+
+    return images;
 }
 
 /* Top-k: fills out[k] with indices of the k largest values in scores[n], sorted descending. */
@@ -190,6 +229,7 @@ int main(int argc, char **argv) {
     const char *weights_path  = "vit_weights.bin";
     const char *labels_path   = "data/labels.csv";
     const char *flags_dir     = "data/flags";
+    const char *flags_dir2    = NULL;
 
     int pos = 0;
     for (int i = 1; i < argc; i++) {
@@ -199,6 +239,7 @@ int main(int argc, char **argv) {
             weights_path = argv[++i];
         } else if (pos == 0) { labels_path = argv[i]; pos++; }
           else if (pos == 1) { flags_dir   = argv[i]; pos++; }
+          else if (pos == 2) { flags_dir2  = argv[i]; pos++; }
     }
 
     /* ── Identify mode: load weights and classify a single image ── */
@@ -220,12 +261,16 @@ int main(int argc, char **argv) {
     vx_dataset_print_summary(&dataset);
     require_all_images_present(&dataset);
 
-    Tensor **images  = load_images(&dataset);
+    Tensor **images  = load_images_multi(&dataset, flags_dir2);
     Tensor **targets = make_targets(dataset.count);
     Tensor **patches = make_patches(images, dataset.count);
 
-    int n_flags = dataset.count;
-    printf("training on all %d flags\n", n_flags);
+    int n_flags  = dataset.count;
+    int n_images = flags_dir2 ? n_flags * 2 : n_flags;
+    if (flags_dir2)
+        printf("training on %d flags × 2 sources = %d images\n", n_flags, n_images);
+    else
+        printf("training on all %d flags\n", n_flags);
     printf("baseline ln(%d) ~= %.6f\n", n_flags, logf((float)n_flags));
 
     printf("\nViT training  (augmentation + cosine LR)\n");
@@ -282,9 +327,11 @@ int main(int argc, char **argv) {
 
         float batch_loss = 0.0f;
         for (int b = 0; b < VX_BATCH_SIZE; b++) {
-            int idx = ((step - 1) * VX_BATCH_SIZE + b) % n_flags;
+            int idx       = ((step - 1) * VX_BATCH_SIZE + b) % n_images;
+            int class_idx = idx % n_flags;
 
-            Tensor *aug = img_augment(images[idx], VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+            Tensor *src = images[idx] ? images[idx] : images[class_idx];
+            Tensor *aug = img_augment(src, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
             Tensor *p   = img_patchify(aug, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,
                                        VX_PATCH_H, VX_PATCH_W);
             p->persistent = 1;
@@ -294,7 +341,7 @@ int main(int argc, char **argv) {
             tg_to_cuda(p);
 #endif
             Tensor *logits      = vx_vit_forward(&vit, p);
-            Tensor *loss        = tg_cross_entropy(logits, targets[idx]);
+            Tensor *loss        = tg_cross_entropy(logits, targets[class_idx]);
             Tensor *scaled_loss = tg_scale(loss, inv_batch);
 
             batch_loss += loss->data[0];   /* loss->data[0] is synced by tg_cross_entropy */
@@ -375,7 +422,7 @@ int main(int argc, char **argv) {
     vx_vit_free(&vit);
     free_tensor_array(patches, dataset.count);
     free_tensor_array(targets, dataset.count);
-    free_tensor_array(images, dataset.count);
+    free_tensor_array(images, n_images);
     vx_dataset_free(&dataset);
     return 0;
 }
