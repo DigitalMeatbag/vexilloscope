@@ -3,6 +3,10 @@ vit_weights.bin
 .claude/
 data/flags_wiki/
 data/flags_emoji/
-bot/__pycache__/
-bot/*.pyc
+data/generated/
+reports/qa/latest.json
+reports/qa/latest.md
+reports/qa/archive/
+__pycache__/
+*.pyc
 bot/debug/

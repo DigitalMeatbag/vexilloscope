@@ -1,0 +1,6 @@
+{"confusable_id": "ro-td", "level": "result", "members": ["ro", "td"], "reason": "near-identical vertical tricolor (blue, yellow, red)", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "mc-id", "level": "result", "members": ["mc", "id"], "reason": "red-white horizontal bicolor, differing only in proportion", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "ie-ci", "level": "result", "members": ["ie", "ci"], "reason": "mirrored vertical tricolor (green-white-orange vs orange-white-green)", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "nl-lu", "level": "result", "members": ["nl", "lu"], "reason": "red-white-blue horizontal tricolor; Luxembourg blue is lighter but indistinguishable at 128px", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "no-is", "level": "result", "members": ["no", "is"], "reason": "Nordic cross with inverted red/blue color scheme", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "au-nz", "level": "result", "members": ["au", "nz"], "reason": "blue defaced ensign with Union Jack canton and Southern Cross stars", "source": "manual", "review_status": "reviewed"}
