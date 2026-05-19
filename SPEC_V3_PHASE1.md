@@ -248,7 +248,16 @@ Each line defines a reviewed visual similarity or identity relationship between 
 {"confusable_id": "ro-td", "level": "result", "members": ["ro", "td"], "reason": "near-identical vertical tricolor", "source": "manual", "review_status": "reviewed"}
 ```
 
-Phase 1 ships with a minimal seed confusables file containing the known v2-era lookalikes. It may be empty (zero lines) at the start if no manual entries are ready.
+Phase 1 ships `confusables.jsonl` pre-seeded with the following known v2-era lookalike pairs:
+
+```jsonl
+{"confusable_id": "ro-td", "level": "result", "members": ["ro", "td"], "reason": "near-identical vertical tricolor (blue, yellow, red)", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "mc-id", "level": "result", "members": ["mc", "id"], "reason": "red-white horizontal bicolor, differing only in proportion", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "ie-ci", "level": "result", "members": ["ie", "ci"], "reason": "mirrored vertical tricolor (green-white-orange vs orange-white-green)", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "nl-lu", "level": "result", "members": ["nl", "lu"], "reason": "red-white-blue horizontal tricolor; Luxembourg blue is lighter but indistinguishable at 128px", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "no-is", "level": "result", "members": ["no", "is"], "reason": "Nordic cross with inverted red/blue color scheme", "source": "manual", "review_status": "reviewed"}
+{"confusable_id": "au-nz", "level": "result", "members": ["au", "nz"], "reason": "blue defaced ensign with Union Jack canton and Southern Cross stars", "source": "manual", "review_status": "reviewed"}
+```
 
 ---
 
@@ -847,6 +856,15 @@ python scripts/export_training.py [--output data/generated/train]
 - Prints the correct C trainer invocation to stdout after completion.
 - Exits non-zero on any error.
 
+### `scripts/requirements.txt`
+
+```
+Pillow>=9.0
+imagehash>=4.3
+```
+
+`Pillow` is used for image integrity validation (decode, dimensions, alpha detection) in `validate_manifest.py`. `imagehash` is used for perceptual hash computation (`visual_similar_across_results` warning). All other script dependencies (`json`, `csv`, `pathlib`, `hashlib`, `datetime`) are Python standard library.
+
 ---
 
 ## 13. Phase 1 Verification Checklist
@@ -856,7 +874,7 @@ All items must pass before Phase 1 is declared complete.
 - [ ] `data/manifest/results.jsonl` exists with one entry per v2 label (255 entries).
 - [ ] `data/manifest/flags.jsonl` exists with one entry per v2 label (255 entries).
 - [ ] `data/manifest/assets.jsonl` exists with at least one entry per v2 label (primary assets).
-- [ ] `data/manifest/confusables.jsonl` exists (may be empty or contain seed entries).
+- [ ] `data/manifest/confusables.jsonl` exists with the 6 seed entries from Section 4.4.
 - [ ] `python scripts/validate_manifest.py` exits `0` (no blockers) on the migrated manifest.
 - [ ] `reports/qa/latest.json` is written and parseable.
 - [ ] `reports/qa/latest.md` is written.
