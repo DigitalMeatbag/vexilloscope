@@ -11,6 +11,7 @@ Exits:
 """
 
 import argparse
+import io
 import json
 import sys
 from datetime import datetime, timezone
@@ -370,8 +371,55 @@ def validate(manifest_dir: Path = MANIFEST_DIR) -> tuple[list, dict, dict]:
         imagehash_available = False
 
     if pil_available:
+        _cairosvg = None
+        _cairosvg_checked = False
+
         for aid, path_str in image_check_queue:
             abs_path = REPO_ROOT / path_str
+
+            if path_str.endswith(".svg"):
+                # Lazy import cairosvg only when an SVG trainable asset is encountered
+                if not _cairosvg_checked:
+                    try:
+                        import cairosvg as _cairosvg_mod
+                        _cairosvg = _cairosvg_mod
+                    except ImportError:
+                        _cairosvg = None
+                    _cairosvg_checked = True
+
+                if _cairosvg is None:
+                    issues.append(blocker(
+                        "trainable_asset_unreadable", "asset", aid,
+                        f"Trainable asset {aid!r}: cairosvg is required to validate SVG assets "
+                        f"at {path_str!r}. Install it with: pip install 'cairosvg>=2.5'.",
+                        "Install cairosvg>=2.5 or set trainable=false.",
+                        field="path"
+                    ))
+                    continue
+
+                try:
+                    png_bytes = _cairosvg.svg2png(url=str(abs_path), output_width=512)
+                    img = Image.open(io.BytesIO(png_bytes))
+                    img.load()
+                except Exception as e:
+                    issues.append(blocker(
+                        "trainable_asset_unreadable", "asset", aid,
+                        f"Trainable asset {aid!r}: cannot render SVG at {path_str!r}: {e}",
+                        "Replace the file with a valid SVG.",
+                        field="path"
+                    ))
+                    continue
+
+                w, h = img.size
+                if w == 0 or h == 0:
+                    issues.append(blocker(
+                        "trainable_asset_zero_dimensions", "asset", aid,
+                        f"Trainable asset {aid!r}: rendered SVG has zero dimensions ({w}x{h}).",
+                        "Replace with a valid SVG.",
+                        field="path"
+                    ))
+                continue
+
             try:
                 img = Image.open(abs_path)
                 img.load()

@@ -1,5 +1,6 @@
 build/
 vit_weights.bin
+reports/import/
 .claude/
 data/flags_wiki/
 data/flags_emoji/

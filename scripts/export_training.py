@@ -9,17 +9,67 @@ Exits non-zero on any error.
 """
 
 import argparse
+import io
 import json
 import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+try:
+    import cairosvg as _cairosvg
+except ImportError:
+    print(
+        "ERROR: cairosvg is required for SVG export. "
+        "Install it with: pip install cairosvg>=2.5",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
+try:
+    from PIL import Image as _Image
+except ImportError:
+    print("ERROR: Pillow is required. Install it with: pip install Pillow>=9.0", file=sys.stderr)
+    sys.exit(1)
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "generated" / "train"
+SVG_RENDER_SIZE = 512
+TRAIN_SIZE = 128
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import validate_manifest as vm
+
+
+def _render_svg_for_export(svg_path: Path) -> bytes:
+    """Render SVG to 128×128 PNG bytes for training export.
+
+    Renders at SVG_RENDER_SIZE first (aspect-preserving, white background),
+    then resizes to TRAIN_SIZE×TRAIN_SIZE with LANCZOS.
+    """
+    # Render at export canvas width; height scales naturally
+    png_bytes = _cairosvg.svg2png(url=str(svg_path), output_width=SVG_RENDER_SIZE)
+    img = _Image.open(io.BytesIO(png_bytes)).convert("RGBA")
+    w, h = img.size
+
+    # If natural height exceeds canvas, re-render constrained by height
+    if h > SVG_RENDER_SIZE:
+        png_bytes = _cairosvg.svg2png(url=str(svg_path), output_height=SVG_RENDER_SIZE)
+        img = _Image.open(io.BytesIO(png_bytes)).convert("RGBA")
+        w, h = img.size
+
+    # Composite centered onto white canvas at SVG_RENDER_SIZE
+    canvas = _Image.new("RGB", (SVG_RENDER_SIZE, SVG_RENDER_SIZE), "white")
+    x = (SVG_RENDER_SIZE - w) // 2
+    y = (SVG_RENDER_SIZE - h) // 2
+    canvas.paste(img, (x, y), mask=img.split()[3])
+
+    # Resize to training resolution
+    canvas = canvas.resize((TRAIN_SIZE, TRAIN_SIZE), _Image.LANCZOS)
+
+    buf = io.BytesIO()
+    canvas.save(buf, format="PNG")
+    return buf.getvalue()
 
 
 def _rel(p: Path) -> str:
@@ -122,7 +172,11 @@ def main():
         primary_asset = primary_assets[0]
         src_path = REPO_ROOT / primary_asset["path"]
         dest_path = images_dir / f"{fid}.png"
-        shutil.copy2(str(src_path), str(dest_path))
+        if primary_asset["path"].endswith(".svg"):
+            png_bytes = _render_svg_for_export(src_path)
+            dest_path.write_bytes(png_bytes)
+        else:
+            shutil.copy2(str(src_path), str(dest_path))
 
         # Wiki image — first eligible source_render
         if has_wiki and wiki_assets:

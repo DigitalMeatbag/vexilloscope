@@ -253,3 +253,54 @@
 {"flag_id": "za-current", "result_id": "za", "display_name": "South Africa current flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
 {"flag_id": "zm-current", "result_id": "zm", "display_name": "Zambia current flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
 {"flag_id": "zw-current", "result_id": "zw", "display_name": "Zimbabwe current flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-al-current", "result_id": "us-al", "display_name": "Alabama state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ak-current", "result_id": "us-ak", "display_name": "Alaska state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-az-current", "result_id": "us-az", "display_name": "Arizona state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ar-current", "result_id": "us-ar", "display_name": "Arkansas state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ca-current", "result_id": "us-ca", "display_name": "California state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-co-current", "result_id": "us-co", "display_name": "Colorado state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ct-current", "result_id": "us-ct", "display_name": "Connecticut state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-de-current", "result_id": "us-de", "display_name": "Delaware state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-fl-current", "result_id": "us-fl", "display_name": "Florida state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ga-current", "result_id": "us-ga", "display_name": "Georgia state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-hi-current", "result_id": "us-hi", "display_name": "Hawaii state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-id-current", "result_id": "us-id", "display_name": "Idaho state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-il-current", "result_id": "us-il", "display_name": "Illinois state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-in-current", "result_id": "us-in", "display_name": "Indiana state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ia-current", "result_id": "us-ia", "display_name": "Iowa state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ks-current", "result_id": "us-ks", "display_name": "Kansas state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ky-current", "result_id": "us-ky", "display_name": "Kentucky state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-la-current", "result_id": "us-la", "display_name": "Louisiana state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-me-current", "result_id": "us-me", "display_name": "Maine state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-md-current", "result_id": "us-md", "display_name": "Maryland state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ma-current", "result_id": "us-ma", "display_name": "Massachusetts state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-mi-current", "result_id": "us-mi", "display_name": "Michigan state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-mn-current", "result_id": "us-mn", "display_name": "Minnesota state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ms-current", "result_id": "us-ms", "display_name": "Mississippi state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-mo-current", "result_id": "us-mo", "display_name": "Missouri state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-mt-current", "result_id": "us-mt", "display_name": "Montana state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ne-current", "result_id": "us-ne", "display_name": "Nebraska state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nv-current", "result_id": "us-nv", "display_name": "Nevada state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nh-current", "result_id": "us-nh", "display_name": "New Hampshire state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nj-current", "result_id": "us-nj", "display_name": "New Jersey state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nm-current", "result_id": "us-nm", "display_name": "New Mexico state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ny-current", "result_id": "us-ny", "display_name": "New York state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nc-current", "result_id": "us-nc", "display_name": "North Carolina state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-nd-current", "result_id": "us-nd", "display_name": "North Dakota state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-oh-current", "result_id": "us-oh", "display_name": "Ohio state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ok-current", "result_id": "us-ok", "display_name": "Oklahoma state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-or-current", "result_id": "us-or", "display_name": "Oregon state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-pa-current", "result_id": "us-pa", "display_name": "Pennsylvania state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ri-current", "result_id": "us-ri", "display_name": "Rhode Island state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-sc-current", "result_id": "us-sc", "display_name": "South Carolina state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-sd-current", "result_id": "us-sd", "display_name": "South Dakota state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-tn-current", "result_id": "us-tn", "display_name": "Tennessee state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-tx-current", "result_id": "us-tx", "display_name": "Texas state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-ut-current", "result_id": "us-ut", "display_name": "Utah state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-vt-current", "result_id": "us-vt", "display_name": "Vermont state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-va-current", "result_id": "us-va", "display_name": "Virginia state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-wa-current", "result_id": "us-wa", "display_name": "Washington state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-wv-current", "result_id": "us-wv", "display_name": "West Virginia state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-wi-current", "result_id": "us-wi", "display_name": "Wisconsin state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-wy-current", "result_id": "us-wy", "display_name": "Wyoming state flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
+{"flag_id": "us-dc-current", "result_id": "us-dc", "display_name": "District of Columbia flag", "variant": "standard", "status": "current", "review_status": "reviewed", "trainable": true}
