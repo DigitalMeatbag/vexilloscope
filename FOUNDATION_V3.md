@@ -1,4 +1,4 @@
-# vexilloscope v3 Foundation Document v1
+# vexilloscope v3 Foundation Document v2
 
 > **Purpose:** This document captures the intent, constraints, proposed direction, open questions, and planning checklist for vexilloscope v3. It is a living foundation document, not yet an implementation specification.
 
@@ -371,7 +371,7 @@ This keeps the philosophical center clean: v3's truth lives in metadata-rich, re
 - `display_name`: human-readable label.
 - `category`: national, subnational, military, maritime, organization, cultural, pride, sports, or other.
 - `fictionality`: nonfiction or fictional.
-- `parent_id`: hierarchy, such as California -> United States.
+- `parent_result_id`: hierarchy, such as California -> United States.
 - `territory_code`: ISO or local administrative code when one exists.
 - `era_start` / `era_end`: date range for historical flags.
 - `variant`: standard, civil, state, military, royal, presidential, organizational, alternate, reconstruction, or ceremonial.
@@ -547,10 +547,10 @@ Example:
 ```text
 flag_id: us-ca-current
 result_id: us-ca
-asset_id: us-ca-wikimedia-svg-render
+asset_id: us-ca-current-wikimedia-svg
 display_name: California
 category: subnational
-parent_id: us
+parent_result_id: us
 status: current
 ```
 
@@ -791,10 +791,10 @@ Required fields:
 
 ```json
 {
-  "asset_id": "us-ca-wikimedia-svg-render",
+  "asset_id": "us-ca-current-wikimedia-svg",
   "flag_id": "us-ca-current",
-  "asset_type": "source_render",
-  "path": "data/sources/wikimedia/us-ca.png",
+  "asset_type": "source_original",
+  "path": "data/sources/wikimedia/us_states/us-ca.svg",
   "source_name": "Wikimedia Commons",
   "source_url": "https://commons.wikimedia.org/...",
   "license": "public-domain",
@@ -1491,10 +1491,10 @@ Example:
 
 ```json
 {
-  "asset_id": "us-ca-wikimedia-svg-render",
+  "asset_id": "us-ca-current-wikimedia-svg",
   "flag_id": "us-ca-current",
-  "asset_type": "source_render",
-  "path": "data/sources/wikimedia/us-ca.png",
+  "asset_type": "source_original",
+  "path": "data/sources/wikimedia/us_states/us-ca.svg",
   "source_name": "Wikimedia Commons",
   "source_url": "https://commons.wikimedia.org/...",
   "license": "public-domain",
@@ -3189,3 +3189,27 @@ Closed: v3 separates canonical manifest data, curated source assets, generated a
 - Replacing the from-scratch C/otto-von-grad model with an external ML framework.
 - Breaking existing `--identify` stdout without a compatibility path.
 - Treating fictional, unofficial, or proposed flags as equivalent to current official flags without metadata.
+
+---
+
+## Document Revision History
+
+### v2 — Phase 2 spec closure (2026-05-19)
+
+**Trigger:** Phase 2 spec review (`SPEC_V3_PHASE2_SOURCES.md`) surfaced two problems in the v1 Foundation: a field-naming inconsistency that existed within v1 itself, and asset examples that used pre-decision placeholder values that were superseded by decisions Phase 2 closed. Both are corrected here so the Foundation remains the upstream source of truth rather than drifting behind the spec it governs.
+
+**Changes:**
+
+1. **`parent_id` → `parent_result_id` (Field Intent list and result object example block)**
+
+   The v1 Field Intent prose and one illustrative example block used `parent_id`. The rest of v1 — including the `results.jsonl` schema block and all other examples — consistently used `parent_result_id`. Both Phase 1 and Phase 2 specs correctly inferred `parent_result_id` from the schema examples and never used `parent_id`. This is an internal v1 inconsistency; the correct field name was never in dispute. The Field Intent list and the affected example block now match the rest of the Foundation.
+
+2. **Asset type, path, and ID in the `assets.jsonl` example (Dataset Manifest section) and the Asset Type Values section example**
+
+   The v1 examples showed a Wikimedia asset as `asset_type: "source_render"` with a `.png` path and `asset_id: "us-ca-wikimedia-svg-render"`. These were pre-decision placeholders written before the Wikimedia source strategy was settled. Phase 2 (`SPEC_V3_PHASE2_SOURCES.md`, Source Policy and Importer Contract sections) closed the following decisions:
+
+   - **SVG files downloaded from Wikimedia Commons are `source_original`.** The SVG is the authored original. PNG renders are reproducible generated artifacts placed under `data/generated/renders/` and are not manifest records. This is semantically consistent with the `source_render` definition in this document ("rasterized, normalized, or converted version of a source asset"): the render of an SVG is not the SVG itself.
+   - **Asset ID convention for Wikimedia SVG assets:** `<flag_id>-wikimedia-svg` (e.g., `us-ca-current-wikimedia-svg`).
+   - **Directory structure:** `data/sources/wikimedia/<import_family>/` (e.g., `data/sources/wikimedia/us_states/`), with the filename matching the flag ISO/admin code.
+
+   The v1 examples have been updated to reflect these closed decisions. The rationale is recorded here rather than being embedded silently in the example values.
