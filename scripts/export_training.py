@@ -35,17 +35,18 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "generated" / "train"
 SVG_RENDER_SIZE = 512
-TRAIN_SIZE = 128
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import validate_manifest as vm
 
 
 def _render_svg_for_export(svg_path: Path) -> bytes:
-    """Render SVG to 128×128 PNG bytes for training export.
+    """Render SVG to SVG_RENDER_SIZE×SVG_RENDER_SIZE PNG bytes for training export.
 
-    Renders at SVG_RENDER_SIZE first (aspect-preserving, white background),
-    then resizes to TRAIN_SIZE×TRAIN_SIZE with LANCZOS.
+    Renders aspect-preserving with white background and padding, then saves at
+    SVG_RENDER_SIZE without downsampling. The C trainer's img_load resizes to
+    128×128 using the same algorithm as --identify, keeping training and
+    inference on the same resize pipeline.
     """
     # Render at export canvas width; height scales naturally
     png_bytes = _cairosvg.svg2png(url=str(svg_path), output_width=SVG_RENDER_SIZE)
@@ -63,9 +64,6 @@ def _render_svg_for_export(svg_path: Path) -> bytes:
     x = (SVG_RENDER_SIZE - w) // 2
     y = (SVG_RENDER_SIZE - h) // 2
     canvas.paste(img, (x, y), mask=img.split()[3])
-
-    # Resize to training resolution
-    canvas = canvas.resize((TRAIN_SIZE, TRAIN_SIZE), _Image.LANCZOS)
 
     buf = io.BytesIO()
     canvas.save(buf, format="PNG")

@@ -198,9 +198,14 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
             tg_free_graph(logits);
             tg_free(p);
         }
+        if ((i + 1) % 10 == 0 || i == n_flags - 1) {
+            printf("  %d/%d\r", i + 1, n_flags);
+            fflush(stdout);
+        }
     }
 
-    printf("eval (augmented, %d augs × %d flags):\n", VX_EVAL_AUGS, n_flags);
+    printf("\n");
+    printf("eval (augmented, %d augs x %d flags):\n", VX_EVAL_AUGS, n_flags);
     printf("  top-1: %.2f%%  (%d/%d)\n", 100.0f * top1 / total, top1, total);
     printf("  top-3: %.2f%%  (%d/%d)\n", 100.0f * top3 / total, top3, total);
 }
