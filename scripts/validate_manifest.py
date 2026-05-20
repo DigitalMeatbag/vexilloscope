@@ -240,9 +240,11 @@ def validate(manifest_dir: Path = MANIFEST_DIR) -> tuple[list, dict, dict]:
     # --- Per-flag trainable-asset counts ---
     flag_trainable_asset_counts: dict[str, int] = {}
     flag_has_trainable_source_original: dict[str, bool] = {}
+    flag_has_untrained_secondary: dict[str, bool] = {}
     for fid in flags:
         flag_trainable_asset_counts[fid] = 0
         flag_has_trainable_source_original[fid] = False
+        flag_has_untrained_secondary[fid] = False
 
     # --- Assets ---
     # Deferred image checks — collect (asset_id, path) pairs
@@ -337,6 +339,9 @@ def validate(manifest_dir: Path = MANIFEST_DIR) -> tuple[list, dict, dict]:
                 flag_trainable_asset_counts[flag_id] += 1
             if asset_type == "source_original" and flag_id in flag_has_trainable_source_original:
                 flag_has_trainable_source_original[flag_id] = True
+
+        if not trainable and flag_id in flag_has_untrained_secondary:
+            flag_has_untrained_secondary[flag_id] = True
 
         sha256 = rec.get("sha256")
         if sha256:
@@ -487,11 +492,12 @@ def validate(manifest_dir: Path = MANIFEST_DIR) -> tuple[list, dict, dict]:
             count = flag_trainable_asset_counts.get(fid, 0)
             has_primary = flag_has_trainable_source_original.get(fid, False)
 
-            if count == 1:
+            if count == 1 and flag_has_untrained_secondary.get(fid, False):
                 issues.append(warning(
                     "flag_one_trainable_asset", "flag", fid,
-                    f"Trainable flag {fid!r} has exactly one trainable asset.",
-                    "Consider adding a secondary source for augmentation diversity.",
+                    f"Trainable flag {fid!r} has exactly one trainable asset but has "
+                    "additional non-trainable assets that could be promoted.",
+                    "Review and promote secondary assets to trainable=true for augmentation diversity.",
                     field="trainable"
                 ))
 
