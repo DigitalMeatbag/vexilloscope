@@ -5,7 +5,7 @@ See `AGENTS.md` for full architecture, API reference, and constraints.
 
 - No external ML or image processing libraries — stb (`vendor/`) is the only approved image dep
 - Encoder uses **non-causal** attention (`causal=0`) — do not change this
-- All 255 flags train; there is no held-out class split — eval uses augmented passes per flag
+- All 306 flags train (v3: 255 Phase 1 + 51 US states); there is no held-out class split — eval uses augmented passes per flag
 - Hyperparameter changes go in the `enum` at the top of `main.c` — no scattered magic numbers
 - `persistent = 1` on any tensor that must survive `tg_free_graph` (params, patches reused across steps)
 - Image dimensions are always passed explicitly — no global state
@@ -23,26 +23,26 @@ cmake -B build -DOVG_CUDA=ON -G Ninja "-DCMAKE_CUDA_FLAGS=-allow-unsupported-com
 cmake --build build
 ```
 
-Train (three-source recommended — run `scripts/fetch_wiki_flags.py` and `scripts/fetch_twemoji_flags.py` first):
+Train (v3 export — run `scripts/export_training.py` first):
 ```powershell
-.\build\vexilloscope.exe data/labels.csv data/flags data/flags_wiki data/flags_emoji
+.\build\vexilloscope.exe data/generated/train/labels.csv data/generated/train/images/
 ```
 
 The `-allow-unsupported-compiler` flag is set in the otto-von-grad CMakeLists.txt — do not remove it.
 
 ## Verification
 
-After code changes, build and run identify mode on any flag:
+After code changes, build and run identify mode on any flag. Always pass `--labels` pointing to the active training export:
 
 ```powershell
-.\build\Release\vexilloscope.exe --identify data/flags/de.png
+.\build\vexilloscope.exe --labels data/generated/train/labels.csv --identify data/generated/train/images/de-current.png
 ```
 
 Expected output format:
 
 ```
-identify_flag: data/flags/de.png
-  #1  DE    Germany                                   logit: <score>
+identify_flag: data/generated/train/images/de-current.png
+  #1  de-current  Germany                                   logit: <score>
   #2  ...
   #3  ...
 ```

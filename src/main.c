@@ -334,6 +334,8 @@ int main(int argc, char **argv) {
             identify_path = argv[++i];
         } else if (strcmp(argv[i], "--weights") == 0 && i + 1 < argc) {
             weights_path = argv[++i];
+        } else if (strcmp(argv[i], "--labels") == 0 && i + 1 < argc) {
+            labels_path = argv[++i];
         } else if (pos == 0) { labels_path = argv[i]; pos++; }
           else if (pos == 1) { flags_dir   = argv[i]; pos++; }
           else if (pos == 2) { flags_dir2  = argv[i]; pos++; }
