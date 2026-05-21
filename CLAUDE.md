@@ -25,7 +25,7 @@ cmake --build build
 
 Train (v3 export — run `scripts/export_training.py` first):
 ```powershell
-.\build\vexilloscope.exe data/generated/train/labels.csv data/generated/train/images/
+.\build\vexilloscope.exe data/generated/train/labels.csv data/generated/train/images/ --eval-dump data/generated/train/eval_dump.csv
 ```
 
 The `-allow-unsupported-compiler` flag is set in the otto-von-grad CMakeLists.txt — do not remove it.
@@ -47,4 +47,4 @@ identify_flag: data/generated/train/images/de-current.png
   #3  ...
 ```
 
-No separate test runner. If training is needed to verify changes, `.\build\Release\vexilloscope.exe` runs the full loop and reports train accuracy and augmented eval on completion.
+No separate test runner. If training is needed to verify changes, `.\build\vexilloscope.exe` runs the full loop and reports train accuracy and augmented eval on completion.
