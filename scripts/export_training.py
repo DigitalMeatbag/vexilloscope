@@ -249,6 +249,8 @@ def main():
     if has_emoji:
         invocation_parts.append(_rel(images_emoji_dir) + "/")
 
+    invocation_parts.append("--eval-dump data/generated/train/eval_dump.csv")
+
     print("\nC trainer invocation:")
     print(" ".join(invocation_parts))
 

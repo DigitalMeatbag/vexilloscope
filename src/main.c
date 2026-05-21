@@ -172,13 +172,32 @@ static void topk_indices(const float *scores, int n, int k, int *out) {
 }
 
 /* Eval: run VX_EVAL_AUGS augmented passes per flag, report aggregate top-1/top-3.
-   Tests robustness to the kinds of distortions seen in Discord-resized images. */
+   Tests robustness to the kinds of distortions seen in Discord-resized images.
+   When eval_dump_path is non-NULL, writes a per-example prediction CSV to that path. */
 static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
-                     const VxDataset *dataset) {
+                     const VxDataset *dataset, const char *eval_dump_path) {
     int top1 = 0, top3 = 0;
     int k = dataset->count < 3 ? dataset->count : 3;
     int top_indices[3];
     int total = n_flags * VX_EVAL_AUGS;
+
+    FILE *dump_fp = NULL;
+    if (eval_dump_path) {
+        dump_fp = fopen(eval_dump_path, "w");
+        if (!dump_fp) {
+            char parent[512];
+            strncpy(parent, eval_dump_path, sizeof(parent) - 1);
+            parent[sizeof(parent) - 1] = '\0';
+            char *last = NULL;
+            for (char *p = parent; *p; p++)
+                if (*p == '/' || *p == '\\') last = p;
+            if (last) { *last = '\0'; fprintf(stderr, "eval-dump: directory does not exist: %s\n", parent); }
+            else fprintf(stderr, "eval-dump: cannot open '%s' for writing\n", eval_dump_path);
+            exit(1);
+        }
+        fprintf(dump_fp, "aug_pass,true_class_id,pred1_class_id,pred1_logit,"
+                         "pred2_class_id,pred2_logit,pred3_class_id,pred3_logit\n");
+    }
 
     for (int i = 0; i < n_flags; i++) {
         for (int a = 0; a < VX_EVAL_AUGS; a++) {
@@ -195,6 +214,16 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
             for (int r = 0; r < k; r++)
                 if (top_indices[r] == i) { top3++; break; }
 
+            if (dump_fp) {
+                float l1 = logits->data[top_indices[0]];
+                float l2 = (k >= 2) ? logits->data[top_indices[1]] : l1;
+                float l3 = (k >= 3) ? logits->data[top_indices[2]] : l1;
+                int   p2 = (k >= 2) ? top_indices[1] : top_indices[0];
+                int   p3 = (k >= 3) ? top_indices[2] : top_indices[0];
+                fprintf(dump_fp, "%d,%d,%d,%.6f,%d,%.6f,%d,%.6f\n",
+                        a, i, top_indices[0], l1, p2, l2, p3, l3);
+            }
+
             tg_free_graph(logits);
             tg_free(p);
         }
@@ -208,9 +237,111 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
     printf("eval (augmented, %d augs x %d flags):\n", VX_EVAL_AUGS, n_flags);
     printf("  top-1: %.2f%%  (%d/%d)\n", 100.0f * top1 / total, top1, total);
     printf("  top-3: %.2f%%  (%d/%d)\n", 100.0f * top3 / total, top3, total);
+
+    if (dump_fp) fclose(dump_fp);
 }
 
-static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset) {
+/* Run full identify pipeline (always TTA, no threshold gate) and print one TSV line:
+   <path>\t<flag_id>\t<pre_tta_best_logit>\t<post_tta_avg_logit>
+   On image-load failure: <path>\tERROR\tcannot load image */
+static void identify_flag_batch_one(const char *path, VxViT *vit,
+                                    const VxDataset *dataset) {
+    int H = 0, W = 0;
+    Tensor *full_img = img_load_native(path, VX_DETECT_MAX_DIM, VX_IMAGE_C, &H, &W);
+    if (!full_img) {
+        printf("%s\tERROR\tcannot load image\n", path);
+        return;
+    }
+    int n = dataset->count;
+
+    float best_logit = -1e38f;
+    int best_y0 = 0, best_x0 = 0, best_crop_h = H, best_crop_w = W;
+
+#define SCORE_CANDIDATE_B(cy0, cx0, ch, cw)                                      \
+    do {                                                                          \
+        Tensor *_crop = img_crop_and_resize(full_img, H, W, VX_IMAGE_C,          \
+                                            (cy0), (cx0), (ch), (cw),            \
+                                            VX_IMAGE_H, VX_IMAGE_W);             \
+        Tensor *_p = img_patchify(_crop, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,    \
+                                  VX_PATCH_H, VX_PATCH_W);                       \
+        _p->persistent = 1;                                                       \
+        tg_free(_crop);                                                           \
+        Tensor *_lg = vx_vit_forward(vit, _p);                                   \
+        float _mx = _lg->data[0];                                                 \
+        for (int _j = 1; _j < n; _j++)                                           \
+            if (_lg->data[_j] > _mx) _mx = _lg->data[_j];                        \
+        tg_free_graph(_lg);                                                       \
+        tg_free(_p);                                                              \
+        if (_mx > best_logit) {                                                   \
+            best_logit = _mx;                                                     \
+            best_y0 = (cy0); best_x0 = (cx0);                                    \
+            best_crop_h = (ch); best_crop_w = (cw);                              \
+        }                                                                         \
+    } while (0)
+
+    SCORE_CANDIDATE_B(0, 0, H, W);
+    float scale1_logit = best_logit;
+
+    if (scale1_logit < VX_DETECT_SKIP_SUBWINDOWS_X10 / 10.0f) {
+        int min_side = H < W ? H : W;
+        float scale_fracs[2] = { 0.75f, 0.50f };
+        for (int s = 0; s < 2; s++) {
+            int side = (int)(scale_fracs[s] * min_side);
+            if (side < VX_DETECT_MIN_CROP) continue;
+            int stride = side * VX_DETECT_STRIDE_PCT / 100;
+            if (stride < 1) stride = 1;
+            for (int cy0 = 0; cy0 + side <= H; cy0 += stride)
+                for (int cx0 = 0; cx0 + side <= W; cx0 += stride)
+                    SCORE_CANDIDATE_B(cy0, cx0, side, side);
+        }
+    }
+
+#undef SCORE_CANDIDATE_B
+
+    float pre_tta_logit = best_logit;
+
+    /* Always run TTA — caller applies threshold in post-processing. */
+    Tensor *win_crop = img_crop_and_resize(full_img, H, W, VX_IMAGE_C,
+                                           best_y0, best_x0,
+                                           best_crop_h, best_crop_w,
+                                           VX_IMAGE_H, VX_IMAGE_W);
+    tg_free(full_img);
+
+    float *avg_logits = calloc((size_t)n, sizeof(float));
+    if (!avg_logits) { fprintf(stderr, "identify_flag_batch_one: out of memory\n"); exit(1); }
+
+    for (int a = 0; a < VX_IDENTIFY_TTA; a++) {
+        Tensor *aug     = img_augment(win_crop, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);
+        Tensor *patches = img_patchify(aug, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C,
+                                       VX_PATCH_H, VX_PATCH_W);
+        patches->persistent = 1;
+        tg_free(aug);
+        Tensor *logits = vx_vit_forward(vit, patches);
+        for (int j = 0; j < n; j++)
+            avg_logits[j] += logits->data[j];
+        tg_free_graph(logits);
+        tg_free(patches);
+    }
+    tg_free(win_crop);
+
+    float inv = 1.0f / VX_IDENTIFY_TTA;
+    for (int j = 0; j < n; j++) avg_logits[j] *= inv;
+
+    int best_idx = 0;
+    for (int j = 1; j < n; j++)
+        if (avg_logits[j] > avg_logits[best_idx]) best_idx = j;
+
+    printf("%s\t%s\t%.6f\t%.6f\n",
+           path,
+           dataset->countries[best_idx].code,
+           pre_tta_logit,
+           avg_logits[best_idx]);
+
+    free(avg_logits);
+}
+
+static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset,
+                          int threshold_x10) {
     printf("\nidentify_flag: %s\n", path);
 
     int H = 0, W = 0;
@@ -265,7 +396,7 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
 
 #undef SCORE_CANDIDATE
 
-    if (best_logit < VX_DETECT_THRESHOLD_X10 / 10.0f) {
+    if (best_logit < threshold_x10 / 10.0f) {
         tg_free(full_img);
         printf("no flag detected\n");
         return;
@@ -321,21 +452,42 @@ int main(int argc, char **argv) {
     srand(42);
 
     /* Parse flags and positional args */
-    const char *identify_path = NULL;
-    const char *weights_path  = "vit_weights.bin";
-    const char *labels_path   = "data/labels.csv";
-    const char *flags_dir     = "data/flags";
-    const char *flags_dir2    = NULL;
-    const char *flags_dir3    = NULL;
+    const char *identify_path       = NULL;
+    const char *identify_batch_path = NULL;
+    const char *weights_path        = "vit_weights.bin";
+    const char *labels_path         = "data/labels.csv";
+    const char *flags_dir           = "data/flags";
+    const char *flags_dir2          = NULL;
+    const char *flags_dir3          = NULL;
+    const char *eval_dump_path      = NULL;
+    int detect_threshold_x10        = VX_DETECT_THRESHOLD_X10;
 
     int pos = 0;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--identify") == 0 && i + 1 < argc) {
             identify_path = argv[++i];
+        } else if (strcmp(argv[i], "--identify-batch") == 0 && i + 1 < argc) {
+            identify_batch_path = argv[++i];
         } else if (strcmp(argv[i], "--weights") == 0 && i + 1 < argc) {
             weights_path = argv[++i];
         } else if (strcmp(argv[i], "--labels") == 0 && i + 1 < argc) {
             labels_path = argv[++i];
+        } else if (strcmp(argv[i], "--eval-dump") == 0) {
+            if (i + 1 >= argc || strncmp(argv[i + 1], "--", 2) == 0) {
+                fprintf(stderr, "error: --eval-dump requires a path argument\n");
+                exit(1);
+            }
+            eval_dump_path = argv[++i];
+        } else if (strcmp(argv[i], "--detect-threshold-x10") == 0) {
+            if (i + 1 >= argc) {
+                fprintf(stderr, "error: --detect-threshold-x10 requires a positive integer argument\n");
+                exit(1);
+            }
+            detect_threshold_x10 = atoi(argv[++i]);
+            if (detect_threshold_x10 <= 0) {
+                fprintf(stderr, "error: --detect-threshold-x10 value must be a positive integer\n");
+                exit(1);
+            }
         } else if (pos == 0) { labels_path = argv[i]; pos++; }
           else if (pos == 1) { flags_dir   = argv[i]; pos++; }
           else if (pos == 2) { flags_dir2  = argv[i]; pos++; }
@@ -348,7 +500,32 @@ int main(int argc, char **argv) {
         tg_training = 0;
         VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
         VxViT vit = vx_vit_load(weights_path);
-        identify_flag(identify_path, &vit, &dataset);
+        identify_flag(identify_path, &vit, &dataset, detect_threshold_x10);
+        vx_vit_free(&vit);
+        vx_dataset_free(&dataset);
+        return 0;
+    }
+
+    /* ── Batch identify mode: classify many images, one TSV line per image ── */
+    if (identify_batch_path) {
+        tg_training = 0;
+        VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
+        VxViT vit = vx_vit_load(weights_path);
+        FILE *list = fopen(identify_batch_path, "r");
+        if (!list) {
+            fprintf(stderr, "error: cannot open batch list '%s'\n", identify_batch_path);
+            exit(1);
+        }
+        char line[4096];
+        while (fgets(line, sizeof(line), list)) {
+            /* strip trailing newline/carriage-return */
+            int len = (int)strlen(line);
+            while (len > 0 && (line[len-1] == '\n' || line[len-1] == '\r')) line[--len] = '\0';
+            if (len == 0) continue;
+            identify_flag_batch_one(line, &vit, &dataset);
+            fflush(stdout);
+        }
+        fclose(list);
         vx_vit_free(&vit);
         vx_dataset_free(&dataset);
         return 0;
@@ -513,12 +690,13 @@ int main(int argc, char **argv) {
 
     /* Augmented eval: robustness to distortion across all flags */
     printf("\naugmented eval (%d augs per flag):\n", VX_EVAL_AUGS);
-    vit_eval(&vit, images, n_flags, &dataset);
+    vit_eval(&vit, images, n_flags, &dataset, eval_dump_path);
 
     /* Identify demo on 3 spread-out flags */
     int demo_indices[3] = { 0, n_flags / 2, n_flags - 1 };
     for (int d = 0; d < 3; d++)
-        identify_flag(dataset.countries[demo_indices[d]].flag_path, &vit, &dataset);
+        identify_flag(dataset.countries[demo_indices[d]].flag_path, &vit, &dataset,
+                      VX_DETECT_THRESHOLD_X10);
 
     vx_vit_free(&vit);
     free_tensor_array(patches, dataset.count);

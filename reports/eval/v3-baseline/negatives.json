@@ -1,0 +1,5529 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-21T07:45:49Z",
+  "run_id": "v3-baseline",
+  "binary_path": "build/vexilloscope.exe",
+  "labels_path": "data/generated/train/labels.csv",
+  "negative_dir": "data/generated/negative_eval",
+  "fn_image_dir": "data/generated/train/images",
+  "high_confidence_logit_threshold": 9.281902,
+  "high_confidence_threshold_source": "p25_correct_top1_logit_from_eval_report",
+  "n_negatives": 600,
+  "n_fn_images": 306,
+  "threshold_sweep": [
+    {
+      "threshold_x10": 5,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 10,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 15,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 20,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 25,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 30,
+      "fp_count": 600,
+      "fp_rate": 1.0,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 35,
+      "fp_count": 596,
+      "fp_rate": 0.993333,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    },
+    {
+      "threshold_x10": 40,
+      "fp_count": 593,
+      "fp_rate": 0.988333,
+      "high_confidence_fp_count": 118,
+      "high_confidence_fp_rate": 0.196667,
+      "fn_count": 0,
+      "fn_rate": 0.0
+    }
+  ],
+  "per_recipe": {
+    "geometric": {
+      "n": 150,
+      "fp_count_at_base": 150,
+      "fp_rate_at_base": 1.0
+    },
+    "gradient": {
+      "n": 100,
+      "fp_count_at_base": 100,
+      "fp_rate_at_base": 1.0
+    },
+    "noise": {
+      "n": 100,
+      "fp_count_at_base": 100,
+      "fp_rate_at_base": 1.0
+    },
+    "solid_color": {
+      "n": 100,
+      "fp_count_at_base": 100,
+      "fp_rate_at_base": 1.0
+    },
+    "stripes": {
+      "n": 150,
+      "fp_count_at_base": 150,
+      "fp_rate_at_base": 1.0
+    }
+  },
+  "false_positives_at_base": [
+    {
+      "image_path": "data/generated/negative_eval/geometric/0000.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 5.506177,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0001.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 9.819398,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0002.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tg-current",
+      "predicted_result_id": "tg",
+      "predicted_display_name": "Togo",
+      "top1_logit": 4.424328,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0003.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 9.831509,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0004.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "pg-current",
+      "predicted_result_id": "pg",
+      "predicted_display_name": "Papua New Guinea",
+      "top1_logit": 5.248824,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0005.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 6.584338,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0006.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 6.392297,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0007.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "th-current",
+      "predicted_result_id": "th",
+      "predicted_display_name": "Thailand",
+      "top1_logit": 5.351318,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0008.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sy-current",
+      "predicted_result_id": "sy",
+      "predicted_display_name": "Syrian Arab Republic",
+      "top1_logit": 6.039884,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0009.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 5.735863,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0010.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 5.902731,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0011.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "dm-current",
+      "predicted_result_id": "dm",
+      "predicted_display_name": "Dominica",
+      "top1_logit": 3.710446,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0012.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.039157,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0013.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.34766,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0014.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 10.714441,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0015.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 6.58436,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0016.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 6.742918,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0017.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 5.991138,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0018.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tz-current",
+      "predicted_result_id": "tz",
+      "predicted_display_name": "Tanzania, United Republic of",
+      "top1_logit": 6.392542,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0019.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 8.184795,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0020.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.237585,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0021.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 7.189338,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0022.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 5.805011,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0023.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 3.648698,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0024.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 10.565224,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0025.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.628851,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0026.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sy-current",
+      "predicted_result_id": "sy",
+      "predicted_display_name": "Syrian Arab Republic",
+      "top1_logit": 6.376765,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0027.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 5.352167,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0028.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 5.80347,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0029.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "vi-current",
+      "predicted_result_id": "vi",
+      "predicted_display_name": "Virgin Islands, U.S.",
+      "top1_logit": 5.500363,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0030.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eu-current",
+      "predicted_result_id": "eu",
+      "predicted_display_name": "Europe",
+      "top1_logit": 8.467752,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0031.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nh-current",
+      "predicted_result_id": "us-nh",
+      "predicted_display_name": "New Hampshire",
+      "top1_logit": 6.24291,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0032.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.08245,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0033.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.604604,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0034.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "iq-current",
+      "predicted_result_id": "iq",
+      "predicted_display_name": "Iraq",
+      "top1_logit": 5.706992,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0035.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 6.488187,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0036.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 12.506721,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0037.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 5.831542,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0038.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.714305,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0039.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 7.410573,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0040.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.280025,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0041.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 6.61062,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0042.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ly-current",
+      "predicted_result_id": "ly",
+      "predicted_display_name": "Libya",
+      "top1_logit": 5.138608,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0043.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 6.550177,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0044.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "co-current",
+      "predicted_result_id": "co",
+      "predicted_display_name": "Colombia",
+      "top1_logit": 6.978856,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0045.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "vi-current",
+      "predicted_result_id": "vi",
+      "predicted_display_name": "Virgin Islands, U.S.",
+      "top1_logit": 3.763323,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0046.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 4.723162,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0047.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sg-current",
+      "predicted_result_id": "sg",
+      "predicted_display_name": "Singapore",
+      "top1_logit": 5.649327,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0048.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "aq-current",
+      "predicted_result_id": "aq",
+      "predicted_display_name": "Antarctica",
+      "top1_logit": 7.504094,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0049.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 10.341695,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0050.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 10.378349,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0051.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.082273,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0052.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 5.575356,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0053.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sy-current",
+      "predicted_result_id": "sy",
+      "predicted_display_name": "Syrian Arab Republic",
+      "top1_logit": 5.749549,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0054.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 7.920478,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0055.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 11.895377,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0056.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.326727,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0057.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sy-current",
+      "predicted_result_id": "sy",
+      "predicted_display_name": "Syrian Arab Republic",
+      "top1_logit": 5.033454,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0058.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 8.634532,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0059.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ca-current",
+      "predicted_result_id": "ca",
+      "predicted_display_name": "Canada",
+      "top1_logit": 5.3749,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0060.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "rw-current",
+      "predicted_result_id": "rw",
+      "predicted_display_name": "Rwanda",
+      "top1_logit": 5.204862,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0061.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 8.434708,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0062.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 5.212642,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0063.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 4.876251,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0064.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 6.562266,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0065.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "th-current",
+      "predicted_result_id": "th",
+      "predicted_display_name": "Thailand",
+      "top1_logit": 9.249122,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0066.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.235934,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0067.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.645875,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0068.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 4.964437,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0069.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bn-current",
+      "predicted_result_id": "bn",
+      "predicted_display_name": "Brunei Darussalam",
+      "top1_logit": 6.999818,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0070.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.783941,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0071.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 4.794474,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0072.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 4.056986,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0073.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 5.484966,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0074.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.788239,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0075.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 3.722658,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0076.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nh-current",
+      "predicted_result_id": "us-nh",
+      "predicted_display_name": "New Hampshire",
+      "top1_logit": 6.697744,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0077.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eg-current",
+      "predicted_result_id": "eg",
+      "predicted_display_name": "Egypt",
+      "top1_logit": 6.884618,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0078.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 7.034344,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0079.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 5.813884,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0080.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 7.526833,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0081.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 10.730303,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0082.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eu-current",
+      "predicted_result_id": "eu",
+      "predicted_display_name": "Europe",
+      "top1_logit": 7.556934,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0083.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 7.296296,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0084.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 6.577713,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0085.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 8.628577,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0086.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.318684,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0087.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nh-current",
+      "predicted_result_id": "us-nh",
+      "predicted_display_name": "New Hampshire",
+      "top1_logit": 7.874901,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0088.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 4.761094,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0089.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 10.17157,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0090.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "de-current",
+      "predicted_result_id": "de",
+      "predicted_display_name": "Germany",
+      "top1_logit": 4.317828,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0091.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 5.5209,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0092.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 8.539672,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0093.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bi-current",
+      "predicted_result_id": "bi",
+      "predicted_display_name": "Burundi",
+      "top1_logit": 5.274729,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0094.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.962602,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0095.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 6.060972,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0096.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.711647,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0097.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 10.582716,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0098.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 9.547701,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0099.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sm-current",
+      "predicted_result_id": "sm",
+      "predicted_display_name": "San Marino",
+      "top1_logit": 4.519728,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0100.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 11.146865,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0101.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "hn-current",
+      "predicted_result_id": "hn",
+      "predicted_display_name": "Honduras",
+      "top1_logit": 7.537731,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0102.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 10.816893,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0103.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 6.551862,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0104.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 9.985233,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0105.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tt-current",
+      "predicted_result_id": "tt",
+      "predicted_display_name": "Trinidad and Tobago",
+      "top1_logit": 6.485452,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0106.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "co-current",
+      "predicted_result_id": "co",
+      "predicted_display_name": "Colombia",
+      "top1_logit": 6.079513,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0107.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 9.579323,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0108.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.834014,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0109.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 7.04089,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0110.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 5.331569,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0111.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "co-current",
+      "predicted_result_id": "co",
+      "predicted_display_name": "Colombia",
+      "top1_logit": 9.07624,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0112.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sy-current",
+      "predicted_result_id": "sy",
+      "predicted_display_name": "Syrian Arab Republic",
+      "top1_logit": 5.874133,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0113.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 11.575164,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0114.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 4.715547,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0115.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 6.568741,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0116.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bb-current",
+      "predicted_result_id": "bb",
+      "predicted_display_name": "Barbados",
+      "top1_logit": 5.568615,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0117.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-de-current",
+      "predicted_result_id": "us-de",
+      "predicted_display_name": "Delaware",
+      "top1_logit": 5.419825,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0118.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 4.325512,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0119.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 4.904616,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0120.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.293682,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0121.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 8.00404,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0122.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 11.31398,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0123.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 5.846016,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0124.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 5.453217,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0125.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ne-current",
+      "predicted_result_id": "ne",
+      "predicted_display_name": "Niger",
+      "top1_logit": 6.758893,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0126.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 7.769055,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0127.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ug-current",
+      "predicted_result_id": "ug",
+      "predicted_display_name": "Uganda",
+      "top1_logit": 7.645867,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0128.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 6.383289,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0129.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.934062,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0130.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.143237,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0131.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 6.6585,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0132.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 5.324497,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0133.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "ug-current",
+      "predicted_result_id": "ug",
+      "predicted_display_name": "Uganda",
+      "top1_logit": 7.768471,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0134.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.416152,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0135.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.386103,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0136.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "co-current",
+      "predicted_result_id": "co",
+      "predicted_display_name": "Colombia",
+      "top1_logit": 4.189568,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0137.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eg-current",
+      "predicted_result_id": "eg",
+      "predicted_display_name": "Egypt",
+      "top1_logit": 5.500895,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0138.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bw-current",
+      "predicted_result_id": "bw",
+      "predicted_display_name": "Botswana",
+      "top1_logit": 6.636369,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0139.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "be-current",
+      "predicted_result_id": "be",
+      "predicted_display_name": "Belgium",
+      "top1_logit": 8.551975,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0140.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "af-current",
+      "predicted_result_id": "af",
+      "predicted_display_name": "Afghanistan",
+      "top1_logit": 4.493548,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0141.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.310187,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0142.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-wa-current",
+      "predicted_result_id": "us-wa",
+      "predicted_display_name": "Washington",
+      "top1_logit": 4.967678,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0143.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.691216,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0144.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.15854,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0145.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.027916,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0146.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eh-current",
+      "predicted_result_id": "eh",
+      "predicted_display_name": "Western Sahara",
+      "top1_logit": 7.538213,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0147.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 9.605989,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0148.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "eg-current",
+      "predicted_result_id": "eg",
+      "predicted_display_name": "Egypt",
+      "top1_logit": 4.262264,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/geometric/0149.png",
+      "recipe": "geometric",
+      "predicted_flag_id": "bg-current",
+      "predicted_result_id": "bg",
+      "predicted_display_name": "Bulgaria",
+      "top1_logit": 5.674137,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0000.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 7.490302,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0001.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 6.881326,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0002.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.564064,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0003.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.798819,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0004.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 5.245138,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0005.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 9.021279,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0006.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.686263,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0007.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.642825,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0008.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.750407,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0009.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 6.193679,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0010.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ec-current",
+      "predicted_result_id": "ec",
+      "predicted_display_name": "Ecuador",
+      "top1_logit": 6.00979,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0011.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 5.520896,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0012.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 5.939901,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0013.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.366554,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0014.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 7.46593,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0015.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.861397,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0016.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.857657,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0017.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.901522,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0018.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 5.182304,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0019.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.730093,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0020.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.620703,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0021.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 6.561437,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0022.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.061697,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0023.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sz-current",
+      "predicted_result_id": "sz",
+      "predicted_display_name": "Kingdom of Eswatini",
+      "top1_logit": 4.920342,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0024.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.073183,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0025.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 6.106625,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0026.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "es-current",
+      "predicted_result_id": "es",
+      "predicted_display_name": "Spain",
+      "top1_logit": 6.109953,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0027.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 5.335083,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0028.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 6.331735,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0029.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.078481,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0030.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nm-current",
+      "predicted_result_id": "us-nm",
+      "predicted_display_name": "New Mexico",
+      "top1_logit": 6.772838,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0031.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 4.956431,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0032.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-de-current",
+      "predicted_result_id": "us-de",
+      "predicted_display_name": "Delaware",
+      "top1_logit": 5.673192,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0033.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "bi-current",
+      "predicted_result_id": "bi",
+      "predicted_display_name": "Burundi",
+      "top1_logit": 5.598491,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0034.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 8.609735,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0035.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.342494,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0036.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.84695,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0037.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.952511,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0038.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.258358,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0039.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "mm-current",
+      "predicted_result_id": "mm",
+      "predicted_display_name": "Myanmar",
+      "top1_logit": 4.008906,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0040.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "nu-current",
+      "predicted_result_id": "nu",
+      "predicted_display_name": "Niue",
+      "top1_logit": 4.944397,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0041.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.15215,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0042.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "af-current",
+      "predicted_result_id": "af",
+      "predicted_display_name": "Afghanistan",
+      "top1_logit": 4.609506,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0043.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 6.584138,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0044.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 7.872582,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0045.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.911823,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0046.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.906733,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0047.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-de-current",
+      "predicted_result_id": "us-de",
+      "predicted_display_name": "Delaware",
+      "top1_logit": 5.763116,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0048.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "af-current",
+      "predicted_result_id": "af",
+      "predicted_display_name": "Afghanistan",
+      "top1_logit": 4.134956,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0049.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.990996,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0050.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.252755,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0051.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.42111,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0052.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ec-current",
+      "predicted_result_id": "ec",
+      "predicted_display_name": "Ecuador",
+      "top1_logit": 4.657279,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0053.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.594209,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0054.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.589067,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0055.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.664,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0056.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.715343,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0057.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.995086,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0058.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 10.166251,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0059.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.720897,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0060.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 6.157253,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0061.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "vn-current",
+      "predicted_result_id": "vn",
+      "predicted_display_name": "Vietnam",
+      "top1_logit": 7.150939,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0062.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 4.637346,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0063.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.182705,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0064.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.830132,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0065.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.910507,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0066.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.409942,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0067.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "at-current",
+      "predicted_result_id": "at",
+      "predicted_display_name": "Austria",
+      "top1_logit": 4.655295,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0068.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.214129,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0069.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 6.184474,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0070.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.516271,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0071.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.26256,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0072.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 7.441144,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0073.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-or-current",
+      "predicted_result_id": "us-or",
+      "predicted_display_name": "Oregon",
+      "top1_logit": 4.764599,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0074.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.570913,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0075.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 6.534726,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0076.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 6.673059,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0077.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.651928,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0078.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 8.029349,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0079.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 5.845605,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0080.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 7.199624,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0081.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.239793,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0082.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 7.65645,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0083.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.419109,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0084.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.002913,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0085.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "mm-current",
+      "predicted_result_id": "mm",
+      "predicted_display_name": "Myanmar",
+      "top1_logit": 5.949614,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0086.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.240301,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0087.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nm-current",
+      "predicted_result_id": "us-nm",
+      "predicted_display_name": "New Mexico",
+      "top1_logit": 6.602968,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0088.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "eu-current",
+      "predicted_result_id": "eu",
+      "predicted_display_name": "Europe",
+      "top1_logit": 5.923007,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0089.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.045481,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0090.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.886593,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0091.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.348988,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0092.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 6.120605,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0093.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.670381,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0094.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.894147,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0095.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.160026,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0096.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.916801,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0097.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.339156,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0098.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.682752,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/gradient/0099.png",
+      "recipe": "gradient",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 7.967937,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0000.png",
+      "recipe": "noise",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.292103,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0001.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.913355,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0002.png",
+      "recipe": "noise",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 15.161274,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0003.png",
+      "recipe": "noise",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.486856,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0004.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.165564,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0005.png",
+      "recipe": "noise",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 15.630395,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0006.png",
+      "recipe": "noise",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.494518,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0007.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.199085,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0008.png",
+      "recipe": "noise",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 15.430382,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0009.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.254682,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0010.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.077007,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0011.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.256542,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0012.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.483212,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0013.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.55234,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0014.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.730497,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0015.png",
+      "recipe": "noise",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 8.428355,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0016.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.650165,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0017.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.466932,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0018.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.045701,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0019.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.887177,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0020.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.675035,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0021.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.875534,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0022.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.801643,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0023.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.456127,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0024.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.969133,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0025.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.607936,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0026.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.316021,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0027.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.91206,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0028.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.310675,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0029.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.316069,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0030.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.249516,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0031.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.216973,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0032.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.275697,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0033.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.816508,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0034.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.273043,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0035.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.250759,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0036.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.90944,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0037.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.557441,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0038.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.230151,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0039.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.507075,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0040.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.160163,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0041.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.558156,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0042.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.616911,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0043.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.416764,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0044.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.560936,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0045.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.383235,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0046.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.761688,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0047.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.47646,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0048.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.583797,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0049.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.741022,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0050.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.27902,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0051.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.405034,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0052.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.059507,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0053.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.725906,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0054.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.697357,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0055.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.240449,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0056.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.405487,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0057.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.221787,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0058.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.318029,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0059.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.004869,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0060.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.172658,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0061.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.792871,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0062.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.249748,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0063.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.426453,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0064.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.127642,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0065.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.191088,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0066.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.44553,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0067.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.161857,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0068.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.257289,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0069.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.102194,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0070.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.797864,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0071.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.580189,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0072.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.644567,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0073.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.876135,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0074.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.957369,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0075.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.86147,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0076.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.040997,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0077.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.44267,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0078.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.298182,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0079.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.596041,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0080.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.79137,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0081.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.331655,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0082.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.088415,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0083.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.263631,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0084.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.483513,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0085.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.678953,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0086.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.28697,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0087.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.020308,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0088.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.766966,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0089.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.37498,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0090.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.154848,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0091.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.236317,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0092.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.663368,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0093.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.774847,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0094.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.756589,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0095.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.901815,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0096.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.695612,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0097.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.394503,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0098.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.933101,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/noise/0099.png",
+      "recipe": "noise",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.583642,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0000.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.692261,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0001.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "pg-current",
+      "predicted_result_id": "pg",
+      "predicted_display_name": "Papua New Guinea",
+      "top1_logit": 3.260233,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0002.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 9.452523,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0003.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "tr-current",
+      "predicted_result_id": "tr",
+      "predicted_display_name": "Republic of Türkiye",
+      "top1_logit": 12.506066,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0004.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 11.03621,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0005.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 7.751888,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0006.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 10.028126,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0007.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.755833,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0008.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.322497,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0009.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 8.036433,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0010.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.752429,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0011.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 8.928129,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0012.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 9.941608,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0013.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.913175,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0014.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "tr-current",
+      "predicted_result_id": "tr",
+      "predicted_display_name": "Republic of Türkiye",
+      "top1_logit": 12.028086,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0015.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.880089,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0016.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.553554,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0017.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.659586,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0018.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.490183,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0019.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 8.280416,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0020.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 7.559329,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0021.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 8.953438,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0022.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 14.625322,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0023.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.805835,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0024.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 6.56189,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0025.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.988134,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0026.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 12.238982,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0027.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 10.587474,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0028.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "ma-current",
+      "predicted_result_id": "ma",
+      "predicted_display_name": "Morocco",
+      "top1_logit": 8.740062,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0029.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.849316,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0030.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.456428,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0031.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 9.03196,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0032.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 8.949319,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0033.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "ma-current",
+      "predicted_result_id": "ma",
+      "predicted_display_name": "Morocco",
+      "top1_logit": 8.548433,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0034.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.501394,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0035.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 7.493148,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0036.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.434769,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0037.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 12.523884,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0038.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.993208,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0039.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 7.150712,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0040.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 7.696834,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0041.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.520101,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0042.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.266174,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0043.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 5.879387,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0044.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 7.155414,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0045.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.378287,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0046.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 8.422622,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0047.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.111175,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0048.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 7.449228,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0049.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 6.51132,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0050.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-wy-current",
+      "predicted_result_id": "us-wy",
+      "predicted_display_name": "Wyoming",
+      "top1_logit": 7.547967,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0051.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.441981,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0052.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.908675,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0053.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 8.349277,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0054.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 5.944633,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0055.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 6.022273,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0056.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 8.303888,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0057.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 6.665404,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0058.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.17842,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0059.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 7.718197,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0060.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "dk-current",
+      "predicted_result_id": "dk",
+      "predicted_display_name": "Denmark",
+      "top1_logit": 11.052654,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0061.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.459361,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0062.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 11.936443,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0063.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 6.66909,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0064.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 9.714793,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0065.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 10.723414,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0066.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "um-current",
+      "predicted_result_id": "um",
+      "predicted_display_name": "US Minor Outlying Islands",
+      "top1_logit": 8.152937,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0067.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 13.723903,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0068.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 11.012369,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0069.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "tf-current",
+      "predicted_result_id": "tf",
+      "predicted_display_name": "French Southern Territories",
+      "top1_logit": 6.856523,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0070.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 10.798396,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0071.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 11.155377,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0072.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 9.329609,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0073.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 9.511082,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0074.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 6.263607,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0075.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 6.827596,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0076.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 8.188335,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0077.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 8.885337,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0078.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 14.110005,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0079.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 11.618011,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0080.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.557631,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0081.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 8.331038,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0082.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 6.323813,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0083.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 10.812175,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0084.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 6.436388,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0085.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 13.477751,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0086.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-sc-current",
+      "predicted_result_id": "us-sc",
+      "predicted_display_name": "South Carolina",
+      "top1_logit": 8.808935,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0087.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 12.798397,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0088.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.117058,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0089.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 10.657417,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0090.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 9.43231,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0091.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.232186,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0092.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 11.875937,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0093.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 7.23433,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0094.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 10.664993,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0095.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 6.980194,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0096.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "us-ak-current",
+      "predicted_result_id": "us-ak",
+      "predicted_display_name": "Alaska",
+      "top1_logit": 8.531042,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0097.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "aq-current",
+      "predicted_result_id": "aq",
+      "predicted_display_name": "Antarctica",
+      "top1_logit": 7.918859,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0098.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 11.17751,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/solid_color/0099.png",
+      "recipe": "solid_color",
+      "predicted_flag_id": "so-current",
+      "predicted_result_id": "so",
+      "predicted_display_name": "Somalia",
+      "top1_logit": 8.152592,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0000.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.494359,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0001.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 6.496823,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0002.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ad-current",
+      "predicted_result_id": "ad",
+      "predicted_display_name": "Andorra",
+      "top1_logit": 7.019845,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0003.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-az-current",
+      "predicted_result_id": "us-az",
+      "predicted_display_name": "Arizona",
+      "top1_logit": 4.570302,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0004.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sz-current",
+      "predicted_result_id": "sz",
+      "predicted_display_name": "Kingdom of Eswatini",
+      "top1_logit": 3.777381,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0005.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 10.717276,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0006.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 4.489344,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0007.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.802464,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0008.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "bi-current",
+      "predicted_result_id": "bi",
+      "predicted_display_name": "Burundi",
+      "top1_logit": 5.508509,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0009.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 6.152863,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0010.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 4.713786,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0011.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "gw-current",
+      "predicted_result_id": "gw",
+      "predicted_display_name": "Guinea-Bissau",
+      "top1_logit": 4.511159,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0012.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 7.095417,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0013.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ks-current",
+      "predicted_result_id": "us-ks",
+      "predicted_display_name": "Kansas",
+      "top1_logit": 4.834732,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0014.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 6.268445,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0015.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ht-current",
+      "predicted_result_id": "ht",
+      "predicted_display_name": "Haiti",
+      "top1_logit": 3.456096,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0016.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.283919,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0017.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.07037,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0018.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "nu-current",
+      "predicted_result_id": "nu",
+      "predicted_display_name": "Niue",
+      "top1_logit": 4.300432,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0019.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "at-current",
+      "predicted_result_id": "at",
+      "predicted_display_name": "Austria",
+      "top1_logit": 9.733613,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0020.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 6.091862,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0021.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.422169,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0022.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.495449,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0023.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ht-current",
+      "predicted_result_id": "ht",
+      "predicted_display_name": "Haiti",
+      "top1_logit": 5.851141,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0024.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 7.524581,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0025.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 7.132775,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0026.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-wa-current",
+      "predicted_result_id": "us-wa",
+      "predicted_display_name": "Washington",
+      "top1_logit": 7.017566,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0027.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.548567,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0028.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 6.357377,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0029.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 5.661746,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0030.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sa-current",
+      "predicted_result_id": "sa",
+      "predicted_display_name": "Saudi Arabia",
+      "top1_logit": 6.199677,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0031.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 6.559189,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0032.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "br-current",
+      "predicted_result_id": "br",
+      "predicted_display_name": "Brazil",
+      "top1_logit": 4.925549,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0033.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "kp-current",
+      "predicted_result_id": "kp",
+      "predicted_display_name": "Korea, Democratic People's Republic of",
+      "top1_logit": 6.892143,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0034.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "km-current",
+      "predicted_result_id": "km",
+      "predicted_display_name": "Comoros",
+      "top1_logit": 6.640045,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0035.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ri-current",
+      "predicted_result_id": "us-ri",
+      "predicted_display_name": "Rhode Island",
+      "top1_logit": 6.143261,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0036.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 6.884026,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0037.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-mt-current",
+      "predicted_result_id": "us-mt",
+      "predicted_display_name": "Montana",
+      "top1_logit": 6.436839,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0038.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ax-current",
+      "predicted_result_id": "ax",
+      "predicted_display_name": "Åland Islands",
+      "top1_logit": 5.119422,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0039.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 4.827998,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0040.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-de-current",
+      "predicted_result_id": "us-de",
+      "predicted_display_name": "Delaware",
+      "top1_logit": 7.586237,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0041.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "cc-current",
+      "predicted_result_id": "cc",
+      "predicted_display_name": "Cocos (Keeling) Islands",
+      "top1_logit": 5.194347,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0042.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 6.436582,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0043.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.856439,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0044.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ri-current",
+      "predicted_result_id": "us-ri",
+      "predicted_display_name": "Rhode Island",
+      "top1_logit": 4.285286,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0045.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mu-current",
+      "predicted_result_id": "mu",
+      "predicted_display_name": "Mauritius",
+      "top1_logit": 3.774866,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0046.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 6.787582,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0047.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.814313,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0048.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ne-current",
+      "predicted_result_id": "us-ne",
+      "predicted_display_name": "Nebraska",
+      "top1_logit": 5.398738,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0049.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.12057,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0050.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.811013,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0051.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.407995,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0052.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "pk-current",
+      "predicted_result_id": "pk",
+      "predicted_display_name": "Pakistan",
+      "top1_logit": 6.063071,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0053.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ad-current",
+      "predicted_result_id": "ad",
+      "predicted_display_name": "Andorra",
+      "top1_logit": 6.043657,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0054.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "lk-current",
+      "predicted_result_id": "lk",
+      "predicted_display_name": "Sri Lanka",
+      "top1_logit": 3.912201,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0055.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-mt-current",
+      "predicted_result_id": "us-mt",
+      "predicted_display_name": "Montana",
+      "top1_logit": 5.927326,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0056.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.77314,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0057.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 11.7921,
+      "is_high_confidence": true
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0058.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 6.923149,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0059.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nv-current",
+      "predicted_result_id": "us-nv",
+      "predicted_display_name": "Nevada",
+      "top1_logit": 6.095717,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0060.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "az-current",
+      "predicted_result_id": "az",
+      "predicted_display_name": "Azerbaijan",
+      "top1_logit": 4.626775,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0061.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 6.450337,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0062.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ls-current",
+      "predicted_result_id": "ls",
+      "predicted_display_name": "Lesotho",
+      "top1_logit": 5.783389,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0063.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.805637,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0064.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 6.689034,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0065.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 5.767634,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0066.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "az-current",
+      "predicted_result_id": "az",
+      "predicted_display_name": "Azerbaijan",
+      "top1_logit": 4.346761,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0067.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 4.894606,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0068.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nd-current",
+      "predicted_result_id": "us-nd",
+      "predicted_display_name": "North Dakota",
+      "top1_logit": 5.101619,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0069.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "az-current",
+      "predicted_result_id": "az",
+      "predicted_display_name": "Azerbaijan",
+      "top1_logit": 5.955475,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0070.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "nf-current",
+      "predicted_result_id": "nf",
+      "predicted_display_name": "Norfolk Island",
+      "top1_logit": 6.52283,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0071.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mo-current",
+      "predicted_result_id": "mo",
+      "predicted_display_name": "Macao",
+      "top1_logit": 9.002389,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0072.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ky-current",
+      "predicted_result_id": "us-ky",
+      "predicted_display_name": "Kentucky",
+      "top1_logit": 6.890391,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0073.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "bb-current",
+      "predicted_result_id": "bb",
+      "predicted_display_name": "Barbados",
+      "top1_logit": 4.445515,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0074.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 5.423516,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0075.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nm-current",
+      "predicted_result_id": "us-nm",
+      "predicted_display_name": "New Mexico",
+      "top1_logit": 5.383284,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0076.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ga-current",
+      "predicted_result_id": "ga",
+      "predicted_display_name": "Gabon",
+      "top1_logit": 4.53808,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0077.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-or-current",
+      "predicted_result_id": "us-or",
+      "predicted_display_name": "Oregon",
+      "top1_logit": 4.842976,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0078.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 5.415652,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0079.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-wa-current",
+      "predicted_result_id": "us-wa",
+      "predicted_display_name": "Washington",
+      "top1_logit": 4.35955,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0080.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 6.645339,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0081.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 7.933377,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0082.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.748386,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0083.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "nu-current",
+      "predicted_result_id": "nu",
+      "predicted_display_name": "Niue",
+      "top1_logit": 5.541857,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0084.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sb-current",
+      "predicted_result_id": "sb",
+      "predicted_display_name": "Solomon Islands",
+      "top1_logit": 3.839322,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0085.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 5.579838,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0086.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.394852,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0087.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "bo-current",
+      "predicted_result_id": "bo",
+      "predicted_display_name": "Bolivia, Plurinational State of",
+      "top1_logit": 7.082766,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0088.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "va-current",
+      "predicted_result_id": "va",
+      "predicted_display_name": "Holy See (Vatican City State)",
+      "top1_logit": 9.236495,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0089.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.782064,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0090.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.048431,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0091.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "za-current",
+      "predicted_result_id": "za",
+      "predicted_display_name": "South Africa",
+      "top1_logit": 4.613992,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0092.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 6.858642,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0093.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 6.161616,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0094.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "bt-current",
+      "predicted_result_id": "bt",
+      "predicted_display_name": "Bhutan",
+      "top1_logit": 6.007119,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0095.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 5.893262,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0096.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mp-current",
+      "predicted_result_id": "mp",
+      "predicted_display_name": "Northern Mariana Islands",
+      "top1_logit": 4.531903,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0097.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 3.84816,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0098.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "vg-current",
+      "predicted_result_id": "vg",
+      "predicted_display_name": "Virgin Islands, British",
+      "top1_logit": 3.574683,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0099.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-dc-current",
+      "predicted_result_id": "us-dc",
+      "predicted_display_name": "District of Columbia",
+      "top1_logit": 3.910678,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0100.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-nj-current",
+      "predicted_result_id": "us-nj",
+      "predicted_display_name": "New Jersey",
+      "top1_logit": 4.808258,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0101.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "br-current",
+      "predicted_result_id": "br",
+      "predicted_display_name": "Brazil",
+      "top1_logit": 4.808475,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0102.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-md-current",
+      "predicted_result_id": "us-md",
+      "predicted_display_name": "Maryland",
+      "top1_logit": 3.998993,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0103.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.589018,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0104.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 4.65206,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0105.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.254714,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0106.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "na-current",
+      "predicted_result_id": "na",
+      "predicted_display_name": "Namibia",
+      "top1_logit": 4.777102,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0107.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "br-current",
+      "predicted_result_id": "br",
+      "predicted_display_name": "Brazil",
+      "top1_logit": 6.222206,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0108.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "jm-current",
+      "predicted_result_id": "jm",
+      "predicted_display_name": "Jamaica",
+      "top1_logit": 3.990261,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0109.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ch-current",
+      "predicted_result_id": "ch",
+      "predicted_display_name": "Switzerland",
+      "top1_logit": 7.611531,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0110.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "th-current",
+      "predicted_result_id": "th",
+      "predicted_display_name": "Thailand",
+      "top1_logit": 6.239983,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0111.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 4.484993,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0112.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.557971,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0113.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-md-current",
+      "predicted_result_id": "us-md",
+      "predicted_display_name": "Maryland",
+      "top1_logit": 4.444781,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0114.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "cx-current",
+      "predicted_result_id": "cx",
+      "predicted_display_name": "Christmas Island",
+      "top1_logit": 5.269516,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0115.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "wf-current",
+      "predicted_result_id": "wf",
+      "predicted_display_name": "Wallis and Futuna Islands",
+      "top1_logit": 8.55461,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0116.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-or-current",
+      "predicted_result_id": "us-or",
+      "predicted_display_name": "Oregon",
+      "top1_logit": 5.758187,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0117.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "aq-current",
+      "predicted_result_id": "aq",
+      "predicted_display_name": "Antarctica",
+      "top1_logit": 3.76127,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0118.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "se-current",
+      "predicted_result_id": "se",
+      "predicted_display_name": "Sweden",
+      "top1_logit": 5.101976,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0119.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "eu-current",
+      "predicted_result_id": "eu",
+      "predicted_display_name": "Europe",
+      "top1_logit": 6.200916,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0120.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 5.255653,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0121.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 7.933518,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0122.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.591485,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0123.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 4.099147,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0124.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.76891,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0125.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "bz-current",
+      "predicted_result_id": "bz",
+      "predicted_display_name": "Belize",
+      "top1_logit": 5.193182,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0126.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.99911,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0127.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "vn-current",
+      "predicted_result_id": "vn",
+      "predicted_display_name": "Vietnam",
+      "top1_logit": 4.968896,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0128.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mm-current",
+      "predicted_result_id": "mm",
+      "predicted_display_name": "Myanmar",
+      "top1_logit": 4.695855,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0129.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ml-current",
+      "predicted_result_id": "ml",
+      "predicted_display_name": "Mali",
+      "top1_logit": 6.480515,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0130.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mm-current",
+      "predicted_result_id": "mm",
+      "predicted_display_name": "Myanmar",
+      "top1_logit": 3.766418,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0131.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "br-current",
+      "predicted_result_id": "br",
+      "predicted_display_name": "Brazil",
+      "top1_logit": 6.166556,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0132.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sb-current",
+      "predicted_result_id": "sb",
+      "predicted_display_name": "Solomon Islands",
+      "top1_logit": 3.634509,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0133.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 7.459677,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0134.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "my-current",
+      "predicted_result_id": "my",
+      "predicted_display_name": "Malaysia",
+      "top1_logit": 6.453296,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0135.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "np-current",
+      "predicted_result_id": "np",
+      "predicted_display_name": "Nepal",
+      "top1_logit": 7.86517,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0136.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "er-current",
+      "predicted_result_id": "er",
+      "predicted_display_name": "Eritrea",
+      "top1_logit": 4.71375,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0137.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "na-current",
+      "predicted_result_id": "na",
+      "predicted_display_name": "Namibia",
+      "top1_logit": 4.93337,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0138.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ba-current",
+      "predicted_result_id": "ba",
+      "predicted_display_name": "Bosnia and Herzegovina",
+      "top1_logit": 4.841429,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0139.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-current",
+      "predicted_result_id": "us",
+      "predicted_display_name": "United States",
+      "top1_logit": 7.301236,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0140.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-wi-current",
+      "predicted_result_id": "us-wi",
+      "predicted_display_name": "Wisconsin",
+      "top1_logit": 3.749406,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0141.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "az-current",
+      "predicted_result_id": "az",
+      "predicted_display_name": "Azerbaijan",
+      "top1_logit": 4.479009,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0142.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "sl-current",
+      "predicted_result_id": "sl",
+      "predicted_display_name": "Sierra Leone",
+      "top1_logit": 6.000779,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0143.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "us-ct-current",
+      "predicted_result_id": "us-ct",
+      "predicted_display_name": "Connecticut",
+      "top1_logit": 8.343812,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0144.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "ec-current",
+      "predicted_result_id": "ec",
+      "predicted_display_name": "Ecuador",
+      "top1_logit": 3.925412,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0145.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "gd-current",
+      "predicted_result_id": "gd",
+      "predicted_display_name": "Grenada",
+      "top1_logit": 3.865222,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0146.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "fm-current",
+      "predicted_result_id": "fm",
+      "predicted_display_name": "Micronesia, Federated States of",
+      "top1_logit": 8.112293,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0147.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "tn-current",
+      "predicted_result_id": "tn",
+      "predicted_display_name": "Tunisia",
+      "top1_logit": 4.41244,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0148.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "er-current",
+      "predicted_result_id": "er",
+      "predicted_display_name": "Eritrea",
+      "top1_logit": 5.25209,
+      "is_high_confidence": false
+    },
+    {
+      "image_path": "data/generated/negative_eval/stripes/0149.png",
+      "recipe": "stripes",
+      "predicted_flag_id": "mm-current",
+      "predicted_result_id": "mm",
+      "predicted_display_name": "Myanmar",
+      "top1_logit": 7.388617,
+      "is_high_confidence": false
+    }
+  ],
+  "recommendation": {
+    "base_threshold_x10": 20,
+    "base_fp_rate": 1.0,
+    "base_high_confidence_fp_rate": 0.196667,
+    "base_fn_rate": 0.0,
+    "recommended_threshold_x10": 5,
+    "recommendation_basis": "highest_swept_value_best_tradeoff",
+    "targets": {
+      "fp_rate_ceiling": 0.05,
+      "high_confidence_fp_rate_ceiling": 0.01
+    },
+    "note": "No swept threshold meets both FP rate targets. Recommending threshold 5 to minimize high-confidence false positives."
+  }
+}
