@@ -1,0 +1,28 @@
+# Historical flag seed file for import_historical.py
+#
+# Columns:
+#   result_id        — base identifier (e.g., "de"); flag_id = f"{result_id}-{era_descriptor}"
+#   era_descriptor   — short label for the era (e.g., "1871", "east", "weimar"); URL-safe, no spaces
+#   era_start        — YYYY or YYYY-MM-DD start year/date (optional, leave blank if unknown)
+#   era_end          — YYYY or YYYY-MM-DD end year/date (optional, leave blank if unknown)
+#   display_name     — human-readable label (e.g., "Germany (Empire)")
+#   wikimedia_filename — exact Wikimedia Commons filename including extension (e.g., "Flag_of_the_German_Empire.svg")
+#   short_description  — one-line note for the import report only; NOT stored in the manifest
+#
+result_id,era_descriptor,era_start,era_end,display_name,wikimedia_filename,short_description
+af,republic,2013,2021,Afghanistan (Islamic Republic),Flag_of_Afghanistan_(2013–2021).svg,Former black-red-green republic flag
+by,1991,1991,1995,Belarus (1991-1995),"Flag_of_Belarus_(1918,_1991–1995).svg",White-red-white post-Soviet state flag
+ca,red-ensign-1957,1957,1965,Canada (Red Ensign),Flag_of_Canada_(1957–1965).svg,Canadian Red Ensign before the maple leaf flag
+cn,1912,1912,1928,China (1912-1928),Flag_of_China_(1912–1928).svg,Five-colored early Republic of China flag
+de,empire,1867,1918,Germany (Empire),Flag_of_the_German_Empire.svg,Black-white-red German imperial tricolor
+de,east,1959-10-01,1990-10-03,Germany (East Germany),Flag_of_East_Germany.svg,East German flag with state emblem
+es,second-republic,1931,1939,Spain (Second Republic),Flag_of_Spain_1931_1939.svg,Red-yellow-purple Spanish republican flag
+et,derg-emblem,1975,1987,Ethiopia (1975-1987),"Flag_of_Ethiopia_(1975–1987,_with_emblem).svg",Derg-era Ethiopian flag with emblem
+ir,pahlavi,1964,1980,Iran (Pahlavi state flag),State_flag_of_Iran_(1964–1980).svg,Lion and Sun state flag
+iq,1963,1963,1991,Iraq (1963-1991),Flag_of_Iraq_(1963–1991).svg,Former Iraqi flag with three green stars
+ly,jamahiriya,1977,2011,Libya (1977-2011),Flag_of_Libya_(1977–2011).svg,Solid green Libyan Arab Jamahiriya flag
+mm,1974,1974,2010,Myanmar (1974-2010),Flag_of_Myanmar_(1974–2010).svg,Former Myanmar flag with rice and stars
+rw,1961,1961,2001,Rwanda (1961-2001),Flag_of_Rwanda_(1961–2001).svg,Former Rwanda tricolor with black R
+us,13-stars,1777,1795,United States (13 stars),Flag_of_the_United_States_(1777-1795).svg,Early United States flag with thirteen stars
+us,48-stars,1912,1959,United States (48 stars),Flag_of_the_United_States_(1912-1959).svg,United States flag before Alaska and Hawaii
+za,1928,1928,1994,South Africa (1928-1994),"Flag_of_South_Africa_(1928–1994,_dark_colors).svg",Old orange-white-blue South African flag

@@ -17,7 +17,7 @@ VxPatchEmbedding vx_patch_embedding_create(int n_patches, int patch_size, int em
     p.embed_dim = embed_dim;
     p.PatchEmb = tg_new(patch_size, embed_dim);
     p.PosEmb = tg_new(n_patches, embed_dim);
-    tg_fill_randn(p.PatchEmb, 0.02f);
+    tg_fill_xavier_uniform(p.PatchEmb);
     tg_fill(p.PosEmb, 0.0f);
 
     p.PatchEmb->persistent = 1;

@@ -17,7 +17,7 @@ VxViT vx_vit_create(int n_patches, int patch_size, int embed_dim,
     v.n_labels  = n_labels;
     v.embed_dim = embed_dim;
 
-    tg_fill_randn(v.Wout, 0.1f);
+    tg_fill_xavier_uniform(v.Wout);
     v.Wout->persistent = 1;
 
     return v;
@@ -210,7 +210,7 @@ VxViT vx_vit_load(const char *path) {
     }
 
     fclose(f);
-    printf("loaded weights from '%s'  (%d params  n_labels=%d)\n",
-           path, n_params, n_labels);
+    fprintf(stderr, "loaded weights from '%s'  (%d params  n_labels=%d)\n",
+            path, n_params, n_labels);
     return v;
 }

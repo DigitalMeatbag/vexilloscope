@@ -10,6 +10,7 @@ Exits non-zero on any error.
 
 import argparse
 import io
+import itertools
 import json
 import shutil
 import sys
@@ -76,6 +77,10 @@ def _rel(p: Path) -> str:
         return str(p.relative_to(REPO_ROOT)).replace("\\", "/")
     except ValueError:
         return str(p).replace("\\", "/")
+
+
+def _clean(s):
+    return str(s).replace("\t", " ").replace("\n", " ")
 
 
 def main():
@@ -164,7 +169,10 @@ def main():
     class_entries = []
 
     for class_id, (fid, flag, result, primary_assets, wiki_assets, emoji_assets) in enumerate(eligible_flags):
-        display_name = result.get("display_name", "")
+        if flag.get("status") == "current":
+            display_name = result.get("display_name", "")
+        else:
+            display_name = flag.get("display_name") or result.get("display_name", "")
 
         # Primary image — use the first eligible source_original
         primary_asset = primary_assets[0]
@@ -225,11 +233,80 @@ def main():
         json.dump(class_map, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
+    # --- Write class_meta.tsv ---
+    class_meta_path = output_dir / "class_meta.tsv"
+    with open(class_meta_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("class_id\tresult_id\tflag_id\tdisplay_name\tcategory\tfictionality\tstatus\tvariant\tshort_description\n")
+        for class_id, (fid, flag, result, *_) in enumerate(eligible_flags):
+            is_current = flag.get("status") == "current"
+            meta_display = (
+                result.get("display_name", "")
+                if is_current
+                else (flag.get("display_name") or result.get("display_name", ""))
+            )
+            meta_short_desc = (
+                flag.get("short_description") or result.get("short_description", "")
+                if is_current
+                else flag.get("short_description") or ""
+            )
+            fields = [
+                str(class_id),
+                _clean(result.get("result_id", "")),
+                _clean(fid),
+                _clean(meta_display),
+                _clean(result.get("category", "")),
+                _clean(result.get("fictionality", "")),
+                _clean(flag.get("status", "")),
+                _clean(flag.get("variant", "")),
+                _clean(meta_short_desc),
+            ]
+            for k, v in zip(
+                ["result_id", "flag_id", "display_name", "category",
+                 "fictionality", "status", "variant", "short_description"],
+                fields[1:],
+            ):
+                if len(v) > 512:
+                    print(
+                        f"WARNING: class_id={class_id} field '{k}' exceeds 512 chars after substitution",
+                        file=sys.stderr,
+                    )
+            f.write("\t".join(fields) + "\n")
+
+    # --- Write confusable_pairs.tsv ---
+    confusables_path = REPO_ROOT / "data" / "manifest" / "confusables.jsonl"
+    confusable_pairs_path = output_dir / "confusable_pairs.tsv"
+    pairs = []
+    if confusables_path.exists():
+        with open(confusables_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                rec = json.loads(line)
+                if rec.get("review_status") != "reviewed":
+                    continue
+                cid = rec["confusable_id"]
+                level = rec["level"]
+                members = rec["members"]
+                for a, b in itertools.combinations(members, 2):
+                    pairs.append((cid, level, a, b))
+    else:
+        print(
+            f"WARNING: {confusables_path} not found; writing empty confusable_pairs.tsv",
+            file=sys.stderr,
+        )
+    with open(confusable_pairs_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("confusable_id\tlevel\tmember_a\tmember_b\n")
+        for cid, level, a, b in pairs:
+            f.write(f"{_clean(cid)}\t{_clean(level)}\t{_clean(a)}\t{_clean(b)}\n")
+
     # --- Report ---
     n_classes = len(class_entries)
     print(f"Exported {n_classes} classes.")
     print(f"  labels.csv:    {labels_path}")
     print(f"  class_map.json: {class_map_path}")
+    print(f"  class_meta.tsv:       {class_meta_path}")
+    print(f"  confusable_pairs.tsv: {confusable_pairs_path}")
     print(f"  images/:       {images_dir}  ({n_classes} PNGs)")
     if has_wiki:
         n_wiki = sum(1 for _, _, _, _, w, _ in eligible_flags if w)

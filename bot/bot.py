@@ -1,6 +1,6 @@
 import asyncio
+import json
 import os
-import re
 import subprocess
 import tempfile
 from io import BytesIO
@@ -13,16 +13,16 @@ from PIL import Image as PILImage  # stb_image doesn't support WebP; thanks for 
 TOKEN   = os.environ["Vexilloscope_DiscordToken"]
 EXE     = os.environ.get("VEXILLOSCOPE_EXE",     str(Path(__file__).parent.parent / "build" / "vexilloscope.exe"))
 WEIGHTS = os.environ.get("VEXILLOSCOPE_WEIGHTS",  str(Path(__file__).parent.parent / "vit_weights.bin"))
+LABELS  = os.environ.get("VEXILLOSCOPE_LABELS",   str(Path(__file__).parent.parent / "data" / "generated" / "train" / "labels.csv"))
 
 DEBUG_DIR = Path(__file__).parent / "debug"
 
-RESULT_RE = re.compile(r"#(\d+)\s+(\S+)\s+(.+?)\s+logit:\s+([-\d.]+)")
-
-
 def flag_emoji(code: str) -> str:
-    if len(code) == 2:
-        return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in code.upper())
-    return ""  # sub-national codes (GB-ENG etc.) have no standard Unicode flag emoji
+    # v3 flag_ids: "de-current", "us-ca" — ISO prefix is the part before the first "-"
+    iso = code.split("-")[0] if "-" in code else code
+    if len(iso) == 2:
+        return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in iso.upper())
+    return ""
 
 client = discord.Client(intents=discord.Intents.default())
 tree   = app_commands.CommandTree(client)
@@ -31,7 +31,7 @@ tree   = app_commands.CommandTree(client)
 def _run_identify(tmp_path: str) -> tuple[str, str, str]:
     """Returns (parsed_result, raw_stdout, raw_stderr)."""
     result = subprocess.run(
-        [EXE, "--identify", tmp_path, "--weights", WEIGHTS],
+        [EXE, "--labels", LABELS, "--identify-json", tmp_path, "--weights", WEIGHTS],
         capture_output=True, text=True, timeout=30,
         cwd=str(Path(__file__).parent.parent),
     )
@@ -43,17 +43,37 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
             result.stderr,
         )
 
-    if any("no flag detected" in line for line in result.stdout.splitlines()):
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return (
+            "error: could not parse classifier output",
+            result.stdout,
+            result.stderr,
+        )
+
+    if not data.get("detected"):
         return "No flag found in that image.", result.stdout, result.stderr
 
     lines = []
-    for line in result.stdout.splitlines():
-        m = RESULT_RE.search(line)
-        if m:
-            rank, code, name, logit = m.groups()
-            emoji = flag_emoji(code)
-            prefix = f"{emoji} " if emoji else ""
-            lines.append(f"{rank}. {prefix}**{name.strip()}** ({code})  —  logit {float(logit):.2f}")
+    for r in data.get("results", []):
+        emoji = flag_emoji(r["result_id"])
+        prefix = f"{emoji} " if emoji else ""
+        rank = r["rank"]
+        name = r["display_name"]
+        conf = r["confidence"]
+        if rank == 1:
+            line = f"{prefix}**{name}**  —  {conf:.0%}"
+            desc = r.get("short_description", "").strip()
+            if desc:
+                line += f"\n_{desc}_"
+        else:
+            line = f"{rank}. {prefix}**{name}**  —  {conf:.0%}"
+        lines.append(line)
+
+    ambiguity = data.get("ambiguity")
+    if ambiguity:
+        lines.append(f"\n⚠️ {ambiguity['message']}")
 
     parsed = "\n".join(lines) if lines else "no results returned"
     return parsed, result.stdout, result.stderr
@@ -124,6 +144,7 @@ async def on_ready():
     print(f"ready: {client.user} (id: {client.user.id})")
     print(f"  exe:     {EXE}")
     print(f"  weights: {WEIGHTS}")
+    print(f"  labels:  {LABELS}")
 
 
 client.run(TOKEN)

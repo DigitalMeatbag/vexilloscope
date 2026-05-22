@@ -5,7 +5,7 @@ See `AGENTS.md` for full architecture, API reference, and constraints.
 
 - No external ML or image processing libraries — stb (`vendor/`) is the only approved image dep
 - Encoder uses **non-causal** attention (`causal=0`) — do not change this
-- All 306 flags train (v3: 255 Phase 1 + 51 US states); there is no held-out class split — eval uses augmented passes per flag
+- All 322 flags train (v3: 255 Phase 1 + 51 US states + 16 historical Phase 5); there is no held-out class split — eval uses augmented passes per flag
 - Hyperparameter changes go in the `enum` at the top of `main.c` — no scattered magic numbers
 - `persistent = 1` on any tensor that must survive `tg_free_graph` (params, patches reused across steps)
 - Image dimensions are always passed explicitly — no global state

@@ -145,6 +145,7 @@ The exact names and boundaries may change, but the principle should not: spec on
 | Source import strategy | Closed | Importers are collectors, not trust authorities; reports must trace failures to likely root cause. |
 | No-flag strategy | Closed | Use locally generated negative evaluation data for threshold calibration first; balance false positives and false negatives with mild preference against confident false positives. |
 | Evaluation strategy | Closed | Result-level accuracy is the primary user-value metric; exact flag accuracy remains a model/debug metric with required breakdowns and no-flag/confusable reporting. |
+| Production resolution | Closed | 256×256 input with 16×16 patches (adopted 2026-05-21 from exp-256-p16: top-1 94.32%, HC-FP 15.0% at threshold_x10=35). Pending clean retraining from scratch. |
 
 ---
 
@@ -2103,6 +2104,8 @@ v3 baseline keeps the existing `128x128` training target until the data pipeline
 
 Source renders should be generated at a higher resolution where practical so future experiments can downsample to `160`, `192`, `256`, or other sizes without re-fetching sources.
 
+**Update (2026-05-21):** After Phase 4 eval infrastructure was in place, the `exp-256-p16` experiment (256×256 input, 16×16 patches, same 256 tokens) was run and adopted as the production default. Results: top-1 94.32%, top-3 97.96%, HC-FP rate 15.0% at threshold_x10=35. Both accuracy and false-positive metrics improved meaningfully over the 128×128 / 8×8 baseline. The enum constants in `main.c` now reflect these values. Pending retraining from scratch; current weights (`vit_weights_256p16.bin`) were produced from the experiment run.
+
 ### Category-Aware Augmentation
 
 Category-aware augmentation is deferred.
@@ -2124,7 +2127,7 @@ The first v3 pass should use a common augmentation policy. Category-specific pol
 
 ### Decision
 
-Closed: curated assets are source truth; generated renders and training files are reproducible artifacts. The initial v3 export remains compatible with the existing C pipeline, balances sampling by `flag_id`, keeps runtime augmentation as the primary distortion source, and retains `128x128` as the baseline training target while rendering sources at higher resolution where practical.
+Closed: curated assets are source truth; generated renders and training files are reproducible artifacts. The initial v3 export remains compatible with the existing C pipeline, balances sampling by `flag_id`, keeps runtime augmentation as the primary distortion source, and retains `128x128` as the initial baseline training target while rendering sources at higher resolution where practical. **Updated 2026-05-21:** production default is now `256x256` with `16x16` patches (adopted from exp-256-p16).
 
 ---
 
@@ -2717,7 +2720,7 @@ Those become justified if:
 
 ### Evidence Questions
 
-- Is `256x256` with `16x16` patches sufficient, or does the model need `256x256` with smaller patches despite the token cost?
+- **Closed (2026-05-21):** `256x256` with `16x16` patches was sufficient as a first meaningful improvement (top-1 +0.7 pp, HC-FP −4.7 pp vs 128×128 / 8×8 baseline). Smaller patches at 256×256 remain an open question for future confusable-heavy cases.
 - What GPU memory and training time budget is acceptable on the RTX 4070 SUPER 12GB machine?
 - Closed: v3 preserves the single-model classifier path initially.
 
@@ -3175,11 +3178,19 @@ Closed: v3 separates canonical manifest data, curated source assets, generated a
 
 ### Phase 4: Model and Inference Experiments
 
-- [ ] Calibrate detection thresholds with negatives.
-- [ ] Try class-balanced sampling.
-- [ ] Try resolution/patch/capacity experiments.
-- [ ] Evaluate flagness head or separate detector.
-- [ ] Add `--identify-json` structured output mode.
+- [x] Calibrate detection thresholds with negatives. (threshold raised 20→35; deeper calibration deferred — threshold alone cannot solve HC-FP problem)
+- [ ] Try class-balanced sampling. (deferred to Phase 5+; low expected value with single-source-dominated dataset)
+- [x] Try resolution/patch/capacity experiments. (exp-256-p16 adopted 2026-05-21)
+- [ ] Evaluate flagness head or separate detector. (deferred; separate spec required)
+- [x] Add `--identify-json` structured output mode. (implemented 2026-05-21)
+
+### Phase 5: Historical Flags and Bot Migration
+
+- [x] Add `scripts/import_historical.py` and `scripts/historical_seed.csv` for Wikimedia-sourced historical national flags.
+- [x] Import 16 initial historical flag records; promote all to `review_status=reviewed`, `trainable=true`; retrain to 322 classes.
+- [x] Migrate `bot/bot.py` from `--identify` text parsing (RESULT_RE) to `--identify-json` structured output.
+- [x] Add `--identify-json-batch <file>` for NDJSON batch inference.
+- [x] Fix `VX_CODE_MAX` 16→64 to support flag IDs longer than 15 chars (e.g., `ca-red-ensign-1957`, `es-second-republic`).
 
 ---
 
@@ -3213,3 +3224,37 @@ Closed: v3 separates canonical manifest data, curated source assets, generated a
    - **Directory structure:** `data/sources/wikimedia/<import_family>/` (e.g., `data/sources/wikimedia/us_states/`), with the filename matching the flag ISO/admin code.
 
    The v1 examples have been updated to reflect these closed decisions. The rationale is recorded here rather than being embedded silently in the example values.
+
+### v3 — Phase 5 completion (2026-05-22)
+
+**Trigger:** v3 Phase 5 implemented per `SPEC_V3_PHASE5.md`. Three threads:
+
+**Thread A — Historical flag import pipeline**
+
+`scripts/import_historical.py` added following the `import_us_states.py` pattern. Reads a curated `scripts/historical_seed.csv`; never writes `results.jsonl`; downloads SVGs to `data/sources/wikimedia/historical/{flag_id}.svg`; `--force` unlocks overwriting reviewed records. 16 initial historical flags imported and promoted to `trainable=true`.
+
+**Thread B — Bot migration to structured output**
+
+`bot/bot.py` migrated from `--identify` text parsing (RESULT_RE regex) to `--identify-json` JSON parsing. Removes the fragile regex dependency; bot now consumes the structured `results[]` array directly.
+
+**Thread C — Batch inference**
+
+`--identify-json-batch <file>` added to `src/main.c`. `identify_flag_json_one` extracted as a static void helper (compact NDJSON, one line per image); `identify_flag_json` is a thin wrapper. Batch mode loads `class_meta.tsv` and `confusable_pairs.tsv` once, then loops over paths from the file.
+
+**Breaking fix — `VX_CODE_MAX` 16→64**
+
+`VxCountry.code[16]` held only 15 usable characters. `ca-red-ensign-1957` (18 chars) and `es-second-republic` (18 chars) were silently truncated, causing "missing flag image" errors at training time. `VX_CODE_MAX` bumped to 64 in `src/dataset.h`. All AGENTS.md references updated.
+
+**Eval — exp-historical-16**
+
+Retrained from scratch on 322 classes (255 Phase 1 + 51 US states + DC + 16 historical). Results:
+
+| Metric | exp-historical-16 (322 classes) | exp-256-p16 baseline (306 classes) |
+|---|---|---|
+| Top-1 exact | 92.62% | 94.32% |
+| Top-1 result-level | 93.13% | — |
+| Top-3 | 97.55% | 97.96% |
+| Historical flags top-1 | 98.44% | (not in baseline) |
+| Current flags top-1 | 92.85% | 94.32% |
+
+Regression on current flags (−1.47 pp exact) is consistent with the larger softmax head and some pre-existing weak classes. Historical flags performed better than current average (98.44%), expected given their visual distinctiveness. Known weak classes (bq-current, gb-nir-current, sh-current) were weak pre-Phase-5 and are not regressions introduced by the historical expansion.

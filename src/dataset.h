@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#define VX_CODE_MAX 16
+#define VX_CODE_MAX 64
 #define VX_NAME_MAX 128
 #define VX_PATH_MAX 512
 
