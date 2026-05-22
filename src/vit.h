@@ -28,5 +28,9 @@ int     vx_vit_collect_params(VxViT *v, Tensor **params);
 // vx_vit_load creates a fresh VxViT from the file header, then overwrites weights.
 void    vx_vit_save(const VxViT *v, const char *path);
 VxViT   vx_vit_load(const char *path);
+// vx_vit_load_warmstart: load weights and expand Wout to new_n_labels.
+// Old class columns are copied verbatim; new columns keep Xavier init from vx_vit_create.
+// Fatals if new_n_labels < file's n_labels (truncation is ambiguous).
+VxViT   vx_vit_load_warmstart(const char *path, int new_n_labels);
 
 #endif

@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -27,11 +28,34 @@ Tensor *img_load(const char *path, int target_h, int target_w, int channels) {
     unsigned char *buf = pixels;
     int buf_from_stbi = 1;
 
+    /* Letterbox: pad the short axis with white to make a square source canvas. */
+    if (src_h != src_w) {
+        int sq = src_h > src_w ? src_h : src_w;
+        unsigned char *lbox = malloc((size_t)sq * sq * load_channels);
+        if (!lbox) {
+            fprintf(stderr, "img_load: out of memory letterboxing '%s'\n", path);
+            stbi_image_free(pixels);
+            exit(1);
+        }
+        memset(lbox, 255, (size_t)sq * sq * load_channels);
+        int pad_y = (sq - src_h) / 2;
+        int pad_x = (sq - src_w) / 2;
+        for (int y = 0; y < src_h; y++)
+            for (int x = 0; x < src_w; x++)
+                for (int c = 0; c < load_channels; c++)
+                    lbox[((pad_y + y) * sq + (pad_x + x)) * load_channels + c] =
+                        pixels[(y * src_w + x) * load_channels + c];
+        stbi_image_free(pixels);
+        buf = lbox;
+        buf_from_stbi = 0;
+        src_h = src_w = sq;
+    }
+
     if (src_h != target_h || src_w != target_w) {
         unsigned char *resized = malloc((size_t)target_h * target_w * load_channels);
         if (!resized) {
             fprintf(stderr, "img_load: out of memory resizing '%s'\n", path);
-            stbi_image_free(pixels);
+            if (buf_from_stbi) stbi_image_free(buf); else free(buf);
             exit(1);
         }
         float x_ratio = (target_w > 1) ? (float)(src_w - 1) / (float)(target_w - 1) : 0.0f;
@@ -47,17 +71,17 @@ Tensor *img_load(const char *path, int target_h, int target_w, int channels) {
                 int x1 = x0 + 1 < src_w ? x0 + 1 : src_w - 1;
                 float tx = fx - x0;
                 for (int c = 0; c < load_channels; c++) {
-                    float q00 = pixels[(y0 * src_w + x0) * load_channels + c];
-                    float q10 = pixels[(y0 * src_w + x1) * load_channels + c];
-                    float q01 = pixels[(y1 * src_w + x0) * load_channels + c];
-                    float q11 = pixels[(y1 * src_w + x1) * load_channels + c];
+                    float q00 = buf[(y0 * src_w + x0) * load_channels + c];
+                    float q10 = buf[(y0 * src_w + x1) * load_channels + c];
+                    float q01 = buf[(y1 * src_w + x0) * load_channels + c];
+                    float q11 = buf[(y1 * src_w + x1) * load_channels + c];
                     float v = (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10
                             + (1-tx)*   ty *q01 +    tx*ty *q11;
                     resized[(oy * target_w + ox) * load_channels + c] = (unsigned char)(v + 0.5f);
                 }
             }
         }
-        stbi_image_free(pixels);
+        if (buf_from_stbi) stbi_image_free(buf); else free(buf);
         buf = resized;
         buf_from_stbi = 0;
     }
@@ -210,6 +234,73 @@ Tensor *img_crop_resize(const Tensor *img, int H, int W, int C, float crop_frac)
     return out;
 }
 
+static void img_cutout(Tensor *img, int H, int W, int C) {
+    float fw = 0.15f + ((float)rand() / ((float)RAND_MAX + 1.0f)) * 0.20f;
+    float fh = 0.15f + ((float)rand() / ((float)RAND_MAX + 1.0f)) * 0.20f;
+    int rw = (int)(fw * W); if (rw < 1) rw = 1;
+    int rh = (int)(fh * H); if (rh < 1) rh = 1;
+    int rx = rand() % (W - rw + 1);
+    int ry = rand() % (H - rh + 1);
+    for (int y = ry; y < ry + rh; y++) {
+        for (int x = rx; x < rx + rw; x++) {
+            float grey = (float)rand() / ((float)RAND_MAX + 1.0f);
+            for (int c = 0; c < C; c++)
+                img->data[(y * W + x) * C + c] = grey;
+        }
+    }
+}
+
+static Tensor *img_blur_downsample(const Tensor *img, int H, int W, int C) {
+    float frac = 0.25f + ((float)rand() / ((float)RAND_MAX + 1.0f)) * 0.25f;
+    int sh = (int)(frac * H); if (sh < 1) sh = 1;
+    int sw = (int)(frac * W); if (sw < 1) sw = 1;
+
+    float *small = malloc((size_t)sh * sw * C * sizeof(float));
+    if (!small) { fprintf(stderr, "img_blur_downsample: out of memory\n"); exit(1); }
+
+    float xr = (sw > 1) ? (float)(W - 1) / (float)(sw - 1) : 0.0f;
+    float yr = (sh > 1) ? (float)(H - 1) / (float)(sh - 1) : 0.0f;
+    for (int oy = 0; oy < sh; oy++) {
+        float fy = oy * yr; int y0 = (int)fy;
+        int y1 = y0 + 1 < H ? y0 + 1 : H - 1; float ty = fy - y0;
+        for (int ox = 0; ox < sw; ox++) {
+            float fx = ox * xr; int x0 = (int)fx;
+            int x1 = x0 + 1 < W ? x0 + 1 : W - 1; float tx = fx - x0;
+            for (int c = 0; c < C; c++) {
+                float q00 = img->data[(y0 * W + x0) * C + c];
+                float q10 = img->data[(y0 * W + x1) * C + c];
+                float q01 = img->data[(y1 * W + x0) * C + c];
+                float q11 = img->data[(y1 * W + x1) * C + c];
+                small[(oy * sw + ox) * C + c] =
+                    (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10 + (1-tx)*ty*q01 + tx*ty*q11;
+            }
+        }
+    }
+
+    Tensor *out = tg_new(1, H * W * C);
+    xr = (W > 1) ? (float)(sw - 1) / (float)(W - 1) : 0.0f;
+    yr = (H > 1) ? (float)(sh - 1) / (float)(H - 1) : 0.0f;
+    for (int oy = 0; oy < H; oy++) {
+        float fy = oy * yr; int y0 = (int)fy;
+        int y1 = y0 + 1 < sh ? y0 + 1 : sh - 1; float ty = fy - y0;
+        for (int ox = 0; ox < W; ox++) {
+            float fx = ox * xr; int x0 = (int)fx;
+            int x1 = x0 + 1 < sw ? x0 + 1 : sw - 1; float tx = fx - x0;
+            for (int c = 0; c < C; c++) {
+                float q00 = small[(y0 * sw + x0) * C + c];
+                float q10 = small[(y0 * sw + x1) * C + c];
+                float q01 = small[(y1 * sw + x0) * C + c];
+                float q11 = small[(y1 * sw + x1) * C + c];
+                out->data[(oy * W + ox) * C + c] =
+                    (1-tx)*(1-ty)*q00 + tx*(1-ty)*q10 + (1-tx)*ty*q01 + tx*ty*q11;
+            }
+        }
+    }
+
+    free(small);
+    return out;
+}
+
 Tensor *img_augment(const Tensor *img, int H, int W, int C) {
     Tensor *cur = tg_new(1, H * W * C);
     int n = H * W * C;
@@ -254,6 +345,17 @@ Tensor *img_augment(const Tensor *img, int H, int W, int C) {
         float t = (float)rand() / ((float)RAND_MAX + 1.0f);
         float angle = (t * 2.0f - 1.0f) * max_angle;
         Tensor *tmp = img_rotate(cur, H, W, C, angle);
+        tg_free(cur);
+        cur = tmp;
+    }
+
+    /* Cutout: random rectangle 15–35% × 15–35% filled with grey noise (50%) */
+    if (rand() & 1)
+        img_cutout(cur, H, W, C);
+
+    /* Blur: downsample to 25–50% and upsample back (50%) */
+    if (rand() & 1) {
+        Tensor *tmp = img_blur_downsample(cur, H, W, C);
         tg_free(cur);
         cur = tmp;
     }

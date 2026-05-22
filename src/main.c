@@ -27,10 +27,10 @@ enum {
     VX_PATCH_W       = 16,
     VX_PATCH_SIZE    = VX_PATCH_H * VX_PATCH_W * VX_IMAGE_C,
     VX_N_PATCHES     = (VX_IMAGE_H / VX_PATCH_H) * (VX_IMAGE_W / VX_PATCH_W),
-    VX_EMBED_DIM     = 128,
-    VX_HIDDEN_DIM    = 256,
+    VX_EMBED_DIM     = 192,
+    VX_HIDDEN_DIM    = 512,
     VX_N_BLOCKS      = 6,
-    VX_N_HEADS       = 4,
+    VX_N_HEADS       = 6,
     VX_VIT_STEPS     = 50000,
     VX_EVAL_AUGS     = 8,     // augmented versions per flag for robustness eval
     VX_IDENTIFY_TTA  = 8,     // augmented passes averaged at inference time
@@ -876,6 +876,7 @@ int main(int argc, char **argv) {
     const char *flags_dir2          = NULL;
     const char *flags_dir3          = NULL;
     const char *eval_dump_path      = NULL;
+    const char *warmstart_path      = NULL;
     int detect_threshold_x10        = VX_DETECT_THRESHOLD_X10;
 
     int pos = 0;
@@ -908,6 +909,8 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "error: --detect-threshold-x10 value must be a positive integer\n");
                 exit(1);
             }
+        } else if (strcmp(argv[i], "--warmstart") == 0 && i + 1 < argc) {
+            warmstart_path = argv[++i];
         } else if (pos == 0) { labels_path = argv[i]; pos++; }
           else if (pos == 1) { flags_dir   = argv[i]; pos++; }
           else if (pos == 2) { flags_dir2  = argv[i]; pos++; }
@@ -1066,13 +1069,15 @@ int main(int argc, char **argv) {
     printf("embed_dim=%d  hidden=%d  n_blocks=%d  n_heads=%d  steps=%d\n",
            VX_EMBED_DIM, VX_HIDDEN_DIM, VX_N_BLOCKS, VX_N_HEADS, VX_VIT_STEPS);
 
-    VxViT vit = vx_vit_create(VX_N_PATCHES, VX_PATCH_SIZE, VX_EMBED_DIM,
-                               VX_HIDDEN_DIM, VX_N_BLOCKS, VX_N_HEADS, dataset.count);
+    VxViT vit = warmstart_path
+        ? vx_vit_load_warmstart(warmstart_path, dataset.count)
+        : vx_vit_create(VX_N_PATCHES, VX_PATCH_SIZE, VX_EMBED_DIM,
+                        VX_HIDDEN_DIM, VX_N_BLOCKS, VX_N_HEADS, dataset.count);
 
     for (int i = 0; i < vit.encoder.n_blocks; i++)
         vit.encoder.blocks[i].dropout = 0.1f;
 
-    Tensor *vit_params[2 + VX_N_BLOCKS * 8 + 1];
+    Tensor *vit_params[2 + VX_N_BLOCKS * 12 + 1];
     int n_vit_params = vx_vit_collect_params(&vit, vit_params);
 
     float **adam_m = calloc((size_t)n_vit_params, sizeof(float *));

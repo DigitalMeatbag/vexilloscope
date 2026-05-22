@@ -64,11 +64,15 @@ int vx_vit_collect_params(VxViT *v, Tensor **params) {
     for (int i = 0; i < v->encoder.n_blocks; i++) {
         TgBlock *b = &v->encoder.blocks[i];
 
+        params[n++] = b->gamma1;
+        params[n++] = b->beta1;
         params[n++] = b->attn.Wq;
         params[n++] = b->attn.Wk;
         params[n++] = b->attn.Wv;
         params[n++] = b->attn.Wo;
 
+        params[n++] = b->gamma2;
+        params[n++] = b->beta2;
         params[n++] = b->W1;
         params[n++] = b->B1;
         params[n++] = b->W2;
@@ -212,5 +216,144 @@ VxViT vx_vit_load(const char *path) {
     fclose(f);
     fprintf(stderr, "loaded weights from '%s'  (%d params  n_labels=%d)\n",
             path, n_params, n_labels);
+    return v;
+}
+
+VxViT vx_vit_load_warmstart(const char *path, int new_n_labels) {
+    if (!path) {
+        fprintf(stderr, "vx_vit_load_warmstart: NULL path\n");
+        exit(1);
+    }
+
+    FILE *f = fopen(path, "rb");
+    if (!f) {
+        fprintf(stderr, "vx_vit_load_warmstart: cannot open '%s' for reading\n", path);
+        exit(1);
+    }
+
+    char magic[4];
+    fread(magic, 1, 4, f);
+    if (magic[0]!='V' || magic[1]!='X' || magic[2]!='W' || magic[3]!='T') {
+        fprintf(stderr, "vx_vit_load_warmstart: invalid magic bytes in '%s'\n", path);
+        fclose(f);
+        exit(1);
+    }
+
+    int version;
+    fread(&version, sizeof(int), 1, f);
+    if (version != 1) {
+        fprintf(stderr, "vx_vit_load_warmstart: unsupported version %d in '%s'\n", version, path);
+        fclose(f);
+        exit(1);
+    }
+
+    int n_patches, patch_size, embed_dim, hidden_dim, n_blocks, n_heads, file_n_labels, n_params;
+    fread(&n_patches,     sizeof(int), 1, f);
+    fread(&patch_size,    sizeof(int), 1, f);
+    fread(&embed_dim,     sizeof(int), 1, f);
+    fread(&hidden_dim,    sizeof(int), 1, f);
+    fread(&n_blocks,      sizeof(int), 1, f);
+    fread(&n_heads,       sizeof(int), 1, f);
+    fread(&file_n_labels, sizeof(int), 1, f);
+    fread(&n_params,      sizeof(int), 1, f);
+
+    if (new_n_labels < file_n_labels) {
+        fprintf(stderr,
+            "vx_vit_load_warmstart: new_n_labels=%d < file n_labels=%d; truncation is ambiguous\n",
+            new_n_labels, file_n_labels);
+        fclose(f);
+        exit(1);
+    }
+
+    VxViT v = vx_vit_create(n_patches, patch_size, embed_dim,
+                             hidden_dim, n_blocks, n_heads, new_n_labels);
+
+    Tensor *params[512];
+    int actual_n = vx_vit_collect_params(&v, params);
+    if (actual_n != n_params) {
+        fprintf(stderr, "vx_vit_load_warmstart: param count mismatch: file=%d expected=%d\n",
+                n_params, actual_n);
+        fclose(f);
+        vx_vit_free(&v);
+        exit(1);
+    }
+
+    /* Contract guard: Wout must be the last collected param. */
+    if (params[n_params - 1] != v.Wout) {
+        fprintf(stderr, "vx_vit_load_warmstart: internal error — Wout is not the last param\n");
+        fclose(f);
+        vx_vit_free(&v);
+        exit(1);
+    }
+
+    /* Load all params except Wout with strict shape check. */
+    for (int i = 0; i < n_params - 1; i++) {
+        int rows, cols;
+        if (fread(&rows, sizeof(int), 1, f) != 1 ||
+            fread(&cols, sizeof(int), 1, f) != 1) {
+            fprintf(stderr, "vx_vit_load_warmstart: unexpected EOF reading param %d header\n", i);
+            fclose(f);
+            vx_vit_free(&v);
+            exit(1);
+        }
+        if (rows != params[i]->rows || cols != params[i]->cols) {
+            fprintf(stderr,
+                "vx_vit_load_warmstart: param %d shape mismatch: file=[%d,%d] expected=[%d,%d]\n",
+                i, rows, cols, params[i]->rows, params[i]->cols);
+            fclose(f);
+            vx_vit_free(&v);
+            exit(1);
+        }
+        size_t n_floats = (size_t)rows * cols;
+        if (fread(params[i]->data, sizeof(float), n_floats, f) != n_floats) {
+            fprintf(stderr, "vx_vit_load_warmstart: unexpected EOF reading param %d data\n", i);
+            fclose(f);
+            vx_vit_free(&v);
+            exit(1);
+        }
+    }
+
+    /* Load Wout: verify file shape, then copy row-by-row into the wider new Wout.
+       Columns [file_n_labels, new_n_labels) keep their Xavier-init values. */
+    {
+        int rows, cols;
+        if (fread(&rows, sizeof(int), 1, f) != 1 ||
+            fread(&cols, sizeof(int), 1, f) != 1) {
+            fprintf(stderr, "vx_vit_load_warmstart: unexpected EOF reading Wout header\n");
+            fclose(f);
+            vx_vit_free(&v);
+            exit(1);
+        }
+        if (rows != embed_dim || cols != file_n_labels) {
+            fprintf(stderr,
+                "vx_vit_load_warmstart: Wout shape mismatch: file=[%d,%d] expected=[%d,%d]\n",
+                rows, cols, embed_dim, file_n_labels);
+            fclose(f);
+            vx_vit_free(&v);
+            exit(1);
+        }
+        for (int r = 0; r < embed_dim; r++) {
+            if (fread(&v.Wout->data[r * new_n_labels], sizeof(float), (size_t)file_n_labels, f)
+                    != (size_t)file_n_labels) {
+                fprintf(stderr, "vx_vit_load_warmstart: unexpected EOF reading Wout row %d\n", r);
+                fclose(f);
+                vx_vit_free(&v);
+                exit(1);
+            }
+        }
+    }
+
+    fclose(f);
+
+    if (new_n_labels > file_n_labels) {
+        fprintf(stderr,
+            "warm-start: loaded '%s'  (%d params  %d → %d labels  %d new classes Xavier-inited)\n",
+            path, n_params, file_n_labels, new_n_labels, new_n_labels - file_n_labels);
+    } else {
+        fprintf(stderr,
+            "warm-start: loaded '%s'  (%d params  n_labels=%d  no expansion)\n",
+            path, n_params, file_n_labels);
+    }
+
     return v;
 }
