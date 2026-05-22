@@ -43,7 +43,7 @@ enum {
     VX_DETECT_MIN_CROP           =   64, // minimum window dimension (px) in working image
     VX_DETECT_SKIP_SUBWINDOWS_X10=   30, // skip sub-windows if scale-1 logit >= this ÷ 10
     VX_AMBIGUITY_MARGIN          =   10, // ambiguity gate: emit when margin < this / 100.0
-    VX_BALANCED_SAMPLING         =    0  // 0 = round-robin (baseline default), 1 = class-balanced random
+    VX_BALANCED_SAMPLING         =    1  // 0 = round-robin (baseline default), 1 = class-balanced random
 };
 
 /* ── Phase 4 structs ── */
@@ -1119,8 +1119,15 @@ int main(int argc, char **argv) {
 
         float batch_loss = 0.0f;
         for (int b = 0; b < VX_BATCH_SIZE; b++) {
-            int idx       = ((step - 1) * VX_BATCH_SIZE + b) % n_images;
-            int class_idx = idx % n_flags;
+            int idx, class_idx;
+            if (VX_BALANCED_SAMPLING) {
+                class_idx     = rand() % n_flags;
+                int src_choice = rand() % n_src;
+                idx            = src_choice * n_flags + class_idx;
+            } else {
+                idx       = ((step - 1) * VX_BATCH_SIZE + b) % n_images;
+                class_idx = idx % n_flags;
+            }
 
             Tensor *src = images[idx] ? images[idx] : images[class_idx];
             Tensor *aug = img_augment(src, VX_IMAGE_H, VX_IMAGE_W, VX_IMAGE_C);

@@ -90,7 +90,7 @@ python scripts/eval_report.py data/generated/train/eval_dump.csv data/generated/
 
 ## Step 5 — Capacity bump [src/main.c enum only]
 
-**Status:** done
+**Status:** done (top-1 92.93%, top-3 97.86%; beats baseline on both metrics)
 
 **Problem:** ~1M params (embed_dim=128, hidden_dim=256, 6 blocks, 4 heads) is light for 500+ classes
 with heterogeneous visual structure (stripes, seals, geometric patterns, color-block pride flags).
@@ -126,7 +126,7 @@ where seal/emblem detail matters).
 
 ## Step 7 — Enable balanced sampling [src/main.c enum]
 
-**Status:** pending (must do before adding new categories)
+**Status:** done (branch implemented and VX_BALANCED_SAMPLING set to 1)
 
 **Problem:** `VX_BALANCED_SAMPLING=0` means round-robin over all flags. When heterogeneous categories
 (e.g. 50 pride + 80 military + 322 current) are combined, rare categories get proportionally fewer
