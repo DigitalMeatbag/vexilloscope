@@ -359,6 +359,7 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * Eval strategy: all 402 flags in training, eval via augmented passes (VX_EVAL_AUGS). Do not reintroduce a class-split holdout.
 * `VxCountry` covers all 402 classes — countries, territories, US states, DC, historical, pride, and HRE flags. The field name `code` holds `flag_id` (e.g. `us-ca-current`, `de-empire`), not a raw ISO code. `VX_CODE_MAX` is 64 — do not shrink it; historical flag IDs can exceed 15 chars.
 * When changing hyperparameters, update the enum constants in `main.c` — do not scatter magic numbers.
+* Keep all C string literals ASCII-only. The Windows console OEM code page (CP437) will corrupt any UTF-8 bytes above 0x7F in printf output — use `--` instead of `—`, avoid smart quotes, etc.
 * The `-allow-unsupported-compiler` flag is required for VS 2022 + CUDA 12.x and is set in the otto-von-grad CMakeLists.txt — do not remove it.
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
 * `data/generated/` is generated — do not commit it. Regenerate with `scripts/export_training.py`.
