@@ -80,7 +80,7 @@ Input: PNG flag image → resize to [256 × 256 × 3]
 Patchify: 16×16 patches → [256 × 768]  (n_patches=256, patch_size=16*16*3=768)
          ↓
 PatchEmbedding: linear projection [768 → embed_dim] + positional embedding + CLS token prepend
-  → [257 × embed_dim]  (CLS token at row 0, patch tokens at rows 1..256)
+  → [(n_patches+1) × embed_dim]  (CLS token at row 0, patch tokens at rows 1..n_patches)
          ↓
 Encoder: non-causal transformer (TgTransformer, causal=0)
   N blocks of: affine LayerNorm → MultiHeadAttention → residual → affine LayerNorm → FFN → residual

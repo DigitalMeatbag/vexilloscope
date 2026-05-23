@@ -62,14 +62,6 @@ Tensor *vx_patch_embedding_forward(VxPatchEmbedding *p, Tensor *patches) {
     return f.encoded;
 }
 
-void vx_patch_embedding_forward_free(VxPatchEmbeddingForward *f) {
-    if (!f) return;
-    tg_free(f->encoded);
-    tg_free(f->projected);
-    f->encoded = NULL;
-    f->projected = NULL;
-}
-
 int vx_patch_embedding_collect_params(VxPatchEmbedding *p, Tensor **params) {
     if (!p || !params) {
         fprintf(stderr, "vx_patch_embedding_collect_params: null argument\n");

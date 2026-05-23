@@ -21,7 +21,6 @@ VxPatchEmbedding        vx_patch_embedding_create(int n_patches, int patch_size,
 void                    vx_patch_embedding_free(VxPatchEmbedding *p);
 VxPatchEmbeddingForward vx_patch_embedding_forward_full(VxPatchEmbedding *p, Tensor *patches);
 Tensor                 *vx_patch_embedding_forward(VxPatchEmbedding *p, Tensor *patches);
-void                    vx_patch_embedding_forward_free(VxPatchEmbeddingForward *f);
 int                     vx_patch_embedding_collect_params(VxPatchEmbedding *p, Tensor **params);
 
 #endif
