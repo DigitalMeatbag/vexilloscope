@@ -111,7 +111,11 @@ with heterogeneous visual structure (stripes, seals, geometric patterns, color-b
 
 ## Step 6 — Patch resolution experiment [main.c enum + img.c]
 
-**Status:** pending (run after Step 4 baseline confirms no regression from Steps 1–3)
+**Status:** 8×8 experiment in progress. Additionally: OVG shipped tg_concat_rows,
+tg_row_slice, tg_rng_uniform, and stochastic depth (drop_path_rate in TgBlock).
+Vexilloscope integrated these: CLS token replaces mean pooling (patch_embedding.c,
+vit.c), VX_DROP_PATH_RATE_X1000=100 enables 10% max drop path rate. Checkpoint
+compat broken; retrain required after experiment completes.
 
 **Current:** 16×16 patches at 256px input → 256 tokens. Corner seals land at ~5px effective detail.
 

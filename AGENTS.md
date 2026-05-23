@@ -79,13 +79,14 @@ Input: PNG flag image → resize to [256 × 256 × 3]
          ↓
 Patchify: 16×16 patches → [256 × 768]  (n_patches=256, patch_size=16*16*3=768)
          ↓
-PatchEmbedding: linear projection [192 → embed_dim] + positional embedding
-  → [256 × embed_dim]
+PatchEmbedding: linear projection [768 → embed_dim] + positional embedding + CLS token prepend
+  → [257 × embed_dim]  (CLS token at row 0, patch tokens at rows 1..256)
          ↓
 Encoder: non-causal transformer (TgTransformer, causal=0)
-  N blocks of: LayerNorm → MultiHeadAttention → residual → LayerNorm → FFN → residual
+  N blocks of: affine LayerNorm → MultiHeadAttention → residual → affine LayerNorm → FFN → residual
+  Stochastic depth: linear drop-path schedule (0 → VX_DROP_PATH_RATE_X1000/1000 across blocks)
          ↓
-Pool: tg_mean_rows → [1 × embed_dim]
+CLS extract: tg_row_slice(enc, 0, 1) → [1 × embed_dim]
          ↓
 Wout: [embed_dim × n_labels] → logits [1 × n_labels]
          ↓
@@ -108,6 +109,7 @@ Default hyperparameters (in `main.c` enum):
 | eval_augs | 8 |
 | identify_tta | 8 |
 | label_smooth | 100 (ε = label_smooth/1000 = 0.10) |
+| drop_path_rate | 0.10 (linear schedule; 0.0 at block 0 → 0.10 at block 5) |
 | detect_threshold_x10 | 35 (= 3.5 logit) |
 | detect_skip_subwindows_x10 | 30 (= 3.0 logit) |
 
