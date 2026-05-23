@@ -38,6 +38,7 @@ enum {
     VX_BATCH_SIZE    = 1,     // gradient accumulation batch size (1 = single sample per step)
     VX_WARMUP_STEPS  = 2400,  // ~4% × VX_VIT_STEPS
     VX_LABEL_SMOOTH  = 100,   // label smoothing epsilon × 1000 (e.g. 100 → ε=0.10); 0 = hard labels
+    VX_DROP_PATH_RATE_X1000 = 100, // max stochastic depth drop rate × 1000 (0.10); 0 = disabled
     VX_DETECT_MAX_DIM            = 1024, // longer edge cap when loading for detection
     VX_DETECT_THRESHOLD_X10      =   35, // confidence threshold × 10; raised from 20 (see SPEC_V3_PHASE4_MODEL_OUTPUT.md §2)
     VX_DETECT_STRIDE_PCT         =   50, // window stride as % of window size
@@ -1088,12 +1089,13 @@ int main(int argc, char **argv) {
     VxViT vit = warmstart_path
         ? vx_vit_load_warmstart(warmstart_path, dataset.count)
         : vx_vit_create(VX_N_PATCHES, VX_PATCH_SIZE, VX_EMBED_DIM,
-                        VX_HIDDEN_DIM, VX_N_BLOCKS, VX_N_HEADS, dataset.count);
+                        VX_HIDDEN_DIM, VX_N_BLOCKS, VX_N_HEADS, dataset.count,
+                        VX_DROP_PATH_RATE_X1000 / 1000.0f);
 
     for (int i = 0; i < vit.encoder.n_blocks; i++)
         vit.encoder.blocks[i].dropout = 0.1f;
 
-    Tensor *vit_params[2 + VX_N_BLOCKS * 12 + 1];
+    Tensor *vit_params[3 + VX_N_BLOCKS * 12 + 1];
     int n_vit_params = vx_vit_collect_params(&vit, vit_params);
 
     float **adam_m = calloc((size_t)n_vit_params, sizeof(float *));

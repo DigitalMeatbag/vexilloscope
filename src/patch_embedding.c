@@ -15,11 +15,14 @@ VxPatchEmbedding vx_patch_embedding_create(int n_patches, int patch_size, int em
     p.n_patches = n_patches;
     p.patch_size = patch_size;
     p.embed_dim = embed_dim;
+    p.ClsToken = tg_new(1, embed_dim);
     p.PatchEmb = tg_new(patch_size, embed_dim);
     p.PosEmb = tg_new(n_patches, embed_dim);
+    tg_fill_xavier_uniform(p.ClsToken);
     tg_fill_xavier_uniform(p.PatchEmb);
     tg_fill(p.PosEmb, 0.0f);
 
+    p.ClsToken->persistent = 1;
     p.PatchEmb->persistent = 1;
     p.PosEmb->persistent   = 1;
     return p;
@@ -27,8 +30,10 @@ VxPatchEmbedding vx_patch_embedding_create(int n_patches, int patch_size, int em
 
 void vx_patch_embedding_free(VxPatchEmbedding *p) {
     if (!p) return;
+    tg_free(p->ClsToken);
     tg_free(p->PatchEmb);
     tg_free(p->PosEmb);
+    p->ClsToken = NULL;
     p->PatchEmb = NULL;
     p->PosEmb = NULL;
 }
@@ -46,7 +51,9 @@ VxPatchEmbeddingForward vx_patch_embedding_forward_full(VxPatchEmbedding *p, Ten
 
     VxPatchEmbeddingForward f;
     f.projected = tg_matmul(patches, p->PatchEmb);
-    f.encoded = tg_add(f.projected, p->PosEmb);
+    Tensor *with_pos = tg_add(f.projected, p->PosEmb);
+    Tensor *parts[2] = { p->ClsToken, with_pos };
+    f.encoded = tg_concat_rows(parts, 2);  // [(n_patches+1) x embed_dim]
     return f;
 }
 
@@ -68,7 +75,8 @@ int vx_patch_embedding_collect_params(VxPatchEmbedding *p, Tensor **params) {
         fprintf(stderr, "vx_patch_embedding_collect_params: null argument\n");
         exit(1);
     }
-    params[0] = p->PatchEmb;
-    params[1] = p->PosEmb;
-    return 2;
+    params[0] = p->ClsToken;
+    params[1] = p->PatchEmb;
+    params[2] = p->PosEmb;
+    return 3;
 }

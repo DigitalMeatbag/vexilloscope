@@ -4,6 +4,7 @@
 #include "tg_tensor.h"
 
 typedef struct {
+    Tensor *ClsToken;  // [1 x embed_dim]        learnable classification token
     Tensor *PatchEmb;  // [patch_size x embed_dim]
     Tensor *PosEmb;    // [n_patches x embed_dim]
     int n_patches;

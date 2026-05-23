@@ -13,7 +13,8 @@ typedef struct {
 } VxViT;
 
 VxViT   vx_vit_create(int n_patches, int patch_size, int embed_dim,
-                      int hidden_dim, int n_blocks, int n_heads, int n_labels);
+                      int hidden_dim, int n_blocks, int n_heads, int n_labels,
+                      float max_drop_path_rate);
 void    vx_vit_free(VxViT *v);
 
 // patches: [n_patches x patch_size] → logits: [1 x n_labels]

@@ -7,12 +7,14 @@
 #include <stdlib.h>
 
 VxViT vx_vit_create(int n_patches, int patch_size, int embed_dim,
-                    int hidden_dim, int n_blocks, int n_heads, int n_labels) {
+                    int hidden_dim, int n_blocks, int n_heads, int n_labels,
+                    float max_drop_path_rate) {
     VxViT v;
 
     v.patch_emb = vx_patch_embedding_create(n_patches, patch_size, embed_dim);
     v.encoder   = tg_transformer_create_encoder(n_blocks, embed_dim, hidden_dim,
-                                                n_patches, n_heads);
+                                                n_patches + 1, n_heads,
+                                                max_drop_path_rate);
     v.Wout      = tg_new(embed_dim, n_labels);
     v.n_labels  = n_labels;
     v.embed_dim = embed_dim;
@@ -50,7 +52,7 @@ Tensor *vx_vit_forward(VxViT *v, Tensor *patches) {
     */
     Tensor *X   = vx_patch_embedding_forward(&v->patch_emb, patches);
     Tensor *enc = tg_transformer_forward(&v->encoder, X);
-    Tensor *pool   = tg_mean_rows(enc);
+    Tensor *pool   = tg_row_slice(enc, 0, 1);  // [1 x embed_dim] — CLS token output
     Tensor *logits = tg_matmul(pool, v->Wout);
 
     return logits;
@@ -175,7 +177,7 @@ VxViT vx_vit_load(const char *path) {
     fread(&n_params,   sizeof(int), 1, f);
 
     VxViT v = vx_vit_create(n_patches, patch_size, embed_dim,
-                             hidden_dim, n_blocks, n_heads, n_labels);
+                             hidden_dim, n_blocks, n_heads, n_labels, 0.0f);
 
     Tensor *params[512];
     int actual_n = vx_vit_collect_params(&v, params);
@@ -266,7 +268,7 @@ VxViT vx_vit_load_warmstart(const char *path, int new_n_labels) {
     }
 
     VxViT v = vx_vit_create(n_patches, patch_size, embed_dim,
-                             hidden_dim, n_blocks, n_heads, new_n_labels);
+                             hidden_dim, n_blocks, n_heads, new_n_labels, 0.0f);
 
     Tensor *params[512];
     int actual_n = vx_vit_collect_params(&v, params);
