@@ -18,6 +18,7 @@ reports/eval/v3-baseline/*
 !reports/eval/v3-baseline/eval.md
 !reports/eval/v3-baseline/negatives.json
 !reports/eval/v3-baseline/negatives.md
+LOCAL.md
 __pycache__/
 *.pyc
 bot/debug/
