@@ -1,0 +1,397 @@
+# Trained Classes
+
+## National (255)
+
+- Afghanistan
+- Albania
+- Algeria
+- American Samoa
+- Andorra
+- Angola
+- Anguilla
+- Antarctica
+- Antigua and Barbuda
+- Argentina
+- Armenia
+- Aruba
+- Australia
+- Austria
+- Azerbaijan
+- Bahamas
+- Bahrain
+- Bangladesh
+- Barbados
+- Belarus
+- Belgium
+- Belize
+- Benin
+- Bermuda
+- Bhutan
+- Bolivia, Plurinational State of
+- Bosnia and Herzegovina
+- Botswana
+- Bouvet Island
+- Brazil
+- British Indian Ocean Territory
+- Brunei Darussalam
+- Bulgaria
+- Burkina Faso
+- Burundi
+- Cambodia
+- Cameroon
+- Canada
+- Cape Verde
+- Caribbean Netherlands
+- Cayman Islands
+- Central African Republic
+- Chad
+- Chile
+- China (People's Republic of China)
+- Christmas Island
+- Cocos (Keeling) Islands
+- Colombia
+- Comoros
+- Congo, the Democratic Republic of the
+- Cook Islands
+- Costa Rica
+- Croatia
+- Cuba
+- Curaçao
+- Cyprus
+- Czech Republic
+- Côte d'Ivoire
+- Denmark
+- Djibouti
+- Dominica
+- Dominican Republic
+- Ecuador
+- Egypt
+- El Salvador
+- England
+- Equatorial Guinea
+- Eritrea
+- Estonia
+- Ethiopia
+- Europe
+- Falkland Islands (Malvinas)
+- Faroe Islands
+- Fiji
+- Finland
+- France
+- French Guiana
+- French Polynesia
+- French Southern Territories
+- Gabon
+- Gambia
+- Georgia
+- Germany
+- Ghana
+- Gibraltar
+- Greece
+- Greenland
+- Grenada
+- Guadeloupe
+- Guam
+- Guatemala
+- Guernsey
+- Guinea
+- Guinea-Bissau
+- Guyana
+- Haiti
+- Heard Island and McDonald Islands
+- Holy See (Vatican City State)
+- Honduras
+- Hong Kong
+- Hungary
+- Iceland
+- India
+- Indonesia
+- Iran, Islamic Republic of
+- Iraq
+- Ireland
+- Isle of Man
+- Israel
+- Italy
+- Jamaica
+- Japan
+- Jersey
+- Jordan
+- Kazakhstan
+- Kenya
+- Kingdom of Eswatini
+- Kiribati
+- Korea, Democratic People's Republic of
+- Korea, Republic of
+- Kosovo
+- Kuwait
+- Kyrgyzstan
+- Laos (Lao People's Democratic Republic)
+- Latvia
+- Lebanon
+- Lesotho
+- Liberia
+- Libya
+- Liechtenstein
+- Lithuania
+- Luxembourg
+- Macao
+- Madagascar
+- Malawi
+- Malaysia
+- Maldives
+- Mali
+- Malta
+- Marshall Islands
+- Martinique
+- Mauritania
+- Mauritius
+- Mayotte
+- Mexico
+- Micronesia, Federated States of
+- Moldova, Republic of
+- Monaco
+- Mongolia
+- Montenegro
+- Montserrat
+- Morocco
+- Mozambique
+- Myanmar
+- Namibia
+- Nauru
+- Nepal
+- Netherlands
+- New Caledonia
+- New Zealand
+- Nicaragua
+- Niger
+- Nigeria
+- Niue
+- Norfolk Island
+- North Macedonia
+- Northern Ireland
+- Northern Mariana Islands
+- Norway
+- Oman
+- Pakistan
+- Palau
+- Palestine
+- Panama
+- Papua New Guinea
+- Paraguay
+- Peru
+- Philippines
+- Pitcairn
+- Poland
+- Portugal
+- Puerto Rico
+- Qatar
+- Republic of Türkiye
+- Republic of the Congo
+- Romania
+- Russian Federation
+- Rwanda
+- Réunion
+- Saint Barthélemy
+- Saint Helena, Ascension and Tristan da Cunha
+- Saint Kitts and Nevis
+- Saint Lucia
+- Saint Martin
+- Saint Pierre and Miquelon
+- Saint Vincent and the Grenadines
+- Samoa
+- San Marino
+- Sao Tome and Principe
+- Saudi Arabia
+- Scotland
+- Senegal
+- Serbia
+- Seychelles
+- Sierra Leone
+- Singapore
+- Sint Maarten (Dutch part)
+- Slovakia
+- Slovenia
+- Solomon Islands
+- Somalia
+- South Africa
+- South Georgia and the South Sandwich Islands
+- South Sudan
+- Spain
+- Sri Lanka
+- Sudan
+- Suriname
+- Svalbard and Jan Mayen Islands
+- Sweden
+- Switzerland
+- Syrian Arab Republic
+- Taiwan (Republic of China)
+- Tajikistan
+- Tanzania, United Republic of
+- Thailand
+- Timor-Leste
+- Togo
+- Tokelau
+- Tonga
+- Trinidad and Tobago
+- Tunisia
+- Turkmenistan
+- Turks and Caicos Islands
+- Tuvalu
+- US Minor Outlying Islands
+- Uganda
+- Ukraine
+- United Arab Emirates
+- United Kingdom
+- United States
+- Uruguay
+- Uzbekistan
+- Vanuatu
+- Venezuela, Bolivarian Republic of
+- Vietnam
+- Virgin Islands, British
+- Virgin Islands, U.S.
+- Wales
+- Wallis and Futuna Islands
+- Western Sahara
+- Yemen
+- Zambia
+- Zimbabwe
+- Åland Islands
+
+## Pride (26)
+
+- Agender Pride Flag
+- Algeria (Gay Pride)
+- Aroace Flag
+- Aromantic Pride Flag
+- Asexual Pride Flag
+- Bandera Butch
+- Bisexual Pride Flag
+- Butch Flag
+- Demiromantic Pride Flag
+- Demisexual Pride Flag
+- Gay Men Pride Flag
+- Gay Pride Flag
+- Genderfluidity Pride Flag
+- Genderqueer Pride Flag
+- Grey Asexuality Flag
+- Intersex Pride Flag
+- Intersex-Inclusive Pride Flag
+- Lesbian Pride Flag (2018)
+- Lesbian Pride Flag (2019)
+- Nonbinary Flag
+- Palestine Flag with Pink Triangle
+- Queer Flag
+- Queer Pride Flag
+- Sekhet Flag
+- Transgender Pride Flag
+- Voidpunk Flag
+
+## Subnational (105)
+
+- Alabama
+- Alaska
+- Arizona
+- Arkansas
+- Ascanian Banner of Ballenstedt (Saxony)
+- Austria (1230–1934, 1945–2000)
+- Austria (1:1)
+- Austria (Empire: Total War)
+- Austria-Hungary (1867–1918)
+- Austrian Empire
+- Banner of Baden (1:1)
+- Banner of Baden (3:2)
+- Banner of Bavaria-München
+- Banner of Palatinate-Neuburg (3:2)
+- Banner of Saxony (1:1)
+- Banner of the Electorate of Mainz
+- Banner of the Palatinate
+- Banner of the Prince-Bishopric of Strasbourg I (1:1)
+- Banner of the Prince-Bishopric of Strasbourg I (3:2)
+- Banner of the Principality of Orange (1:1)
+- Bavaria (lozengy)
+- Bavaria Rautenflagge (24 lozenges)
+- Bishopric of Münster
+- Brandenburg (1340–1657)
+- Brandenburg (1657–1701)
+- Brandenburg (1660–1750)
+- Brandenburg Naval Ensign (c. 1684)
+- Brunswick Banner (Grunwald)
+- California
+- Colorado
+- Connecticut
+- County of Aremberg
+- County of Dülmen
+- Delaware
+- District of Columbia
+- Electoral Palatinate (1604)
+- Electoral Saxony
+- Electoral Standard of Bavaria (1623–1806)
+- Electorate of Bavaria
+- Florida
+- Fürstenberg Regiment (front)
+- Fürstenberg Regiment (reverse)
+- Georgia
+- Habsburg Monarchy
+- Hanover (1692)
+- Hawaii
+- Hesse-Darmstadt Regiment (Seven Years' War, 1756–1763)
+- Hohengeroldseck (until 1798)
+- Hohenzollern Banner
+- House of Nassau-Weilburg
+- Idaho
+- Illinois
+- Indiana
+- Iowa
+- Kansas
+- Kentucky
+- Kniphausen (1689–1702)
+- Kniphausen (1702–1751)
+- Kurbrandenburg Naval Ensign
+- Lauenburg
+- Louisiana
+- Maine
+- March of Verona and Aquileia
+- Maryland
+- Massachusetts
+- Michigan
+- Minnesota
+- Mississippi
+- Missouri
+- Montana
+- Nassau-Usingen
+- Nebraska
+- Nevada
+- New Hampshire
+- New Jersey
+- New Mexico
+- New York
+- North Carolina
+- North Dakota
+- Ohio
+- Oklahoma
+- Old Flag of Hesse
+- Oregon
+- Pennsylvania
+- Prince-Bishopric of Münster
+- Prince-Bishopric of Utrecht
+- Prince-Bishopric of Würzburg
+- Rheina-Wolbeck
+- Rhode Island
+- Salm-Salm
+- South Carolina
+- South Dakota
+- Standard of the Prince of Reuss-Greiz
+- Styrian Banner of Arms
+- Tennessee
+- Texas
+- Utah
+- Vermont
+- Virginia
+- Washington
+- West Virginia
+- Wettin House of Saxony
+- Wisconsin
+- Wyoming
+- Württemberg Banner
+
