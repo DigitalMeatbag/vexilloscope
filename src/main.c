@@ -312,7 +312,7 @@ static void check_pause(void) {
     if (!_kbhit()) return;
     int c = _getch();
     if (c != 'p' && c != 'P') return;
-    printf("\n[paused — press any key to resume]\n");
+    printf("\n[paused -- press any key to resume]\n");
     fflush(stdout);
     _getch();
     printf("[resumed]\n");
