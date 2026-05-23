@@ -32,7 +32,7 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
     """Returns (parsed_result, raw_stdout, raw_stderr)."""
     result = subprocess.run(
         [EXE, "--labels", LABELS, "--identify-json", tmp_path, "--weights", WEIGHTS],
-        capture_output=True, text=True, timeout=30,
+        capture_output=True, text=True, encoding="utf-8", timeout=30,
         cwd=str(Path(__file__).parent.parent),
     )
 

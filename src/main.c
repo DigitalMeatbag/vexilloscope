@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
+#include <conio.h>
 #include <io.h>
 #endif
 
@@ -23,8 +24,8 @@ enum {
     VX_IMAGE_H       = 256,
     VX_IMAGE_W       = 256,
     VX_IMAGE_C       = 3,
-    VX_PATCH_H       = 16,
-    VX_PATCH_W       = 16,
+    VX_PATCH_H       = 8,
+    VX_PATCH_W       = 8,
     VX_PATCH_SIZE    = VX_PATCH_H * VX_PATCH_W * VX_IMAGE_C,
     VX_N_PATCHES     = (VX_IMAGE_H / VX_PATCH_H) * (VX_IMAGE_W / VX_PATCH_W),
     VX_EMBED_DIM     = 192,
@@ -305,6 +306,20 @@ static int path_exists(const char *path) {
     return 1;
 }
 
+/* Press 'p' during training or eval to pause; any key resumes. */
+static void check_pause(void) {
+#ifdef _WIN32
+    if (!_kbhit()) return;
+    int c = _getch();
+    if (c != 'p' && c != 'P') return;
+    printf("\n[paused — press any key to resume]\n");
+    fflush(stdout);
+    _getch();
+    printf("[resumed]\n");
+    fflush(stdout);
+#endif
+}
+
 /* Load images from dataset, optionally supplemented by up to two extra source directories.
    Layout: [0,n) primary, [n,2n) dir2, [2n,3n) dir3.
    Missing secondary/tertiary images are NULL; the training loop falls back to primary. */
@@ -415,6 +430,7 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
         if ((i + 1) % 10 == 0 || i == n_flags - 1) {
             printf("  %d/%d\r", i + 1, n_flags);
             fflush(stdout);
+            check_pause();
         }
     }
 
@@ -1172,6 +1188,7 @@ int main(int argc, char **argv) {
         } else if (step % 10 == 0) {
             printf(".");
             fflush(stdout);
+            check_pause();
         }
     }
 
