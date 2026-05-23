@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Per-channel jitter range: reduce to 0.08 when pride classes are in training
+   (pride flags are hue-defined; ±15% jitter makes color stripes ambiguous). */
+#define VX_JITTER 0.08f
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -313,9 +317,9 @@ Tensor *img_augment(const Tensor *img, int H, int W, int C) {
         cur = tmp;
     }
 
-    /* Color jitter ×[0.85, 1.15] per channel */
+    /* Color jitter per channel */
     {
-        Tensor *tmp = img_jitter(cur, H, W, C, 0.85f, 1.15f);
+        Tensor *tmp = img_jitter(cur, H, W, C, 1.0f - VX_JITTER, 1.0f + VX_JITTER);
         tg_free(cur);
         cur = tmp;
     }

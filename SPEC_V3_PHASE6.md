@@ -126,7 +126,13 @@ where seal/emblem detail matters).
 
 ## Step 7 — Enable balanced sampling [src/main.c enum]
 
-**Status:** done (branch implemented and VX_BALANCED_SAMPLING set to 1)
+**Status:** reverted — branch implemented but VX_BALANCED_SAMPLING reset to 0.
+Balanced sampling caused NaN divergence around step 22–27k on two independent runs
+(warm-start and cold-start) despite different RNG seeds. Root cause: rand() calls
+in the sampling branch shift the augmentation sequence, exposing the model to
+combinations of extreme transforms that survive the gradient clip and accumulate
+into NaN. Round-robin at 402 classes trains stably. Revisit with tighter gradient
+clip (0.5) or lower base LR before re-enabling.
 
 **Problem:** `VX_BALANCED_SAMPLING=0` means round-robin over all flags. When heterogeneous categories
 (e.g. 50 pride + 80 military + 322 current) are combined, rare categories get proportionally fewer

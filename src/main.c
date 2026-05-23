@@ -31,11 +31,11 @@ enum {
     VX_HIDDEN_DIM    = 512,
     VX_N_BLOCKS      = 6,
     VX_N_HEADS       = 6,
-    VX_VIT_STEPS     = 50000,
+    VX_VIT_STEPS     = 60000,  // ~150 × n_classes (402 classes)
     VX_EVAL_AUGS     = 8,     // augmented versions per flag for robustness eval
     VX_IDENTIFY_TTA  = 8,     // augmented passes averaged at inference time
     VX_BATCH_SIZE    = 1,     // gradient accumulation batch size (1 = single sample per step)
-    VX_WARMUP_STEPS  = 2000,  // linear LR ramp; prevents early divergence in deep transformers
+    VX_WARMUP_STEPS  = 2400,  // ~4% × VX_VIT_STEPS
     VX_LABEL_SMOOTH  = 100,   // label smoothing epsilon × 1000 (e.g. 100 → ε=0.10); 0 = hard labels
     VX_DETECT_MAX_DIM            = 1024, // longer edge cap when loading for detection
     VX_DETECT_THRESHOLD_X10      =   35, // confidence threshold × 10; raised from 20 (see SPEC_V3_PHASE4_MODEL_OUTPUT.md §2)
@@ -43,7 +43,7 @@ enum {
     VX_DETECT_MIN_CROP           =   64, // minimum window dimension (px) in working image
     VX_DETECT_SKIP_SUBWINDOWS_X10=   30, // skip sub-windows if scale-1 logit >= this ÷ 10
     VX_AMBIGUITY_MARGIN          =   10, // ambiguity gate: emit when margin < this / 100.0
-    VX_BALANCED_SAMPLING         =    1  // 0 = round-robin (baseline default), 1 = class-balanced random
+    VX_BALANCED_SAMPLING         =    0  // 0 = round-robin (baseline default), 1 = class-balanced random
 };
 
 /* ── Phase 4 structs ── */
