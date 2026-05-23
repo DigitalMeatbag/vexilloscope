@@ -8,7 +8,7 @@ Classifies world flags from PNG images using a from-scratch ViT built on top of
 the otto-von-grad autograd engine. Intended for identifying flags in Discord
 screenshots and similar small/distorted images.
 
-322 classes: 255 national/territory flags (Phase 1) + 51 US states + DC (Phase 2) + 16 historical (Phase 5).
+402 classes: 255 national/territory flags (Phase 1) + 51 US states + DC (Phase 2) + 16 historical (Phase 5) + pride flags + HRE historical flags (Phase 6).
 
 No external ML frameworks. CUDA-accelerated training via otto-von-grad.
 
@@ -99,12 +99,12 @@ Default hyperparameters (in `main.c` enum):
 | Image size | 256×256×3 |
 | Patch size | 16×16 |
 | n_patches | 256 |
-| embed_dim | 128 |
-| hidden_dim | 256 |
+| embed_dim | 192 |
+| hidden_dim | 512 |
 | n_blocks | 6 |
-| n_heads | 4 |
-| steps | 50000 |
-| warmup_steps | 2000 |
+| n_heads | 6 |
+| steps | 60000 |
+| warmup_steps | 2400 |
 | eval_augs | 8 |
 | identify_tta | 8 |
 | label_smooth | 100 (ε = label_smooth/1000 = 0.10) |
@@ -200,7 +200,7 @@ Tensor *img_crop_and_resize(img, src_h, src_w, C,        // extract rect + bilin
                              y0, x0, crop_h, crop_w,     //   → [1 × target_h*target_w*C]
                              target_h, target_w);
 Tensor *img_patchify(img, H, W, C, patch_h, patch_w);    // → [n_patches × patch_size]
-Tensor *img_augment(img, H, W, C);                       // flip + jitter + translate + rotate + crop
+Tensor *img_augment(img, H, W, C);                       // letterbox → flip + jitter + translate + rotate + crop + cutout + blur
 ```
 
 `img_load` is used for training. `img_load_native` + `img_crop_and_resize` drive the
@@ -216,7 +216,7 @@ flag) to measure robustness to distortion.
 startup: load all images → patchify (CPU) → upload params + targets to GPU
 
 per step:
-  sample = images[(step-1) % n_flags]  (all 322 flags, cycling)
+  sample = images[(step-1) % n_images]  (round-robin over all sources × 402 flags)
   aug    = img_augment(sample)          (CPU, fresh each step)
   p      = img_patchify(aug)
   tg_to_cuda(p)
@@ -233,7 +233,7 @@ after all steps:
   eval (CPU, augmented, VX_EVAL_AUGS passes per flag)
 ```
 
-Training runs on **all 322 flags** — there is no held-out class split. Eval measures
+Training runs on **all 402 flags** — there is no held-out class split. Eval measures
 robustness to augmentation across all flags.
 
 When `flags_dir2` is provided (positional arg 3), `n_images = n_flags * 2`. When `flags_dir3`
@@ -259,6 +259,7 @@ Named flags:
   --identify-json <path>       run identify_flag on a single image; JSON output (bot interface)
   --identify-batch <file>      run identify_flag on paths listed in file; TSV output
   --identify-json-batch <file> run identify_flag on paths listed in file; NDJSON output
+  --warmstart <path>           warm-start from existing weights file, expanding Wout for new classes
   --eval-dump <path>           write per-example eval CSV to this path after training
   --detect-threshold-x10 <n>  override VX_DETECT_THRESHOLD_X10 at runtime
 ```
@@ -287,9 +288,13 @@ When the best window logit is below `VX_DETECT_THRESHOLD_X10 / 10.0`, `--identif
 ## Weights Serialization
 
 ```c
-vx_vit_save(const VxViT *v, const char *path);  // saves to binary .bin file
-VxViT vx_vit_load(const char *path);            // reconstructs model from file
+vx_vit_save(const VxViT *v, const char *path);               // saves to binary .bin file
+VxViT vx_vit_load(const char *path);                         // reconstructs model from file
+VxViT vx_vit_load_warmstart(const char *path, int new_n_labels); // load + expand Wout for new classes
 ```
+
+`vx_vit_load_warmstart` copies old Wout columns verbatim and Xavier-inits columns for new classes.
+Fatals if `new_n_labels < file's n_labels` (truncating classes is ambiguous).
 
 File format: `"VXWT"` magic + version int32 + 8 architecture int32s + per-param data.
 
@@ -351,8 +356,8 @@ with a `FetchContent_Declare` block (template already in the comment there).
 
 * Do not introduce external ML or image processing libraries (stb is the approved vendor).
 * The encoder uses **non-causal** attention — do not replace with causal blocks.
-* Eval strategy: all 322 flags in training, eval via augmented passes (VX_EVAL_AUGS). Do not reintroduce a class-split holdout.
-* `VxCountry` covers all 322 classes — countries, territories, US states, DC, and historical flags. The field name `code` holds `flag_id` (e.g. `us-ca-current`, `de-empire`), not a raw ISO code. `VX_CODE_MAX` is 64 — do not shrink it; historical flag IDs can exceed 15 chars.
+* Eval strategy: all 402 flags in training, eval via augmented passes (VX_EVAL_AUGS). Do not reintroduce a class-split holdout.
+* `VxCountry` covers all 402 classes — countries, territories, US states, DC, historical, pride, and HRE flags. The field name `code` holds `flag_id` (e.g. `us-ca-current`, `de-empire`), not a raw ISO code. `VX_CODE_MAX` is 64 — do not shrink it; historical flag IDs can exceed 15 chars.
 * When changing hyperparameters, update the enum constants in `main.c` — do not scatter magic numbers.
 * The `-allow-unsupported-compiler` flag is required for VS 2022 + CUDA 12.x and is set in the otto-von-grad CMakeLists.txt — do not remove it.
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
