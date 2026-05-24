@@ -31,7 +31,7 @@ image [256×256×3]
 → PatchEmb [768 → 192] + PosEmb → [256 × 192]    (embed_dim = 192)
 → encoder transformer (6 blocks, non-causal, 6 heads)
   each block: affine LayerNorm → MultiHeadAttention → residual → affine LayerNorm → FFN → residual
-→ tg_mean_rows → [1 × 192]
+→ CLS token extract: tg_row_slice(enc, 0, 1) → [1 × 192]
 → Wout [192 × n_labels] → logits [1 × n_labels]
 → cross_entropy / identify
 ```

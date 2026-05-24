@@ -47,19 +47,21 @@ vexilloscope/
         eval.json        — top-1/top-3 accuracy by category
         negatives.json   — false-positive rate at swept detection thresholds
   scripts/
-    fetch_wiki_flags.py     — download Wikimedia flag renders into sources/
-    fetch_twemoji_flags.py  — download Twemoji emoji-style renders into sources/
-    import_us_states.py     — import US state flags into manifest
-    import_historical.py    — import historical national flags from Wikimedia (reads historical_seed.csv)
-    historical_seed.csv     — human-curated seed list for import_historical.py
-    migrate_v2.py           — one-time migration from v2 data format
-    validate_manifest.py    — validate manifest JSONL files for consistency
-    render_assets.py        — render SVG assets to PNG
-    export_training.py      — generate labels.csv, images/, and class_map.json from manifest
-    generate_negatives.py   — generate negative (no-flag) eval image set
-    eval_report.py          — generate eval.json from eval_dump.csv
-    eval_negatives.py       — run negative eval and produce negatives.json
-    requirements.txt        — Python deps for scripts
+    fetch_wiki_flags.py          — download Wikimedia flag renders into sources/
+    fetch_twemoji_flags.py       — download Twemoji emoji-style renders into sources/
+    discover_wikipedia_flags.py  — discover candidate flag images from Wikipedia category pages
+    import_us_states.py          — import US state flags into manifest
+    import_historical.py         — import historical national flags from Wikimedia (reads historical_seed.csv)
+    import_manifest_review.py    — review and interactively accept/reject manifest import candidates
+    historical_seed.csv          — human-curated seed list for import_historical.py
+    migrate_v2.py                — one-time migration from v2 data format
+    validate_manifest.py         — validate manifest JSONL files for consistency
+    render_assets.py             — render SVG assets to PNG
+    export_training.py           — generate labels.csv, images/, and class_map.json from manifest
+    generate_negatives.py        — generate negative (no-flag) eval image set
+    eval_report.py               — generate eval.json from eval_dump.csv
+    eval_negatives.py            — run negative eval and produce negatives.json
+    requirements.txt             — Python deps for scripts
   bot/
     bot.py               — Discord bot: right-click context menu → identify flag
     requirements.txt     — Python deps for bot
@@ -230,9 +232,11 @@ per step:
   tg_cuda_free(p)
 
 after all steps:
-  tg_from_cuda(params)   // sync back to CPU
+  tg_from_cuda(params)              // sync weights to CPU (on_cuda stays 1)
   save weights
-  eval (CPU, augmented, VX_EVAL_AUGS passes per flag)
+  augmented eval (GPU, VX_EVAL_AUGS passes per flag — params still on_cuda=1)
+  params->on_cuda = 0               // drop GPU dispatch
+  clean accuracy pass (CPU, unaugmented)
 ```
 
 Training runs on **all 402 flags** — there is no held-out class split. Eval measures
@@ -366,7 +370,7 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * The `-allow-unsupported-compiler` flag is required for VS 2022 + CUDA 12.x and is set in the otto-von-grad CMakeLists.txt — do not remove it.
 * Weights file (`vit_weights.bin`) should not be committed to the repo.
 * `data/generated/` is generated — do not commit it. Regenerate with `scripts/export_training.py`.
-* `data/sources/` is generated — do not commit it. Regenerate with `scripts/fetch_wiki_flags.py`, `scripts/fetch_twemoji_flags.py`, and `scripts/import_historical.py`.
+* `data/sources/` is generated — do not commit it. Regenerate with `scripts/fetch_wiki_flags.py`, `scripts/fetch_twemoji_flags.py`, `scripts/import_historical.py`, and `scripts/discover_wikipedia_flags.py`.
 * `class_map.json` and `class_meta.tsv` are the bridges from model `class_id` to result metadata. `class_meta.tsv` is used by the C binary at inference; `class_map.json` is used by Python eval scripts.
 * The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and calls the binary with `--identify-json`. WebP attachments are converted to PNG in-memory with PIL first (`stb_image` does not support WebP). The response is parsed from `result.stdout` as a single JSON object via `json.loads`.
 * `--identify-json` stdout is a single compact JSON line. The rng seed is redirected to stderr in JSON modes — stdout is clean JSON. Check `detected` before reading `results`.
