@@ -28,32 +28,31 @@ client = discord.Client(intents=discord.Intents.default())
 tree   = app_commands.CommandTree(client)
 
 
-def _run_identify(tmp_path: str) -> tuple[str, str, str]:
-    """Returns (parsed_result, raw_stdout, raw_stderr)."""
-    result = subprocess.run(
-        [EXE, "--labels", LABELS, "--identify-json", tmp_path, "--weights", WEIGHTS],
-        capture_output=True, text=True, encoding="utf-8", timeout=30,
-        cwd=str(Path(__file__).parent.parent),
-    )
+def _run_identify(tmp_path: str) -> str:
+    try:
+        result = subprocess.run(
+            [EXE, "--labels", LABELS, "--identify-json", tmp_path, "--weights", WEIGHTS],
+            capture_output=True, text=True, encoding="utf-8", timeout=30,
+            cwd=str(Path(__file__).parent.parent),
+        )
+    except subprocess.TimeoutExpired:
+        return "timed out running classifier — try again"
+
+    if result.stdout.strip():
+        print(f"  stdout:\n{result.stdout.rstrip()}")
+    if result.stderr.strip():
+        print(f"  stderr:\n{result.stderr.rstrip()}")
 
     if result.returncode != 0:
-        return (
-            f"error: {result.stderr.strip() or 'classifier exited non-zero'}",
-            result.stdout,
-            result.stderr,
-        )
+        return f"error: {result.stderr.strip() or 'classifier exited non-zero'}"
 
     try:
         data = json.loads(result.stdout)
     except json.JSONDecodeError:
-        return (
-            "error: could not parse classifier output",
-            result.stdout,
-            result.stderr,
-        )
+        return "error: could not parse classifier output"
 
     if not data.get("detected"):
-        return "No flag found in that image.", result.stdout, result.stderr
+        return "No flag found in that image."
 
     lines = []
     for r in data.get("results", []):
@@ -75,8 +74,7 @@ def _run_identify(tmp_path: str) -> tuple[str, str, str]:
     if ambiguity:
         lines.append(f"\n⚠️ {ambiguity['message']}")
 
-    parsed = "\n".join(lines) if lines else "no results returned"
-    return parsed, result.stdout, result.stderr
+    return "\n".join(lines) if lines else "no results returned"
 
 
 async def identify_attachment(attachment: discord.Attachment) -> str:
@@ -103,11 +101,7 @@ async def identify_attachment(attachment: discord.Attachment) -> str:
         tmp_path = tmp.name
 
     try:
-        parsed, stdout, stderr = await asyncio.to_thread(_run_identify, tmp_path)
-        print(f"  stdout:\n{stdout.rstrip()}")
-        if stderr.strip():
-            print(f"  stderr:\n{stderr.rstrip()}")
-        return parsed
+        return await asyncio.to_thread(_run_identify, tmp_path)
     finally:
         os.unlink(tmp_path)
 
@@ -131,8 +125,6 @@ async def identify_flag(interaction: discord.Interaction, message: discord.Messa
     try:
         result = await identify_attachment(images[0])
         await interaction.followup.send(f"**Flag identification:**\n{result}")
-    except asyncio.TimeoutError:
-        await interaction.followup.send("timed out running classifier — try again")
     except Exception as e:
         print(f"  exception: {e}")
         await interaction.followup.send(f"error: {e}")

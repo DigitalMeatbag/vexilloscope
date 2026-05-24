@@ -408,7 +408,13 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
             p->persistent = 1;
             tg_free(aug);
 
+#ifdef OVG_CUDA_ENABLED
+            tg_to_cuda(p);
+#endif
             Tensor *logits = vx_vit_forward(vit, p);
+#ifdef OVG_CUDA_ENABLED
+            tg_from_cuda(logits);
+#endif
             topk_indices(logits->data, dataset->count, k, top_indices);
 
             if (top_indices[0] == i) top1++;
@@ -426,6 +432,9 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
             }
 
             tg_free_graph(logits);
+#ifdef OVG_CUDA_ENABLED
+            tg_cuda_free(p);
+#endif
             tg_free(p);
         }
         if ((i + 1) % 10 == 0 || i == n_flags - 1) {
@@ -441,6 +450,29 @@ static void vit_eval(VxViT *vit, Tensor **images, int n_flags,
     printf("  top-3: %.2f%%  (%d/%d)\n", 100.0f * top3 / total, top3, total);
 
     if (dump_fp) fclose(dump_fp);
+}
+
+#ifdef OVG_CUDA_ENABLED
+static void vit_params_to_cuda(VxViT *vit) {
+    Tensor *params[512];
+    int n = vx_vit_collect_params(vit, params);
+    for (int i = 0; i < n; i++)
+        tg_to_cuda(params[i]);
+}
+#endif
+
+/* Inference forward pass: pushes p to GPU (CUDA build), runs forward, pulls logits to CPU.
+   p must be persistent; caller owns tg_free(p). */
+static Tensor *vit_forward_infer(VxViT *vit, Tensor *p) {
+#ifdef OVG_CUDA_ENABLED
+    tg_to_cuda(p);
+    Tensor *logits = vx_vit_forward(vit, p);
+    tg_from_cuda(logits);
+    tg_cuda_free(p);
+    return logits;
+#else
+    return vx_vit_forward(vit, p);
+#endif
 }
 
 /* Run full identify pipeline (always TTA, no threshold gate) and print one TSV line:
@@ -468,7 +500,7 @@ static void identify_flag_batch_one(const char *path, VxViT *vit,
                                   VX_PATCH_H, VX_PATCH_W);                       \
         _p->persistent = 1;                                                       \
         tg_free(_crop);                                                           \
-        Tensor *_lg = vx_vit_forward(vit, _p);                                   \
+        Tensor *_lg = vit_forward_infer(vit, _p);                                \
         float _mx = _lg->data[0];                                                 \
         for (int _j = 1; _j < n; _j++)                                           \
             if (_lg->data[_j] > _mx) _mx = _lg->data[_j];                        \
@@ -518,7 +550,7 @@ static void identify_flag_batch_one(const char *path, VxViT *vit,
                                        VX_PATCH_H, VX_PATCH_W);
         patches->persistent = 1;
         tg_free(aug);
-        Tensor *logits = vx_vit_forward(vit, patches);
+        Tensor *logits = vit_forward_infer(vit, patches);
         for (int j = 0; j < n; j++)
             avg_logits[j] += logits->data[j];
         tg_free_graph(logits);
@@ -563,7 +595,7 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
                                   VX_PATCH_H, VX_PATCH_W);                       \
         _p->persistent = 1;                                                       \
         tg_free(_crop);                                                           \
-        Tensor *_lg = vx_vit_forward(vit, _p);                                   \
+        Tensor *_lg = vit_forward_infer(vit, _p);                                \
         float _mx = _lg->data[0];                                                 \
         for (int _j = 1; _j < n; _j++)                                           \
             if (_lg->data[_j] > _mx) _mx = _lg->data[_j];                        \
@@ -621,7 +653,7 @@ static void identify_flag(const char *path, VxViT *vit, const VxDataset *dataset
         patches->persistent = 1;
         tg_free(aug);
 
-        Tensor *logits = vx_vit_forward(vit, patches);
+        Tensor *logits = vit_forward_infer(vit, patches);
         for (int j = 0; j < n; j++)
             avg_logits[j] += logits->data[j];
 
@@ -679,7 +711,7 @@ static void identify_flag_json_one(const char *path, const VxDataset *dataset,
                                   VX_PATCH_H, VX_PATCH_W);                        \
         _p->persistent = 1;                                                        \
         tg_free(_crop);                                                            \
-        Tensor *_lg = vx_vit_forward(vit, _p);                                    \
+        Tensor *_lg = vit_forward_infer(vit, _p);                                 \
         float _mx = _lg->data[0];                                                  \
         for (int _j = 1; _j < n; _j++)                                            \
             if (_lg->data[_j] > _mx) _mx = _lg->data[_j];                         \
@@ -746,7 +778,7 @@ static void identify_flag_json_one(const char *path, const VxDataset *dataset,
                                        VX_PATCH_H, VX_PATCH_W);
         patches->persistent = 1;
         tg_free(aug);
-        Tensor *logits = vx_vit_forward(vit, patches);
+        Tensor *logits = vit_forward_infer(vit, patches);
         for (int j = 0; j < n; j++) avg_logits[j] += logits->data[j];
         tg_free_graph(logits);
         tg_free(patches);
@@ -967,6 +999,9 @@ int main(int argc, char **argv) {
         tg_training = 0;
         VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
         VxViT vit = vx_vit_load(weights_path);
+#ifdef OVG_CUDA_ENABLED
+        vit_params_to_cuda(&vit);
+#endif
 
         int n_meta = 0, n_pairs = 0;
         VxClassMeta *class_meta = vx_class_meta_load(labels_path, &n_meta);
@@ -993,6 +1028,9 @@ int main(int argc, char **argv) {
         tg_training = 0;
         VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
         VxViT vit = vx_vit_load(weights_path);
+#ifdef OVG_CUDA_ENABLED
+        vit_params_to_cuda(&vit);
+#endif
 
         int n_meta = 0, n_pairs = 0;
         VxClassMeta *class_meta = vx_class_meta_load(labels_path, &n_meta);
@@ -1032,6 +1070,9 @@ int main(int argc, char **argv) {
         tg_training = 0;
         VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
         VxViT vit = vx_vit_load(weights_path);
+#ifdef OVG_CUDA_ENABLED
+        vit_params_to_cuda(&vit);
+#endif
         identify_flag(identify_path, &vit, &dataset, detect_threshold_x10);
         vx_vit_free(&vit);
         vx_dataset_free(&dataset);
@@ -1043,6 +1084,9 @@ int main(int argc, char **argv) {
         tg_training = 0;
         VxDataset dataset = vx_dataset_load(labels_path, flags_dir);
         VxViT vit = vx_vit_load(weights_path);
+#ifdef OVG_CUDA_ENABLED
+        vit_params_to_cuda(&vit);
+#endif
         FILE *list = fopen(identify_batch_path, "r");
         if (!list) {
             fprintf(stderr, "error: cannot open batch list '%s'\n", identify_batch_path);
@@ -1163,7 +1207,8 @@ int main(int argc, char **argv) {
                                                           VX_LABEL_SMOOTH / 1000.0f);
             Tensor *scaled_loss = tg_scale(loss, inv_batch);
 
-            batch_loss += tg_scalar_value(loss);
+            if (step == 1 || step % 500 == 0)
+                batch_loss += tg_scalar_value(loss);
 
             tg_backward_accum(scaled_loss);
             tg_free_graph(scaled_loss);
@@ -1195,11 +1240,9 @@ int main(int argc, char **argv) {
     }
 
 #ifdef OVG_CUDA_ENABLED
-    /* Pull GPU params back to CPU for eval and serialization */
-    for (int i = 0; i < n_vit_params; i++) {
+    /* Sync params to CPU for serialization; keep on_cuda=1 so augmented eval runs on GPU */
+    for (int i = 0; i < n_vit_params; i++)
         tg_from_cuda(vit_params[i]);
-        vit_params[i]->on_cuda = 0;
-    }
     /* Free GPU optimizer moments */
     for (int i = 0; i < n_vit_params; i++) {
         tg_cuda_free_floats(adam_m_gpu[i]);
@@ -1218,6 +1261,15 @@ int main(int argc, char **argv) {
 
     tg_training = 0;
 
+    /* Augmented eval: robustness to distortion across all flags (GPU if CUDA build) */
+    printf("\naugmented eval (%d augs per flag):\n", VX_EVAL_AUGS);
+    vit_eval(&vit, images, n_flags, &dataset, eval_dump_path);
+
+#ifdef OVG_CUDA_ENABLED
+    for (int i = 0; i < n_vit_params; i++)
+        vit_params[i]->on_cuda = 0;
+#endif
+
     /* Accuracy on clean (non-augmented) patches for all flags */
     int train_correct = 0;
     for (int i = 0; i < n_flags; i++) {
@@ -1227,10 +1279,6 @@ int main(int argc, char **argv) {
     }
     printf("train accuracy (clean): %.2f%% (%d/%d)\n",
            100.0f * train_correct / n_flags, train_correct, n_flags);
-
-    /* Augmented eval: robustness to distortion across all flags */
-    printf("\naugmented eval (%d augs per flag):\n", VX_EVAL_AUGS);
-    vit_eval(&vit, images, n_flags, &dataset, eval_dump_path);
 
     /* Identify demo on 3 spread-out flags */
     int demo_indices[3] = { 0, n_flags / 2, n_flags - 1 };

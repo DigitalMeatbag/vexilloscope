@@ -6,6 +6,7 @@ reports/import/
 data/flags_wiki/
 data/flags_emoji/
 data/generated/
+data/sources/wikimedia/
 data/generated/negative_eval/
 data/generated/train/eval_dump.csv
 reports/qa/latest.json
