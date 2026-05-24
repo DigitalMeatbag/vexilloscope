@@ -68,7 +68,7 @@ vexilloscope/
   vendor/
     stb_image.h          — single-header PNG/JPEG loader (stb)
   CMakeLists.txt
-  FOUNDATION_V3.md       — authoritative design decisions for v3
+  docs/FOUNDATION_V3.md  — authoritative design decisions for v3
   AGENTS.md              — this file
 ```
 
@@ -375,4 +375,4 @@ with a `FetchContent_Declare` block (template already in the comment there).
 * The bot (`bot/bot.py`) uses a Discord message context menu command ("Identify flag") and calls the binary with `--identify-json`. WebP attachments are converted to PNG in-memory with PIL first (`stb_image` does not support WebP). The response is parsed from `result.stdout` as a single JSON object via `json.loads`.
 * `--identify-json` stdout is a single compact JSON line. The rng seed is redirected to stderr in JSON modes — stdout is clean JSON. Check `detected` before reading `results`.
 * The detector scores scale-1 (full image) first. If `scale1_logit >= VX_DETECT_SKIP_SUBWINDOWS_X10 / 10.0`, sub-windows are skipped entirely. This prevents a high-confidence sub-crop of a complex flag from overriding the correct full-image answer.
-* The negative eval (exp-256-p16, threshold_x10=35) shows 99.7% raw FP rate and 15.0% high-confidence FP rate — the current threshold mechanism does not reliably suppress non-flag inputs. Do not claim threshold tuning alone will solve this; see FOUNDATION_V3.md §Open Problems.
+* The negative eval (exp-256-p16, threshold_x10=35) shows 99.7% raw FP rate and 15.0% high-confidence FP rate — the current threshold mechanism does not reliably suppress non-flag inputs. Do not claim threshold tuning alone will solve this; see docs/FOUNDATION_V3.md §Open Problems.
